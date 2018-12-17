@@ -5,8 +5,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
 //const CdnPlugin = require("../plugins/cdn-plugin");
-const HappyPack = require('happypack');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
+const HappyPack = require("happypack");
+const LiveReloadPlugin = require("webpack-livereload-plugin");
+const { VueLoaderPlugin } = require("vue-loader");
 const PLUGIN = {
     copy: "copy",
     extractCss: "extractCss",
@@ -20,11 +21,15 @@ const PLUGIN = {
     definePlugin: "definePlugin",
     namedModulesPlugin: "namedModulesPlugin",
     liveReloadPlugin: "liveReloadPlugin",
-    happypack: "happyPack"
+    happypack: "happyPack",
+    vueLoaderPlugin: "vueLoaderPlugin"
 };
 
 const plugins = {
     CONST: PLUGIN,
+    [PLUGIN.vueLoaderPlugin]: () => {
+        return new VueLoaderPlugin();
+    },
     [PLUGIN.liveReloadPlugin]: (option) => {
         return new LiveReloadPlugin(option);
     },

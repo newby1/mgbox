@@ -25,3 +25,5 @@ chrome-ex/dist
 manifest
 npm-debug.log
 *.lock
+mocks/*
+!mocks/index.js

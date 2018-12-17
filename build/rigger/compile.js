@@ -1,7 +1,11 @@
+const path = require("path");
+const extend = require("extend");
 const webpack = require("webpack");
-const WebpackDevServer = require('webpack-dev-server');
+const apiMocker = require("mocker-api");
+const WebpackDevServer = require("webpack-dev-server");
 const Observer = require("../helpers/observer");
 const open = require("opn");
+const Const = require("../const");
 
 class Compile {
     constructor(processArgv){
@@ -18,10 +22,11 @@ class Compile {
         this.compileFrame();
         this.compileEnv();
         this.compileMode();
-        this.dll().then(() => {
-            this.outputConfig();
-            this.runWebpack();
-        })
+        this.dll()
+            .then(() => {
+                this.outputConfig();
+                this.runWebpack();
+            })
     }
     setCompileConfig(){
         this.compilationConfig = require(`../configs/${this.processArgv.item}`);
@@ -47,6 +52,7 @@ class Compile {
     }
     outputConfig(){
         this.webpackConfig = require("./output").run(this.semifinishedConfig);
+        console.log(this.webpackConfig.module.rules);
     }
     dll(){
         return new Promise((resolve, reject) => {
@@ -74,11 +80,26 @@ class Compile {
                 }));
             }
         };
+        let processArgv = this.processArgv;
+        //mode is development and had devserver option
+        if (processArgv.mode === Const.MODES.DEVELOPMENT && processArgv.devserver){
+            // mock
+            if (processArgv.mock) {
+                const mocksPath = path.resolve(Const.MOCKS_PATH , "./index.js");
+                console.log("====");
+                console.log(mocksPath);
+                console.log("====");
+                extend(true, devServer.options, {
+                    before: app => {
+                        apiMocker(app, mocksPath)
+                    }
 
-        if (this.processArgv.devserver){
+                });
+            }
             new WebpackDevServer(compiler, devServer.options)
-                .listen(devServer.port, '0.0.0.0');
+                .listen(devServer.port, "0.0.0.0");
             let firstExec = true;
+            //will opening browser after first compiled
             if (devServer.options.open){
                 compiler.plugin("done", () => {
                     if (firstExec){
@@ -87,7 +108,7 @@ class Compile {
                     }
                 });
             }
-        }else if (this.processArgv.watch){
+        }else if (processArgv.mode === Const.MODES.DEVELOPMENT && processArgv.watch){
             compiler["watch"]({
                 ignored: "/node_modules/"
             }, cbFunction);

@@ -23,6 +23,6 @@ module.exports = {
     SRC_PATH : path.resolve(__dirname, "../src"),
     BUILD_PATH: path.resolve(__dirname, "../build"),
     DIST_PATH : path.resolve(__dirname, "../dist"),
-    MOCK_PATH : path.resolve(__dirname, "../mock"),
+    MOCKS_PATH : path.resolve(__dirname, "../mocks"),
     MANIFEST_PATH: path.resolve(__dirname, `../manifest`)
 };
