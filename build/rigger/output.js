@@ -13,18 +13,17 @@ const sortPlugin = (arr = []) => {
     return res;
 };
 module.exports = {
-    run(semifinishedConfig){
-        let configSet = semifinishedConfig;
+    run(preWebpackConfig){
         let module = [];
-        for(let key in configSet.module){
-            module.push(configSet.module[key]);
+        for(let key in preWebpackConfig.module){
+            module.push(preWebpackConfig.module[key]);
         }
         let config = new Tool()
-            .entry(configSet.entry)
-            .output(configSet.output)
+            .entry(preWebpackConfig.entry)
+            .output(preWebpackConfig.output)
             .module(module)
-            .plugins(sortPlugin(configSet.plugins))
-            .append(configSet.append)
+            .plugins(sortPlugin(preWebpackConfig.plugins))
+            .append(preWebpackConfig.append)
             .done();
         //console.log(config);
         return config;

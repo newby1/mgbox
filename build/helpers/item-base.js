@@ -1,17 +1,19 @@
 const path = require("path");
 const Rigger = require("../rigger/rigger");
-const Helper = require("../helpers/helper");
-const Loader = require("../helpers/loaders");
-const Plugins = require("../helpers/plugins");
+const Helper = require("./helper");
+const Loader = require("./loaders");
+const Plugins = require("./plugins");
+
 module.exports = {
     run(context) {
-        let baseConfig = context.baseConfig;
-        let option = context.option;
-        let configSet = context.configSet;
-        let rigger = new Rigger(configSet);
+        let preWebpackConfig = context.preWebpackConfig;
+        let itemConfig = context.itemConfig;
+        let processArgv = context.processArgv;
+        let rigger = new Rigger(preWebpackConfig);
         let entry = {};
         let plugins = [];
-        Helper.getApps(baseConfig.absolutePath.appPath, option.apps)
+
+        Helper.getApps(itemConfig.absolutePath.appPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
                 entry[name] = [
@@ -22,64 +24,56 @@ module.exports = {
             });
         plugins.push(
             Plugins[Plugins.CONST.definePlugin]( {
-                "_ENV": JSON.stringify(option.env),
-                "_MOCK": JSON.stringify(option.mock),
-                "process.env.NODE_ENV": JSON.stringify(option.mode)
+                "_ENV": JSON.stringify(processArgv.env),
+                "_MOCK": JSON.stringify(processArgv.mock),
+                "process.env.NODE_ENV": JSON.stringify(processArgv.mode)
             }),
             Plugins[Plugins.CONST.extractCss]( {
-                filename: `${baseConfig.relativePath.styles}/[name]_[contenthash].css`,
+                filename: `${itemConfig.relativePath.styles}/[name]_[contenthash].css`,
             } ),
             Plugins[Plugins.CONST.copy]([{
-                from: `${baseConfig.absolutePath.staticPath}/${baseConfig.relativePath.scriptLibraries}`,
-                to: baseConfig.relativePath.scriptLibraries
+                from: `${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.scriptLibraries}`,
+                to: itemConfig.relativePath.scriptLibraries
             }]),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
-                assets: [ ...baseConfig.dll.assets.css,  ...baseConfig.buildAssets.css],
+                assets: [ ...itemConfig.dll.assets.css,  ...itemConfig.buildAssets.css],
                 append: false,
             }),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
-                assets: [ ...baseConfig.dll.assets.js,  ...baseConfig.buildAssets.js],
+                assets: [ ...itemConfig.dll.assets.js,  ...itemConfig.buildAssets.js],
                 append: false,
-            }),
-            Plugins[Plugins.CONST.happypack]({
-                id: "js",
-                loaders: [ {
-                    loader: "babel-loader"
-                } ]
             })
         );
         rigger.entry(entry)
             .output({
-                path: baseConfig.absolutePath.distStaticPath,
+                path: itemConfig.absolutePath.distStaticPath,
                 publicPath: `/`,
-                filename: `${baseConfig.relativePath.scripts}/[name]_[hash:8].js`
+                filename: `${itemConfig.relativePath.scripts}/[name]_[hash:8].js`
             })
             .module({
-                [Loader.CONST.js]: Loader[Loader.CONST.js](),
                 [Loader.CONST.html]: Loader[Loader.CONST.html](),
                 [Loader.CONST.less]: Loader[Loader.CONST.less](),
                 [Loader.CONST.pic]: Loader[Loader.CONST.pic]({
                     use: {
                         options: {
-                            name: `${baseConfig.relativePath.images}/[name]_[hash:8].[ext]`
+                            name: `${itemConfig.relativePath.images}/[name]_[hash:8].[ext]`
                         }
                     }
                 }),
                 [Loader.CONST.font]: Loader[Loader.CONST.font]({
                     use: {
                         options: {
-                            name: `${baseConfig.relativePath.fonts}/[name]_[hash:8].[ext]`,
+                            name: `${itemConfig.relativePath.fonts}/[name]_[hash:8].[ext]`,
                         }
                     }
                 }),
             })
             .plugins(plugins)
             .append({
-                mode: option.buildMode,
                 resolve: {
                     alias: {
-                        "$staticPath": baseConfig.absolutePath.staticPath,
-                        "$appsPath": baseConfig.absolutePath.appPath
+                        "$staticPath": itemConfig.absolutePath.staticPath,
+                        "$appsPath": itemConfig.absolutePath.appPath
                     }
                 }
             });

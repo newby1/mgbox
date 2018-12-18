@@ -12,7 +12,7 @@ class Compile {
         this.processArgv = processArgv;
         this.compilationConfig = null;
         this.observerIns = new Observer;
-        this.semifinishedConfig = null;
+        this.preWebpackConfig = null;
         this.webpackConfig = null;
         this.run();
     }
@@ -33,33 +33,41 @@ class Compile {
     }
     getArgs(){
         return {
-            configSet: this.semifinishedConfig,
-            baseConfig: this.compilationConfig,
-            option: this.processArgv
+            preWebpackConfig: this.preWebpackConfig,
+            itemConfig: this.compilationConfig,
+            processArgv: this.processArgv
         }
     }
     compileItem(){
-        this.semifinishedConfig = require(`../items/${this.processArgv.item}`).run(this.getArgs());
+        let item = this.processArgv.item;
+        console.log("pre-compile item: ", item);
+        this.preWebpackConfig = require(`../items/${item}`).run(this.getArgs());
     }
     compileFrame(){
-        this.semifinishedConfig = require(`../compile/frames/${this.compilationConfig.frame}`).run(this.getArgs());
+        let frame = this.compilationConfig.frame;
+        console.log("pre-compile frame: ", frame);
+        this.preWebpackConfig = require(`../compile/frames/${frame}`).run(this.getArgs());
     }
     compileEnv(){
-        this.semifinishedConfig = require(`../compile/envs/${this.processArgv.env}`).run(this.getArgs());
+        let env = this.processArgv.env;
+        console.log("pre-compile env: ", env);
+        this.preWebpackConfig = require(`../compile/envs/${env}`).run(this.getArgs());
     }
     compileMode(){
-        this.semifinishedConfig = require(`../compile/modes/${this.processArgv.mode}`).run(this.getArgs());
+        let mode = this.processArgv.mode;
+        console.log("pre-compile mode: ", mode);
+        this.preWebpackConfig = require(`../compile/modes/${mode}`).run(this.getArgs());
     }
     outputConfig(){
-        this.webpackConfig = require("./output").run(this.semifinishedConfig);
-        console.log(this.webpackConfig.module.rules);
+        this.webpackConfig = require("./output").run(this.preWebpackConfig);
     }
     dll(){
+        console.log("compile dll");
         return new Promise((resolve, reject) => {
             require("../helpers/dll")
                 .run(this.getArgs())
-                .then((semifinishedConfig) => {
-                    this.semifinishedConfig = semifinishedConfig;
+                .then((preWebpackConfig) => {
+                    this.preWebpackConfig = preWebpackConfig;
                     resolve(true);
                 })
         })
@@ -86,9 +94,6 @@ class Compile {
             // mock
             if (processArgv.mock) {
                 const mocksPath = path.resolve(Const.MOCKS_PATH , "./index.js");
-                console.log("====");
-                console.log(mocksPath);
-                console.log("====");
                 extend(true, devServer.options, {
                     before: app => {
                         apiMocker(app, mocksPath)

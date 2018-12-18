@@ -39,8 +39,9 @@ items.forEach((val) => {
         item: val
     }, processArgv);
     if (itemsLength > 1){
-        option.apps = [];
+        processArgv.apps = [];
     }
+    console.log("process argv: ", option);
     new Compile(option);
 });
 

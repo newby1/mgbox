@@ -1,23 +1,25 @@
 const path = require("path");
 const Rigger = require("../../rigger/rigger");
-const Helper = require("../../helpers/helper");
+const Loader = require("../../helpers/loaders");
 const Plugins = require("../../helpers/plugins");
+const Helper = require("../../helpers/helper");
+const Const = require("../../const");
 module.exports = {
     run(context) {
-        let rigger = new Rigger(context.configSet);
+        let preWebpackConfig = context.preWebpackConfig;
+        let itemConfig = context.itemConfig;
+        let processArgv = context.processArgv;
+        let rigger = new Rigger(preWebpackConfig);
         let entry = {};
         let plugins = [];
-        let configSet = context.configSet;
-        let baseConfig = context.baseConfig;
-        let option = context.option;
 
         let extractCssPublicPath = "/";
         let outputPublicPath = extractCssPublicPath;
 
-        for(let key in configSet.entry){
-            configSet.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://localhost:${baseConfig.devServer.port}/`)
+        for(let key in preWebpackConfig.entry){
+            preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://localhost:${itemConfig.devServer.port}/`)
         }
-        Helper.getApps(baseConfig.absolutePath.appPath, option.apps)
+        Helper.getApps(itemConfig.absolutePath.appPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
                 plugins.push(

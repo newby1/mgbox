@@ -1,6 +1,7 @@
 const path = require("path");
+const PRJ_NAME = path.basename(path.resolve(__dirname, "../"));
 module.exports = {
-    PRJ_NAME: "cgrass",
+    PRJ_NAME,
     ENVS : {
         LOCAL: "local",
         CLIENT: "client",

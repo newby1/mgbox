@@ -4,6 +4,7 @@ const LOADERS = {
     less: "less",
     sass: "sass",
     js: "js",
+    jsx: "jsx",
     vue: "vue",
     html: "html",
     pug: "pug",
@@ -21,6 +22,11 @@ const loaderBase = {
         test: /\.js$/,
         exclude: /(node_modules)/,
         use: "happypack/loader?id=js"
+    },
+    [LOADERS.jsx]: {
+        test: /\.jsx?$/,
+        exclude: /(node_modules)/,
+        use: "happypack/loader?id=jsx"
     },
     [LOADERS.pug]: {
         test: /\.pug$/,

@@ -9,6 +9,9 @@ module.exports = {
         });
         return res;
     },
+    getCdnUrl : function (url, cdnHost, exts) {
+        return cdnHost + (url.indexOf("/") == 0 ?  "" : "/")  + url;
+    },
     getApps(dir, filterApps = []){
         let dirs = [];
         let max = 2;

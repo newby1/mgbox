@@ -1,8 +1,10 @@
 const extend = require("extend");
 const BaseFun = require("./base");
-module.exports = extend({}, BaseFun(__dirname, {
+const Const = require("../const");
+module.exports = extend({}, BaseFun(__filename, {
+    frame: Const.FRAMES.REACT,
     devServer: {
-        port: 3003
+        port: 13004
     },
     dll: {
         assets: {
@@ -10,10 +12,8 @@ module.exports = extend({}, BaseFun(__dirname, {
         },
         entry: {
             "vendor": ["babel-polyfill", "url-polyfill", "whatwg-fetch"],
-            "vue": [ "vue/dist/vue.esm.js"],
-            "vueRouter": [ "vue-router"],
-            "vuex": [ "vuex"],
-            //"elementUI": ["element-ui","element-ui/lib/theme-chalk/index.css"],
+            "react": [ "react", "react-dom"],
+            "redux": ["redux"]
         }
     }
 }));

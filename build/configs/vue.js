@@ -2,7 +2,7 @@ const extend = require("extend");
 const BaseFun = require("./base");
 module.exports = extend({}, BaseFun(__filename, {
     devServer: {
-        port: 3003
+        port: 13003
     },
     dll: {
         assets: {

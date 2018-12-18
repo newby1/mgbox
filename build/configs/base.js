@@ -20,8 +20,7 @@ module.exports = function (jsPath, option) {
         frame: Const.FRAMES.VUE,
         cdn: {
             host: `//{name}-c.te6.com/${PRJ_NAME}`,
-            scriptExt: ["js", "css", "swf"],
-            pictureExt: ["jpg", "png", "gif"]
+            exts: ["js", "css", "swf", "jpg", "png", "gif"]
         },
         absolutePath: {
             wwwPath,
