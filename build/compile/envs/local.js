@@ -16,8 +16,12 @@ module.exports = {
         let extractCssPublicPath = "/";
         let outputPublicPath = extractCssPublicPath;
 
+				let ip = Helper.getIPAdress();
+				console.log("address: ", `http://${ip}/${itemConfig.devServer.port}`);
+
         for(let key in preWebpackConfig.entry){
-            preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://localhost:${itemConfig.devServer.port}/`)
+            //preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://localhost:${itemConfig.devServer.port}/`)
+            preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://${ip}:${itemConfig.devServer.port}/`)
         }
         Helper.getApps(itemConfig.absolutePath.appPath, processArgv.apps)
             .forEach((val) => {
@@ -41,7 +45,7 @@ module.exports = {
                 append: false,
             }),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
-                assets: [`http://localhost:35729/livereload.js`],
+                assets: [`http://${ip}:35729/livereload.js`],
                 publicPath: "",
                 append: false,
             })

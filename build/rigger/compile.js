@@ -105,7 +105,8 @@ class Compile {
                 .listen(devServer.port, "0.0.0.0");
             let firstExec = true;
             //will opening browser after first compiled
-            if (devServer.options.open){
+						let isLinuxOS = require("os").type() === "Linux" ;
+            if (devServer.options.open && !isLinuxOS){
                 compiler.plugin("done", () => {
                     if (firstExec){
                         firstExec = false;
