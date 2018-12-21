@@ -10,14 +10,14 @@ const Const = require("../const");
 class Compile {
     constructor(processArgv){
         this.processArgv = processArgv;
-        this.compilationConfig = null;
+        this.itemConfig = null;
         this.observerIns = new Observer;
         this.preWebpackConfig = null;
         this.webpackConfig = null;
         this.run();
     }
-    run(){
-        this.setCompileConfig();
+    run() {
+        this.setItemConfig();
         this.compileItem();
         this.compileFrame();
         this.compileEnv();
@@ -28,13 +28,13 @@ class Compile {
                 this.runWebpack();
             })
     }
-    setCompileConfig(){
-        this.compilationConfig = require(`../configs/${this.processArgv.item}`);
+    setItemConfig(){
+        this.itemConfig = require(`../configs/${this.processArgv.item}`);
     }
     getArgs(){
         return {
             preWebpackConfig: this.preWebpackConfig,
-            itemConfig: this.compilationConfig,
+            itemConfig: this.itemConfig,
             processArgv: this.processArgv
         }
     }
@@ -44,7 +44,7 @@ class Compile {
         this.preWebpackConfig = require(`../items/${item}`).run(this.getArgs());
     }
     compileFrame(){
-        let frame = this.compilationConfig.frame;
+        let frame = this.itemConfig.frame;
         console.log("pre-compile frame: ", frame);
         this.preWebpackConfig = require(`../compile/frames/${frame}`).run(this.getArgs());
     }
@@ -75,7 +75,7 @@ class Compile {
     }
     runWebpack(){
         let compiler = webpack(this.webpackConfig);
-        let devServer = this.compilationConfig.devServer;
+        let devServer = this.itemConfig.devServer;
         let cbFunction = function (err, stats) {
             if (err){
                 console.log(err);
@@ -87,6 +87,7 @@ class Compile {
                     colors: true
                 }));
             }
+            console.log("\r\n compile success!");
         };
         let processArgv = this.processArgv;
         //mode is development and had devserver option
@@ -105,7 +106,7 @@ class Compile {
                 .listen(devServer.port, "0.0.0.0");
             let firstExec = true;
             //will opening browser after first compiled
-						let isLinuxOS = require("os").type() === "Linux" ;
+            let isLinuxOS = require("os").type() === "Linux" ;
             if (devServer.options.open && !isLinuxOS){
                 compiler.plugin("done", () => {
                     if (firstExec){

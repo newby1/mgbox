@@ -1,3 +1,7 @@
+const path = require("path");
+
+const del = require("del");
+
 const Rigger = require("../../rigger/rigger");
 const Loader = require("../../helpers/loaders");
 const Plugins = require("../../helpers/plugins");
@@ -11,6 +15,34 @@ module.exports = {
         let rigger = new Rigger(preWebpackConfig);
         let entry = {};
         let plugins = [];
+        //删除 manifest,dist
+        console.log("delete dist and manifest");
+        try {
+            del.sync([Const.MANIFEST_PATH, Const.DIST_PATH])
+        } catch(e) {
+        }
+
+        Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
+            .forEach((val) => {
+                let name = path.basename(val);
+                plugins.push(
+                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
+                        chunks: [name],
+                        template: path.resolve(val, "index.html"),
+                        filename:  `${itemConfig.absolutePath.distAppPath}/${name}.html`,
+                        inject: true,
+                        minify: {
+                            collapseWhitespace: true,
+                            removeComments: true,
+                            removeRedundantAttributes: true,
+                            //removeScriptTypeAttributes: true,
+                            removeStyleLinkTypeAttributes: true,
+                            useShortDoctype: true
+                        }
+                    })
+                );
+            });
+
         if (processArgv.cdn){
             plugins.push(
                 Plugins[Plugins.CONST.cdn](itemConfig.cdn)
@@ -38,8 +70,21 @@ module.exports = {
                 }
             });
         }
+        plugins.push(
+            Plugins[Plugins.CONST.uglify]()
+        );
         rigger
             .module({
+                [Loader.CONST.html]: {
+                    use: [
+                        {
+                            loader: "html-loader",
+                            options: {
+                                minimize: true
+                            }
+                        }
+                    ]
+                },
                 [Loader.CONST.less]: {
                     use: [
                         {

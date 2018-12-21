@@ -1,3 +1,5 @@
+const path = require("path");
+
 const Rigger = require("../../rigger/rigger");
 const Loader = require("../../helpers/loaders");
 const Plugins = require("../../helpers/plugins");
@@ -11,6 +13,19 @@ module.exports = {
         let rigger = new Rigger(preWebpackConfig);
         let entry = {};
         let plugins = [];
+
+        Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
+            .forEach((val) => {
+                let name = path.basename(val);
+                plugins.push(
+                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
+                        chunks: [name],
+                        template: path.resolve(val, "index.html"),
+                        filename:  `${itemConfig.absolutePath.distAppPath}/${name}.html`,
+                        inject: true
+                    })
+                );
+            });
         rigger
             .module({
                 [Loader.CONST.less]: {
@@ -33,6 +48,7 @@ module.exports = {
 
                 }
             })
+            .plugins(plugins)
             .append({
                 devtool: "eval-source-map",
                 mode: Const.MODES.DEVELOPMENT

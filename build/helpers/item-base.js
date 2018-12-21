@@ -13,7 +13,7 @@ module.exports = {
         let entry = {};
         let plugins = [];
 
-        Helper.getApps(itemConfig.absolutePath.appPath, processArgv.apps)
+        Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
                 entry[name] = [
@@ -73,7 +73,7 @@ module.exports = {
                 resolve: {
                     alias: {
                         "$staticPath": itemConfig.absolutePath.staticPath,
-                        "$appsPath": itemConfig.absolutePath.appPath
+                        "$appsPath": itemConfig.absolutePath.appsPath
                     }
                 }
             });

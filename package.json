@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "local": "node ./build/index.js  -i jquery -d -M -a index",
-    "client": "rm -rf dist && node ./build/index.js -e client -i jquery -a index"
+    "local": "node ./build/index.js  -i jquery -D -M -a index",
+    "dev": "rm -rf dist && node ./build/index.js -e server -m production -i jquery -a index -C"
   },
   "author": "niudaodao",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.0.0",
     "cssnano": "^4.1.7",
+    "del": "^3.0.0",
     "extend": "^3.0.2",
     "file-loader": "^2.0.0",
     "happypack": "^5.0.0",

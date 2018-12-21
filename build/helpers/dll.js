@@ -16,6 +16,7 @@ module.exports = {
             try{
                 let stats = fs.statSync(itemConfig.dll.manifestPath);
                 if (stats.isDirectory()){
+                    console.log("use cache dll");
                     resolve(preWebpackConfig);
                     return;
                 }
@@ -51,6 +52,7 @@ module.exports = {
                 .done();
             let compiler = webpack(config);
             compiler.run( (err, stats) => {
+                console.log("compile dll done");
                 if (err){
                     console.log(err);
                     return;

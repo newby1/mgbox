@@ -4,29 +4,27 @@ const Const = require("../const");
 const PRJ_NAME = Const.PRJ_NAME;
 
 module.exports = function (jsPath, option) {
-    const appName = path.parse(jsPath).name;
-    const appManifestPath = `${Const.MANIFEST_PATH}/${appName}`;
+    const itemName = path.parse(jsPath).name;
+    const itemManifestPath = `${Const.MANIFEST_PATH}/${itemName}`;
 
     const distPath = Const.DIST_PATH;
-    const distAppPath = `${distPath}/${appName}`;
-    const distStaticPath = `${distPath}/static/${appName}`;
+    const distAppPath = `${distPath}/${itemName}`;
+    const distStaticPath = `${distPath}/static/${itemName}`;
 
-    const wwwPath = Const.SRC_PATH;
-    const appPath = `${wwwPath}/${appName}/apps`;
-    const staticPath = `${wwwPath}/${appName}/static/`;
+    const srcPath = Const.SRC_PATH;
+    const appsPath = `${srcPath}/${itemName}/apps`;
+    const staticPath = `${srcPath}/${itemName}/static/`;
     let base = {
         prjName: PRJ_NAME,
-        appName,
+        itemName,
         frame: Const.FRAMES.VUE,
         cdn: {
-            host: `//{name}-c.te6.com/${PRJ_NAME}`,
+            host: `//www.lgstatic.com/${PRJ_NAME}`,
             exts: ["js", "css", "swf", "jpg", "png", "gif"]
         },
         absolutePath: {
-            wwwPath,
-            appPath,
+            appsPath,
             staticPath,
-            distPath,
             distAppPath,
             distStaticPath
         },
@@ -42,7 +40,7 @@ module.exports = function (jsPath, option) {
             css: []
         },
         dll: {
-            manifestPath: appManifestPath,
+            manifestPath: itemManifestPath,
             assets:{
                 js: [],
                 css: []
@@ -50,7 +48,7 @@ module.exports = function (jsPath, option) {
             entry: null,
         },
         devServer: {
-            port: 3002,
+            port: 0,
             options: {
                 hot: true,
                 inline: true,

@@ -13,26 +13,13 @@ module.exports = {
         let entry = {};
         let plugins = [];
 
-        let extractCssPublicPath = `/${itemConfig.appName}/`;
+        let extractCssPublicPath = `/${itemConfig.itemName}/`;
         let outputPublicPath = extractCssPublicPath;
 
-        Helper.getApps(itemConfig.absolutePath.appPath, processArgv.apps)
-            .forEach((val) => {
-                let name = path.basename(val);
-                plugins.push(
-                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
-                        chunks: [name],
-                        template: path.resolve(val, "index.html"),
-                        filename:  `${itemConfig.absolutePath.distAppPath}/${name}.html`,
-                        inject: true
-                    })
-                );
-            });
         rigger
             .output({
                 publicPath: outputPublicPath
             })
-            .plugins(plugins)
             .helper({
                 extractCssPublicPath,
                 outputPublicPath

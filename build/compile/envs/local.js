@@ -23,18 +23,6 @@ module.exports = {
             //preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://localhost:${itemConfig.devServer.port}/`)
             preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://${ip}:${itemConfig.devServer.port}/`)
         }
-        Helper.getApps(itemConfig.absolutePath.appPath, processArgv.apps)
-            .forEach((val) => {
-                let name = path.basename(val);
-                plugins.push(
-                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
-                        chunks: [name],
-                        template: path.resolve(val, "index.html"),
-                        filename:  `${name}.html`,
-                        inject: true
-                    })
-                );
-            });
         plugins.push(
             Plugins[Plugins.CONST.liveReloadPlugin](),
             Plugins[Plugins.CONST.namedModulesPlugin](),

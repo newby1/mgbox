@@ -16,9 +16,9 @@ program
         return val.split(",");
     }, [])
     .option("-M, --mock", "使用mock")
-    .option("-d, --devserver", "使用devserver")
-    .option("--watch", "需要watch")
-    .option("-c, --cdn", "静态资源需要上cdn")
+    .option("-D, --devserver", "使用devserver")
+    .option("-W --watch", "需要watch")
+    .option("-C, --cdn", "静态资源需要上cdn")
     .parse(process.argv);
 
 let {items, env, mode, apps, mock, devserver, cdn, watch} = program;

@@ -78,7 +78,6 @@ const loaderBase = {
             options: {
                 attrs: ["img:src", "link:href"],
                 interpolate: true,
-                //minimize: !isCoding
             }
         }
     },

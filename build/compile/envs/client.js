@@ -15,20 +15,8 @@ module.exports = {
         let plugins = [];
 
         let extractCssPublicPath = "../";
-        let outputPublicPath = `../static/${itemConfig.appName}/`;
+        let outputPublicPath = `../static/${itemConfig.itemName}/`;
 
-        Helper.getApps(itemConfig.absolutePath.appPath, processArgv.apps)
-            .forEach((val) => {
-                let name = path.basename(val);
-                plugins.push(
-                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
-                        chunks: [name],
-                        template: path.resolve(val, "index.html"),
-                        filename:  `${itemConfig.absolutePath.distAppPath}/${name}.html`,
-                        inject: true
-                    })
-                );
-            });
         rigger
             .output({
                 publicPath: outputPublicPath
@@ -45,7 +33,6 @@ module.exports = {
                     ]
                 }
             })
-            .plugins(plugins)
             .helper({
                 extractCssPublicPath,
                 outputPublicPath

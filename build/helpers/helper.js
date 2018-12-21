@@ -1,26 +1,26 @@
 const fs = require("fs");
 const path = require("path");
 module.exports = {
-		getIPAdress() {
-				var interfaces = require('os').networkInterfaces();　　
-				for (var devName in interfaces) {　　　　
-						var iface = interfaces[devName];　　　　　　
-						for (var i = 0; i < iface.length; i++) {
-								var alias = iface[i];
-								if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
-										return alias.address;
-								}
-						}　　
-				}
-		},
-		getItems(srcPath) {
-				let res = [];
-				let dirList = fs.readdirSync(srcPath);
-				dirList.forEach((item) => {
-						res.push(path.parse(`${srcPath}/${item}`).name);
-				});
-				return res;
-		},
+    getIPAdress() {
+        let interfaces = require('os').networkInterfaces();
+        for (let devName in interfaces) {
+            let iface = interfaces[devName];
+            for (let i = 0; i < iface.length; i++) {
+                let alias = iface[i];
+                if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                    return alias.address;
+                }
+            }
+        }
+    },
+    getItems(itemsPath) {
+        let res = [];
+        let dirList = fs.readdirSync(itemsPath);
+        dirList.forEach((item) => {
+            res.push(path.parse(`${itemsPath}/${item}`).name);
+        });
+        return res;
+    },
     getCdnUrl(url, cdnHost, exts) {
         return cdnHost + (url.indexOf("/") == 0 ?  "" : "/")  + url;
     },

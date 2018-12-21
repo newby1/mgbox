@@ -4,7 +4,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
-//const CdnPlugin = require("../plugins/cdn-plugin");
+const CdnPlugin = require("../plugins/cdn-plugin");
 const HappyPack = require("happypack");
 const LiveReloadPlugin = require("webpack-livereload-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
@@ -79,7 +79,9 @@ const plugins = {
     },
     [PLUGIN.hotReplace]: () => {
         return new webpack.HotModuleReplacementPlugin();
+    },
+    [PLUGIN.cdn]: (option) => {
+        return new CdnPlugin(option);
     }
-
 };
 module.exports = plugins ;
