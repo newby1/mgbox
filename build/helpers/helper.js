@@ -24,9 +24,14 @@ module.exports = {
     getCdnUrl(url, cdnHost, exts) {
         return cdnHost + (url.indexOf("/") == 0 ?  "" : "/")  + url;
     },
-    getApps(dir, filterApps = []){
+    getSSRApps(dir, filterApps){
+        return this.getApps(dir, filterApps, true);
+
+    },
+    getApps(dir, filterApps = [], isSSR = false){
         let dirs = [];
         let max = 2;
+        let targetFile = isSSR ? "server.js" : "index.html";
         function readDirSync(curPath, deep = 0) {
             if (deep >= max) {
                 return;
@@ -37,7 +42,7 @@ module.exports = {
                 if (info.isDirectory()) {
                     readDirSync(curPath + "/" + ele, deep + 1);
                 } else {
-                    if (ele == "index.html" ) {
+                    if (ele == targetFile ) {
                         dirs.push(path.resolve(__dirname, curPath));
                     }
                 }

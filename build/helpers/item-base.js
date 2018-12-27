@@ -3,6 +3,7 @@ const Rigger = require("../rigger/rigger");
 const Helper = require("./helper");
 const Loader = require("./loaders");
 const Plugins = require("./plugins");
+const extend = require("extend");
 
 module.exports = {
     run(context) {
@@ -13,15 +14,6 @@ module.exports = {
         let entry = {};
         let plugins = [];
 
-        Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
-            .forEach((val) => {
-                let name = path.basename(val);
-                entry[name] = [
-                    "babel-polyfill",
-                    path.resolve(val, "index.js"),
-                    path.resolve(val, "index.less")
-                ];
-            });
         plugins.push(
             Plugins[Plugins.CONST.definePlugin]( {
                 "_ENV": JSON.stringify(processArgv.env),
@@ -44,13 +36,7 @@ module.exports = {
                 append: false,
             })
         );
-        rigger.entry(entry)
-            .output({
-                path: itemConfig.absolutePath.distStaticPath,
-                publicPath: `/`,
-                filename: `${itemConfig.relativePath.scripts}/[name]_[hash:8].js`
-            })
-            .module({
+        rigger.module({
                 [Loader.CONST.html]: Loader[Loader.CONST.html](),
                 [Loader.CONST.less]: Loader[Loader.CONST.less](),
                 [Loader.CONST.pic]: Loader[Loader.CONST.pic]({

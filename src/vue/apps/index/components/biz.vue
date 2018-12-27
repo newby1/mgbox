@@ -10,12 +10,14 @@
         method: {
         },
         created: () => {
+            /*
             BizSvc.getUserInfo().then(data => {
                 console.log("api/id", data);
             })
             BizSvc.getHello().then(data => {
                 console.log("/api/hello", data);
             })
+            */
         }
     }
 </script>

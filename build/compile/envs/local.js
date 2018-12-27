@@ -14,10 +14,11 @@ module.exports = {
         let plugins = [];
 
         let extractCssPublicPath = "/";
+        let htmlFileNamePath = "";
         let outputPublicPath = extractCssPublicPath;
 
-				let ip = Helper.getIPAdress();
-				console.log("address: ", `http://${ip}/${itemConfig.devServer.port}`);
+        let ip = Helper.getIPAdress();
+        console.log("address: ", `http://${ip}/${itemConfig.devServer.port}`);
 
         for(let key in preWebpackConfig.entry){
             //preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://localhost:${itemConfig.devServer.port}/`)
@@ -39,9 +40,13 @@ module.exports = {
             })
         );
         rigger.entry(entry)
+            .output({
+                publicPath: outputPublicPath
+            })
             .helper({
                 extractCssPublicPath,
-                outputPublicPath
+                outputPublicPath,
+                htmlFileNamePath
             })
             .plugins(plugins);
 

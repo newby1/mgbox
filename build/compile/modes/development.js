@@ -21,7 +21,7 @@ module.exports = {
                     Plugins[Plugins.CONST.htmlWebpackPlugin]({
                         chunks: [name],
                         template: path.resolve(val, "index.html"),
-                        filename:  `${itemConfig.absolutePath.distAppPath}/${name}.html`,
+                        filename:  `${preWebpackConfig.helper.htmlFileNamePath}${name}.html`,
                         inject: true
                     })
                 );

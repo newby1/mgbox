@@ -4,8 +4,8 @@ const Helper = require("./helpers/helper");
 const path = require("path");
 const Compile = require("./rigger/compile");
 
-let program = require("commander");
-program
+let commander = require("commander");
+commander
     .version("0.1.0")
     .option("-e, --env <env>", "编译环境", Const.ENVS.LOCAL)
     .option("-m, --mode <mode>", "编译模式", new RegExp(`^(${Const.MODES.DEVELOPMENT}|${Const.MODES.PRODUCTION})$`) , Const.MODES.DEVELOPMENT)
@@ -19,20 +19,24 @@ program
     .option("-D, --devserver", "使用devserver")
     .option("-W --watch", "需要watch")
     .option("-C, --cdn", "静态资源需要上cdn")
+    .option("-S, --ssr", "服务端渲染")
     .parse(process.argv);
 
-let {items, env, mode, apps, mock, devserver, cdn, watch} = program;
+let {items, env, mode, apps, mock, devserver, cdn, watch, ssr} = commander;
+
 items = items.length ? items : Helper.getItems(path.resolve(Const.BUILD_PATH, "./items/"));
 const processArgv = {
     items,
     env,
     mode,
     apps,
+    ssr,
     mock: mode == Const.MODES.DEVELOPMENT && mock ? true : false ,
     devserver,
     watch,
     cdn
 };
+
 let itemsLength = items.length;
 items.forEach((val) => {
     let option = extend({
@@ -41,7 +45,6 @@ items.forEach((val) => {
     if (itemsLength > 1){
         processArgv.apps = [];
     }
-    console.log("process argv: ", option);
     new Compile(option);
 });
 

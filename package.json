@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "local": "node ./build/index.js  -i jquery -D -M -a index",
+    "local": "node ./build/index.js  -i vue -D -M -a index -S",
     "dev": "rm -rf dist && node ./build/index.js -e server -m production -i jquery -a index -C"
   },
   "author": "niudaodao",
@@ -22,6 +22,7 @@
     "css-loader": "^2.0.0",
     "cssnano": "^4.1.7",
     "del": "^3.0.0",
+    "express": "^4.16.4",
     "extend": "^3.0.2",
     "file-loader": "^2.0.0",
     "happypack": "^5.0.0",
@@ -40,6 +41,7 @@
     "vue": "^2.5.21",
     "vue-loader": "^15.4.2",
     "vue-router": "^3.0.2",
+    "vue-server-renderer": "^2.5.21",
     "vue-template-compiler": "^2.5.21",
     "vuex": "^3.0.1",
     "webpack": "^4.27.1",
@@ -54,6 +56,8 @@
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "webpack-cli": "^3.1.2"
+    "require-from-string": "^2.0.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-middleware": "^3.4.0"
   }
 }

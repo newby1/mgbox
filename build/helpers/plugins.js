@@ -22,11 +22,17 @@ const PLUGIN = {
     namedModulesPlugin: "namedModulesPlugin",
     liveReloadPlugin: "liveReloadPlugin",
     happypack: "happyPack",
-    vueLoaderPlugin: "vueLoaderPlugin"
+    vueLoaderPlugin: "vueLoaderPlugin",
+    vueServerRenderer: "vueServerRenderer"
 };
 
 const plugins = {
     CONST: PLUGIN,
+    [PLUGIN.vueServerRenderer]: () => {
+        const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
+        return new VueSSRServerPlugin();
+
+    },
     [PLUGIN.vueLoaderPlugin]: () => {
         return new VueLoaderPlugin();
     },

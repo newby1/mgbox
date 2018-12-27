@@ -8,7 +8,7 @@ module.exports = function (jsPath, option) {
     const itemManifestPath = `${Const.MANIFEST_PATH}/${itemName}`;
 
     const distPath = Const.DIST_PATH;
-    const distAppPath = `${distPath}/${itemName}`;
+    const distItemPath = `${distPath}/${itemName}`;
     const distStaticPath = `${distPath}/static/${itemName}`;
 
     const srcPath = Const.SRC_PATH;
@@ -25,7 +25,7 @@ module.exports = function (jsPath, option) {
         absolutePath: {
             appsPath,
             staticPath,
-            distAppPath,
+            distItemPath,
             distStaticPath
         },
         relativePath: {

@@ -16,6 +16,7 @@ module.exports = {
 
         let extractCssPublicPath = "../";
         let outputPublicPath = `../static/${itemConfig.itemName}/`;
+        let htmlFileNamePath = `${itemConfig.absolutePath.distItemPath}/`;
 
         rigger
             .output({

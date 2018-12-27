@@ -9,7 +9,7 @@ module.exports = extend({}, BaseFun(__filename, {
             //css: [`styles/elementUI.css`]
         },
         entry: {
-            "vendor": ["babel-polyfill", "url-polyfill", "whatwg-fetch"],
+            "vendor": ["babel-polyfill", "url-polyfill"],
             "vue": [ "vue/dist/vue.esm.js"],
             "vueRouter": [ "vue-router"],
             "vuex": [ "vuex"],

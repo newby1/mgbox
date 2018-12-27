@@ -21,6 +21,10 @@ module.exports = {
         VUE: "vue",
         REACT: "react"
     },
+    TYPES: {
+        ISOMERISM: "isomerism",
+        ISOMORPHISM: "isomorphism"
+    },
     SRC_PATH : path.resolve(__dirname, "../src"),
     BUILD_PATH: path.resolve(__dirname, "../build"),
     DIST_PATH : path.resolve(__dirname, "../dist"),
