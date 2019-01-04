@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const extend = require("extend");
-const LOADERS = {
+let LOADERS = {
     less: "less",
     sass: "sass",
     js: "js",
@@ -11,7 +11,7 @@ const LOADERS = {
     pic: "pic",
     font: "font"
 };
-const loaderBase = {
+let loaderBase = {
     [LOADERS.vue]: {
         test: /\.vue$/,
         use: {
@@ -85,6 +85,17 @@ const loaderBase = {
 };
 let loader = {
     CONST: LOADERS,
+    registerLoader(name, args){
+        if (LOADERS[name]){
+            return;
+        }
+        LOADERS[name] = name;
+        this[name] = function (option) {
+            return extend(true, {}, loaderBase[name], option || args);
+
+        }
+
+    }
 };
 for(let key in loaderBase){
     loader[key] = (function (name) {

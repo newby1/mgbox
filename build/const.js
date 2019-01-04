@@ -25,6 +25,10 @@ module.exports = {
         ISOMERISM: "isomerism",
         ISOMORPHISM: "isomorphism"
     },
+    RENDERS: {
+        CLIENT: "client",
+        SERVER: "server"
+    },
     SRC_PATH : path.resolve(__dirname, "../src"),
     BUILD_PATH: path.resolve(__dirname, "../build"),
     DIST_PATH : path.resolve(__dirname, "../dist"),

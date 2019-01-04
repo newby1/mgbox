@@ -1,14 +1,5 @@
 const webpack = require("webpack");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
-const CdnPlugin = require("../plugins/cdn-plugin");
-const HappyPack = require("happypack");
-const LiveReloadPlugin = require("webpack-livereload-plugin");
-const { VueLoaderPlugin } = require("vue-loader");
-const PLUGIN = {
+let PLUGIN = {
     copy: "copy",
     extractCss: "extractCss",
     uglify: "uglify",
@@ -23,29 +14,51 @@ const PLUGIN = {
     liveReloadPlugin: "liveReloadPlugin",
     happypack: "happyPack",
     vueLoaderPlugin: "vueLoaderPlugin",
-    vueServerRenderer: "vueServerRenderer"
+    vueServerRenderer: "vueServerRenderer",
+    vueSSRClientPlugin: "vueSSRClientPlugin"
 };
 
-const plugins = {
+let plugins = {
     CONST: PLUGIN,
-    [PLUGIN.vueServerRenderer]: () => {
+    registerPlugin(name, module){
+        if (PLUGIN[name]){
+            return;
+        }
+        PLUGIN[name] = name;
+        this[name] = function (option) {
+            if (typeof module === "string"){
+                return new require(module)(option);
+            }else{
+                return module;
+            }
+        }
+    },
+    [PLUGIN.vueServerRenderer]: (option) => {
         const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
-        return new VueSSRServerPlugin();
+        return new VueSSRServerPlugin(option);
 
     },
+    [PLUGIN.vueSSRClientPlugin]: (option) => {
+        const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
+        return new VueSSRClientPlugin(option);
+    },
     [PLUGIN.vueLoaderPlugin]: () => {
+        const { VueLoaderPlugin } = require("vue-loader");
         return new VueLoaderPlugin();
     },
     [PLUGIN.liveReloadPlugin]: (option) => {
+        const LiveReloadPlugin = require("webpack-livereload-plugin");
         return new LiveReloadPlugin(option);
     },
     [PLUGIN.happypack]: (option) => {
+        const HappyPack = require("happypack");
         return new HappyPack(option);
     },
     [PLUGIN.definePlugin]: (option) => {
         return new webpack.DefinePlugin(option);
     },
     [PLUGIN.htmlWebpackPlugin]: (option) => {
+        const HtmlWebpackPlugin = require("html-webpack-plugin");
         return new HtmlWebpackPlugin(option);
     },
     [PLUGIN.dllPlugin]: (option) => {
@@ -56,15 +69,19 @@ const plugins = {
         return new webpack.DllReferencePlugin(option);
     },
     [PLUGIN.htmlIncludeAssets]: (option) => {
+        const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
         return new HtmlWebpackIncludeAssetsPlugin(option)
     },
     [PLUGIN.copy]: (option) => {
+        const CopyWebpackPlugin = require("copy-webpack-plugin");
         return new CopyWebpackPlugin(option);
     },
     [PLUGIN.extractCss]: (option) => {
+        const MiniCssExtractPlugin = require("mini-css-extract-plugin");
         return new MiniCssExtractPlugin(option)
     },
     [PLUGIN.uglify]: (option) => {
+        const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
         let args = {
             exclude: /\.min\./,
             uglifyOptions: {
@@ -87,6 +104,7 @@ const plugins = {
         return new webpack.HotModuleReplacementPlugin();
     },
     [PLUGIN.cdn]: (option) => {
+        const CdnPlugin = require("../plugins/cdn-plugin");
         return new CdnPlugin(option);
     }
 };

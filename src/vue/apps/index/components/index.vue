@@ -1,15 +1,11 @@
 <template>
-    <div>
+    <div id="app">
         this is index app
-        <Biz/>
+        <router-view/>
     </div>
 </template>
 <script>
-    import Biz from "./biz.vue";
     export default {
-        name: "index",
-        components: {
-            Biz
-        }
+        name: "app"
     }
 </script>

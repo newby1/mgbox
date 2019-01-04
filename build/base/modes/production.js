@@ -8,11 +8,7 @@ const Plugins = require("../../helpers/plugins");
 const Helper = require("../../helpers/helper");
 const Const = require("../../const");
 module.exports = {
-    run(context) {
-        let preWebpackConfig = context.preWebpackConfig;
-        let itemConfig = context.itemConfig;
-        let processArgv = context.processArgv;
-        let rigger = new Rigger(preWebpackConfig);
+    run({rigger, itemConfig, processArgv, preWebpackConfig}) {
         let entry = {};
         let plugins = [];
         //删除 manifest,dist
@@ -23,7 +19,6 @@ module.exports = {
         }
 
         if (!processArgv.ssr){
-
             Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
                 .forEach((val) => {
                     let name = path.basename(val);
@@ -44,8 +39,8 @@ module.exports = {
                         })
                     );
                 });
-        }
 
+        }
         if (processArgv.cdn){
             plugins.push(
                 Plugins[Plugins.CONST.cdn](itemConfig.cdn)

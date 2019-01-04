@@ -11,7 +11,7 @@ export function createApp () {
         router,
         render: h => h(App)
     })
-    console.log(22);
+    console.log(3355);
 
     // 返回 app 和 router
     return { app, router }

@@ -37,23 +37,23 @@ module.exports = {
             })
         );
         rigger.module({
-                [Loader.CONST.html]: Loader[Loader.CONST.html](),
-                [Loader.CONST.less]: Loader[Loader.CONST.less](),
-                [Loader.CONST.pic]: Loader[Loader.CONST.pic]({
-                    use: {
-                        options: {
-                            name: `${itemConfig.relativePath.images}/[name]_[hash:8].[ext]`
-                        }
+            [Loader.CONST.html]: Loader[Loader.CONST.html](),
+            [Loader.CONST.less]: Loader[Loader.CONST.less](),
+            [Loader.CONST.pic]: Loader[Loader.CONST.pic]({
+                use: {
+                    options: {
+                        name: `${itemConfig.relativePath.images}/[name]_[hash:8].[ext]`
                     }
-                }),
-                [Loader.CONST.font]: Loader[Loader.CONST.font]({
-                    use: {
-                        options: {
-                            name: `${itemConfig.relativePath.fonts}/[name]_[hash:8].[ext]`,
-                        }
+                }
+            }),
+            [Loader.CONST.font]: Loader[Loader.CONST.font]({
+                use: {
+                    options: {
+                        name: `${itemConfig.relativePath.fonts}/[name]_[hash:8].[ext]`,
                     }
-                }),
-            })
+                }
+            }),
+        })
             .plugins(plugins)
             .append({
                 resolve: {

@@ -27,12 +27,19 @@ module.exports = {
                 } ]
             })
         ];
-        if (processArgv.ssr){
-            plugins.push(Plugins[Plugins.CONST.vueServerRenderer]())
+        if (processArgv.ssr === Const.TYPES.ISOMORPHISM){
+            console.log(111);
+            plugins.push(Plugins[Plugins.CONST.vueServerRenderer]());
             extend(append, {
                 target: "node"
             })
         }
+
+        if (processArgv.ssr === Const.TYPES.ISOMERISM){
+            console.log(3333);
+            plugins.push(Plugins[Plugins.CONST.vueSSRClientPlugin]());
+        }
+        console.log(555);
 
         return  new Rigger(preWebpackConfig)
             .module({

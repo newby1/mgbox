@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "local": "node ./build/index.js  -i vue -D -M -a index -S",
+    "ls": "node ./build/index.js  -i vue -a index  -S -D",
+    "ld": "node ./build/index.js  -i vue  -a index -S",
+    "l": "node ./build/index.js  -i vue  -a index -D -M",
     "dev": "rm -rf dist && node ./build/index.js -e server -m production -i jquery -a index -C"
   },
   "author": "niudaodao",
@@ -19,6 +21,7 @@
     "babel-polyfill": "^6.26.0",
     "commander": "^2.19.0",
     "copy-webpack-plugin": "^4.6.0",
+    "cross-env": "^5.2.0",
     "css-loader": "^2.0.0",
     "cssnano": "^4.1.7",
     "del": "^3.0.0",
@@ -30,6 +33,7 @@
     "html-webpack-include-assets-plugin": "^1.0.6",
     "html-webpack-plugin": "^3.2.0",
     "less-loader": "^4.1.0",
+    "memory-fs": "^0.4.1",
     "mini-css-extract-plugin": "^0.5.0",
     "mocker-api": "^1.6.6",
     "postcss": "^7.0.6",

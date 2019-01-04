@@ -86,8 +86,11 @@ class Rigger {
         extend(true, this.config.helper, option);
         return this;
     }
-    done(){
+    getConfig(){
         return this.config;
+    }
+    done(){
+        return this.getConfig();
     }
 }
 module.exports = Rigger;

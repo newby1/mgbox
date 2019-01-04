@@ -6,7 +6,6 @@
 <script>
     import BizSvc from "../services/biz";
     export default {
-        name: "Biz",
         data: null,
         method: {
         },

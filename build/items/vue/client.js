@@ -9,7 +9,7 @@ module.exports = {
             },
             entry: {
                 "vendor": ["babel-polyfill", "url-polyfill"],
-                "vue": [ "vue/dist/vue.esm.js"],
+                "vue": [ "vue/dist/vue.js"],
                 "vueRouter": [ "vue-router"],
                 "vuex": [ "vuex"],
                 //"elementUI": ["element-ui","element-ui/lib/theme-chalk/index.css"],
