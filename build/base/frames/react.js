@@ -1,6 +1,6 @@
 const extend = require('extend');
 module.exports = {
-    run({rigger, itemConfig, processArgv}) {
+    run({rigger, itemConfig, processArgv, Loaders, Plugins}) {
         let append = {
             resolve: {
                 alias: {}
@@ -13,7 +13,7 @@ module.exports = {
         }
         return  rigger
             .module({
-                [Loader.CONST.jsx]: Loader[Loader.CONST.jsx](),
+                [Loaders.CONST.jsx]: Loaders[Loaders.CONST.jsx](),
             })
             .plugins([
                 Plugins[Plugins.CONST.happypack]({

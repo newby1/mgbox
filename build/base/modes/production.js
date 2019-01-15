@@ -1,52 +1,41 @@
 const path = require("path");
 
-const del = require("del");
 
-const Rigger = require("../../rigger/rigger");
-const Loader = require("../../helpers/loaders");
-const Plugins = require("../../helpers/plugins");
-const Helper = require("../../helpers/helper");
-const Const = require("../../const");
 module.exports = {
-    run({rigger, itemConfig, processArgv, preWebpackConfig}) {
+    run({rigger, itemConfig, processArgv, Loaders, Plugins}) {
         let entry = {};
         let plugins = [];
         //删除 manifest,dist
         console.log("delete dist and manifest");
-        try {
-            del.sync([Const.MANIFEST_PATH, Const.DIST_PATH])
-        } catch(e) {
-        }
 
-        if (!processArgv.ssr){
-            Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
-                .forEach((val) => {
-                    let name = path.basename(val);
-                    plugins.push(
-                        Plugins[Plugins.CONST.htmlWebpackPlugin]({
-                            chunks: [name],
-                            template: path.resolve(val, "index.html"),
-                            filename:  `${itemConfig.absolutePath.distItemPath}/${name}.html`,
-                            inject: true,
-                            minify: {
-                                collapseWhitespace: true,
-                                removeComments: true,
-                                removeRedundantAttributes: true,
-                                //removeScriptTypeAttributes: true,
-                                removeStyleLinkTypeAttributes: true,
-                                useShortDoctype: true
-                            }
-                        })
-                    );
-                });
+        Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
+            .forEach((val) => {
+                let name = path.basename(val);
+                plugins.push(
+                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
+                        chunks: [name],
+                        template: path.resolve(val, "index.html"),
+                        filename:  `${itemConfig.absolutePath.distItemPath}/${name}.html`,
+                        inject: true,
+                        minify: {
+                            collapseWhitespace: true,
+                            removeComments: true,
+                            removeRedundantAttributes: true,
+                            //removeScriptTypeAttributes: true,
+                            removeStyleLinkTypeAttributes: true,
+                            useShortDoctype: true
+                        }
+                    })
+                );
+            });
 
-        }
+        /*
         if (processArgv.cdn){
             plugins.push(
                 Plugins[Plugins.CONST.cdn](itemConfig.cdn)
             );
             rigger.module({
-                [Loader.CONST.font]: {
+                [Loaders.CONST.font]: {
                     use: {
                         options: {
                             publicPath: function (url) {
@@ -56,7 +45,7 @@ module.exports = {
                         }
                     }
                 },
-                [Loader.CONST.pic]: {
+                [Loaders.CONST.pic]: {
                     use: {
                         options: {
                             publicPath: function (url) {
@@ -68,12 +57,13 @@ module.exports = {
                 }
             });
         }
+        */
         plugins.push(
             Plugins[Plugins.CONST.uglify]()
         );
         rigger
             .module({
-                [Loader.CONST.html]: {
+                [Loaders.CONST.html]: {
                     use: [
                         {
                             loader: "html-loader",
@@ -83,7 +73,7 @@ module.exports = {
                         }
                     ]
                 },
-                [Loader.CONST.less]: {
+                [Loaders.CONST.less]: {
                     use: [
                         {
                             loader: "css-loader",

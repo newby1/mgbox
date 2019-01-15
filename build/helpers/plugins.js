@@ -15,7 +15,8 @@ let PLUGIN = {
     happypack: "happyPack",
     vueLoaderPlugin: "vueLoaderPlugin",
     vueServerRenderer: "vueServerRenderer",
-    vueSSRClientPlugin: "vueSSRClientPlugin"
+    vueSSRClientPlugin: "vueSSRClientPlugin",
+    webpackManifestPlugin: "webpackManifestPlugin"
 };
 
 let plugins = {
@@ -32,6 +33,11 @@ let plugins = {
                 return module;
             }
         }
+    },
+    [PLUGIN.webpackManifestPlugin]: (option) => {
+        const WebpackManifestPlugin = require("webpack-manifest-plugin");
+        return new WebpackManifestPlugin(option);
+
     },
     [PLUGIN.vueServerRenderer]: (option) => {
         const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
@@ -52,7 +58,9 @@ let plugins = {
     },
     [PLUGIN.happypack]: (option) => {
         const HappyPack = require("happypack");
-        return new HappyPack(option);
+        return new HappyPack(Object.assign({
+            threadPool: HappyPack.ThreadPool({size: require("os").cpus().length})
+        }, option));
     },
     [PLUGIN.definePlugin]: (option) => {
         return new webpack.DefinePlugin(option);

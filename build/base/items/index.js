@@ -1,13 +1,13 @@
 
 module.exports = {
-    run({rigger, itemConfig, processArgv, Loaders, Plugins}) {
+    run({rigger, itemConfig, processArgv, Loaders, Plugins, Const}) {
+        const hash = processArgv.env === Const.ENVS.LOCAL ? "hash" : "contenthash";
         let entry = {};
         let plugins = [];
-
         let output = {
             path: itemConfig.absolutePath.distStaticPath,
             publicPath: `/`,
-            filename: `${itemConfig.relativePath.scripts}/[name]_[hash:8].js`
+            filename: `${itemConfig.relativePath.scripts}/[name]_[${hash}:8].js`
         };
         rigger
             .output(output)
@@ -17,14 +17,14 @@ module.exports = {
                 [Loaders.CONST.pic]: Loaders[Loaders.CONST.pic]({
                     use: {
                         options: {
-                            name: `${itemConfig.relativePath.images}/[name]_[hash:8].[ext]`
+                            name: `${itemConfig.relativePath.images}/[name]_[${hash}:8].[ext]`
                         }
                     }
                 }),
                 [Loaders.CONST.font]: Loaders[Loaders.CONST.font]({
                     use: {
                         options: {
-                            name: `${itemConfig.relativePath.fonts}/[name]_[hash:8].[ext]`,
+                            name: `${itemConfig.relativePath.fonts}/[name]_[${hash}:8].[ext]`,
                         }
                     }
                 }),

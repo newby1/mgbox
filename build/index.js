@@ -3,7 +3,7 @@ const extend = require("extend");
 const Helper = require("./helpers/helper");
 const path = require("path");
 const Compile = require("./rigger/compile");
-
+const del = require("del");
 let commander = require("commander");
 commander
     .version("0.1.0")
@@ -17,12 +17,14 @@ commander
     }, [])
     .option("-M, --mock", "使用mock")
     .option("-D, --devserver", "使用devserver")
-    .option("-W --watch", "需要watch")
     .option("-C, --cdn", "静态资源需要上cdn")
     .option("-S, --ssr", "服务端渲染")
+    .option("-T, --tpl", "模板解析引擎")
     .parse(process.argv);
 
-let {items, env, mode, apps, mock, devserver, cdn, watch, ssr} = commander;
+
+
+let {items, env, mode, apps, mock, devserver, cdn, watch, ssr, tpl} = commander;
 
 items = items.length ? items : Helper.getItems(path.resolve(Const.BUILD_PATH, "./items/"));
 const processArgv = {
@@ -34,8 +36,17 @@ const processArgv = {
     mock: mode == Const.MODES.DEVELOPMENT && mock ? true : false ,
     devserver,
     watch,
-    cdn
+    cdn,
+    tpl
 };
+//删除缓存
+if (mode === Const.MODES.PRODUCTION){
+    try {
+        del.sync([Const.MANIFEST_PATH, Const.DIST_PATH])
+    } catch(e) {
+    }
+
+}
 
 let itemsLength = items.length;
 items.forEach((val) => {

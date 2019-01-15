@@ -11,50 +11,56 @@ class PreConfigFactory {
         this.preWebpackConfig = null;
     }
     run(args) {
-        let option = {
-            config: {},
+        let callbacks = {
+            config: null,
+            before: null,
+            after: null,
             item: null,
             render: null,
             frame: null,
             mode: null,
             evn: null,
-            dllPreConfig: {}
+            dllPreConfig: null
         };
-        extend(option, args);
+        extend(callbacks, args);
         return new Promise((resolve, reject) => {
-            this.setConfig(option.config);
-            this.compileItem(option.item);
-            this.compileRender(option.render);
-            this.compileEnv(option.env);
-            this.compileFrame(option.frame);
-            this.compileMode(option.mode);
-            this.compileExternal(option.external);
+            this.setConfig(callbacks.config);
+            this.compileHook(callbacks.before);
+            this.compileItem(callbacks.item);
+            this.compileRender(callbacks.render);
+            this.compileEnv(callbacks.env);
+            this.compileFrame(callbacks.frame);
+            this.compileMode(callbacks.mode);
             if (this.processArgv.ssr === Const.RENDERS.SERVER){
+                this.compileHook(callbacks.after);
                 resolve(this.getContext());
                 return;
             }
             if (this.itemConfig.dll.entry){
-                this.dll(option.dllPreConfig)
+                this.compileDll(callbacks.dllPreConfig)
                     .then(() => {
+                        this.compileHook(callbacks.after);
                         resolve(this.getContext());
                     })
                     .catch(e => {
                         console.log("pre compile error: ", e);
                     })
             }else{
+                this.compileHook(callbacks.after);
                 resolve(this.getContext());
             }
 
         })
     }
-    compileExternal(callback){
-        if (callback){
+    compileHook(callback){
+        if (typeof callback === "function"){
             this.preWebpackConfig = callback(this.getContext());
         }
     }
-    setConfig(option){
+    setConfig(callback){
         const BaseFun = require("../base/configs/");
-        this.itemConfig = extend({}, BaseFun(this.processArgv.item, option));
+        const config = callback  && callback(this.getContext()) || null;
+        this.itemConfig = extend({}, BaseFun(this.processArgv.item, config));
     }
     getContext(){
         return {
@@ -106,13 +112,15 @@ class PreConfigFactory {
     }
     compileMode(callback){
         let mode = this.processArgv.mode;
+
         if (callback){
             this.preWebpackConfig = callback(this.getContext());
         }else{
             this.preWebpackConfig = require(`../base/modes/${mode}`).run(this.getContext());
         }
     }
-    dll(option){
+    compileDll(callback){
+        const option = callback && callback(this.getContext()) || {};
         console.log("compile dll");
         return new Promise((resolve, reject) => {
             require("../base/dlls/")
@@ -127,5 +135,5 @@ class PreConfigFactory {
         })
 
     }
-};
+}
 module.exports = PreConfigFactory;

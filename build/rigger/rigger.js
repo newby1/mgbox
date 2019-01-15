@@ -25,7 +25,7 @@ const mergeArray = function (target = [], merge = []) {
             }
         }else if(typeof val == "object"){
             if (targetObj[val.loader]){
-                extend(targetObj[val.loader], val);
+                extend(true, targetObj[val.loader], val);
             }else{
                 targetObj[val.loader] = val;
                 countObj[targetLen++] = val.loader;

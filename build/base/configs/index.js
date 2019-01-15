@@ -18,7 +18,8 @@ module.exports = function (itemName, option) {
         itemName,
         frame: Const.FRAMES.VUE,
         cdn: {
-            exts: ["js", "css", "swf", "jpg", "png", "gif"]
+            host: "",
+            exts: ["js", "css", "swf", "jpg", "jpeg", "png", "gif", "ico"]
         },
         absolutePath: {
             appsPath,
@@ -50,7 +51,6 @@ module.exports = function (itemName, option) {
             options: {
                 hot: true,
                 inline: true,
-                open: true,
                 overlay: true,
                 stats: {
                     colors: true

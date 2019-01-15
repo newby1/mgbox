@@ -29,7 +29,9 @@ module.exports = {
                 from: `${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.scriptLibraries}`,
                 to: itemConfig.relativePath.scriptLibraries
             }]),
-
+            Plugins[Plugins.CONST.webpackManifestPlugin]()
+        );
+        plugins.push(
             Plugins[Plugins.CONST.htmlIncludeAssets]({
                 assets: [ ...itemConfig.dll.assets.css,  ...itemConfig.buildAssets.css],
                 append: false,
@@ -38,7 +40,7 @@ module.exports = {
                 assets: [ ...itemConfig.dll.assets.js,  ...itemConfig.buildAssets.js],
                 append: false,
             })
-        );
+        )
         rigger
             .entry(entry)
             .plugins(plugins);

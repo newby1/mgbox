@@ -1,12 +1,13 @@
 
-var React = require('react'),
-    ReactDOMServer = require('react-dom/server');
+const React = require('react');
+const  ReactDOMServer = require('react-dom/server');
+import App from "./app";
 
 
 
 
-const Index = () => {
-    return <a>Hello React!</a>;
+const app = ReactDOMServer.renderToString(<App></App>);
+
+export default function ({res, context}) {
+    res.send(context.template.replace("<!--react-ssr-outlet-->", app));
 };
-
-const html = ReactDOMServer.renderToString(<Index />, document.getElementById("app"));

@@ -56,7 +56,6 @@ class Compile {
         }else{
             config = require(`../items/${this.processArgv.item}`);
         }
-        console.log(config, "client");
         return this.getCompileFactory(config);
     }
     getServerPreWebpackConfig(){
@@ -65,7 +64,6 @@ class Compile {
         }else{
             this.processArgv.ssr = Const.RENDERS.SERVER;
             let config = require(`../items/${this.processArgv.item}/server`);
-            console.log(config, "server");
             return this.getCompileFactory(config);
         }
     }
@@ -73,8 +71,6 @@ class Compile {
        return fs.readFileSync(path.join(filepath, file), "utf-8");
     }
     ssrDev(){
-        const createBundleRenderer = require('vue-server-renderer').createBundleRenderer;
-        const mfs = require("memory-fs");
         let clentConfig = this.clientContext.webpackConfig;
         let serverConfig = this.serverContext.webpackConfig;
         // let clientCompiler = webpack(clentConfig);
@@ -87,17 +83,78 @@ class Compile {
         // });
 
 
-        let itemConfig = this.clientContext.itemConfig;
+        let itemConfig = this.serverContext.itemConfig;
         let devServer = itemConfig.devServer;
         new WebpackDevServer(serverCompiler, extend(true, {
             publicPath: outputPublicPath
         }, devServer.options, {
             before: (app, ins) => {
+                app.get("*", (req, res, next) => {
+                    //ssr访问路径，不带文件后缀
+                    if ((/\./.test(req.path))){
+                        next();
+                        return;
+                    }
+                    const fileSystem = ins.middleware.fileSystem;
+                    const outputPath = serverConfig.output.path;
+                    const name = (req.path.slice(1).split("."))[0];
+                    const manifest = JSON.parse(this.readFile(fileSystem, outputPath, `ssr-manifest.json`).toString());
+                    const filename = manifest[`server-${name}.js`];
+                    const serverJs = this.readFile(fileSystem, outputPath, `${filename}`).toString();
+                    const tpl = this.readFile(fileSystem, outputPath, `${name}.html`).toString();
+                    let template = tpl;
+                    if (this.processArgv.tpl){
+                        const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
+                        const ejs = require("ejs");
+                        template = ejs.render(tpl, data);
+                    }
+                    const serverApp = require("require-from-string")(serverJs).default;
+                    app.use(serverApp({
+                        req,
+                        res,
+                        next,
+                        context:{
+                            template
+                        }
+                    }));
+                });
+                //app.set('view engine','ejs');
+                /*
+                app.get("*", (req, res, next) => {
+                    if ((/\./.test(req.path))){
+                        next();
+                        return;
+                    }
+                    const name = (req.path.slice(1).split("."))[0];
+                    //const name = "index";
+                    const manifest = JSON.parse(this.readFile(ins.middleware.fileSystem, serverConfig.output.path, `ssr-manifest.json`).toString());
+                    const filename = manifest[`server-${name}.js`];
+                    const serverJs = this.readFile(ins.middleware.fileSystem, serverConfig.output.path, `${filename}`).toString();
+                    const tpl = this.readFile(ins.middleware.fileSystem, serverConfig.output.path, `${name}.html`).toString();
+                    const serverAppStr = require("require-from-string")(serverJs).default;
+                    res.send(tpl.replace("<!--reactAppTag-->", serverAppStr));
+                });
+                */
+
                 // app.use(clientDevMiddleware);
+                /*
                 app.get("*", (req, res, next) => {
                     if (!(/(\.html)/.test(req.path))){
                         next();
                         return;
+                    }
+                    let getJs = () => {
+                        let strArr = [];
+                        itemConfig.dll.assets.js.forEach((val) => {
+                            strArr.push(`<script src="${clentConfig.output.publicPath}/${val}"></script>`)
+                        });
+                        return strArr.join("");
+                    };
+                    let getCss = () => {
+                        itemConfig.buildAssets.css.forEach((val) => {
+                            strArr.push(`<link rel="stylesheet" href="${clentConfig.output.publicPath}/${val}" />`)
+                        });
+
                     }
                     let getDlls = () => {
                         let strArr = [];
@@ -112,11 +169,13 @@ class Compile {
                         dlls: getDlls()
                     };
                     const name = (req.path.slice(1).split("."))[0];
+                    console.log(name);
                     res.setHeader("Content-Type", "text/html");
 
                     const bundle = JSON.parse(this.readFile(ins.middleware.fileSystem, serverConfig.output.path, `vue-ssr-server-bundle.json`).toString());
                     //const bundle = JSON.parse(this.readFile(new mfs(), serverConfig.output.path, `vue-ssr-server-bundle.json`).toString());
                     const template = fs.readFileSync(path.resolve(itemConfig.absolutePath.appsPath, `./${name}/index.html`), "utf-8");
+                    console.log(template);
                     //const clientManifest = JSON.parse(this.readFile(clientDevMiddleware.fileSystem, clentConfig.output.path, `vue-ssr-client-manifest.json`).toString());
                     const clientManifest = JSON.parse(this.readFile(ins.middleware.fileSystem, clentConfig.output.path, `vue-ssr-client-manifest.json`).toString());
                     createBundleRenderer( bundle, {
@@ -128,6 +187,7 @@ class Compile {
                             res.send(html);
                         })
                 });
+                */
             }
         }))
             .listen(devServer.port, "0.0.0.0");
@@ -163,38 +223,112 @@ class Compile {
 
     }
     serverRender(){
+        const clentConfig = this.clientContext.webpackConfig;
+        const serverConfig = this.serverContext.webpackConfig;
+        const config = [clentConfig, serverConfig];
+        let devServer = this.serverContext.itemConfig.devServer;
+        const middleware = (app, ins) => {
 
-        if (this.processArgv.mode === Const.MODES.DEVELOPMENT && this.processArgv.devserver){
-            this.ssrDev();
-        }else{
-            this.ssrPro();
-        }
+            app.get("*", (req, res, next) => {
+                //ssr访问路径，不带文件后缀
+                if ((/\./.test(req.path))) {
+                    next();
+                    return;
+                }
+                const fileSystem = ins.middleware.fileSystem;
+                const outputPath = serverConfig.output.path;
+                const name = (req.path.slice(1).split("."))[0];
+                const manifest = JSON.parse(this.readFile(fileSystem, outputPath, `ssr-manifest.json`).toString());
+                const filename = manifest[`server-${name}.js`];
+                const serverJs = this.readFile(fileSystem, outputPath, `${filename}`).toString();
+                const tpl = this.readFile(fileSystem, outputPath, `${name}.html`).toString();
+                let template = tpl;
+                if (this.processArgv.tpl) {
+                    console.log(333);
+                    const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
+                    const ejs = require("ejs");
+                    template = ejs.render(tpl, data);
+                    console.log(template);
+                }
+                const serverApp = require("require-from-string")(serverJs).default;
+                serverApp({
+                    req,
+                    res,
+                    next,
+                    context: {
+                        template
+                    }
+                });
+            });
+
+        };
+        this.run({
+            config,
+            devServer,
+            middleware
+        })
+
 
     }
     clientRender(){
-        let clentConfig = this.clientContext.webpackConfig;
-        let compiler = webpack(clentConfig);
-        let itemConfig = this.clientContext.itemConfig;
-        let devServer = itemConfig.devServer;
-        new WebpackDevServer(compiler, extend(true, {}, devServer.options, {
-            before: (app, ins) => {
-            }
-        }))
-            .listen(devServer.port, "0.0.0.0");
-        let firstExec = true;
-        let isLinuxOS = require("os").type() === "Linux" ;
-        if (devServer.options.open && !isLinuxOS){
-            compiler.plugin("done", () => {
-                if (firstExec){
-                    firstExec = false;
-                    //open(`http://localhost:${devServer.port}/webpack-dev-server`);
+        const config = this.clientContext.webpackConfig;
+        const devServer = this.clientContext.itemConfig.devServer;
+        this.run({
+            config,
+            devServer
+        })
+
+    }
+    run({ config, devServer, middleware = null}){
+        const timer = "use time";
+        console.time(timer);
+        const mock = this.processArgv.mock;
+        let compiler = webpack(config);
+        if (this.processArgv.env === Const.ENVS.LOCAL && this.processArgv.devserver){
+            new WebpackDevServer(compiler, extend(
+                true,
+                devServer.options,
+                {
+                    before(app, ins){
+                        if (mock){
+                            const mocksPath = path.resolve(Const.MOCKS_PATH , "./index.js");
+                            apiMocker(app, mocksPath);
+                        }
+                        middleware && middleware(app, ins);
+                    }
                 }
-            });
+            ))
+                .listen(devServer.port, "0.0.0.0");
+            let firstExec = true;
+            let isLinuxOS = require("os").type() === "Linux" ;
+            if (this.processArgv.open && !isLinuxOS){
+                compiler.plugin("done", () => {
+                    console.timeEnd(timer);
+                    if (firstExec){
+                        firstExec = false;
+                        open(`http://localhost:${devServer.port}/webpack-dev-server`);
+                    }
+                });
+            }
+        }else{
+            compiler.run((err, stats) => {
+                if (err){
+                    console.log(err);
+                    return;
+                }
+                if (stats){
+                    process.stdout.write(stats.toString({
+                        chunks: false,
+                        colors: true
+                    }));
+                }
+                console.log(` \r\n compile success! ${console.timeEnd(timer)} `);
+            })
+
         }
 
     }
     runWebpack(){
-        console.log(44);
         let processArgv = this.processArgv;
         if (processArgv.ssr){
             this.serverRender();

@@ -1,8 +1,9 @@
 module.exports = {
-    config(){
+    config({Const}) {
         return {
+            frame: Const.FRAMES.REACT,
             devServer: {
-                port: 13003
+                port: 13004
             }
         }
     },

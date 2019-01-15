@@ -20,6 +20,7 @@ module.exports = {
                 } ]
             })
         ];
+        /*
         if (processArgv.ssr){
             if (processArgv.ssr === Const.RENDERS.SERVER){
                 plugins.push(Plugins[Plugins.CONST.vueServerRenderer]());
@@ -31,6 +32,7 @@ module.exports = {
                 plugins.push(Plugins[Plugins.CONST.vueSSRClientPlugin]());
             }
         }
+        */
         return  rigger
             .module({
                 [Loaders.CONST.vue]: Loaders[Loaders.CONST.vue](),

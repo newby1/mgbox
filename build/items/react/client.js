@@ -1,14 +1,13 @@
 module.exports = {
-    config(){
+    config({Const}) {
         return {
+            frame: Const.FRAMES.REACT,
             dll: {
                 assets: {
-                    //css: [`styles/elementUI.css`]
                 },
                 entry: {
                     "vendor": ["babel-polyfill", "url-polyfill"],
-                    "vueVendor": [ "vue/dist/vue.js", "vue-router", "vuex"],
-                    //"elementUI": ["element-ui","element-ui/lib/theme-chalk/index.css"],
+                    "reactVendor": [ "react", "react-dom","react-redux"]
                 }
             }
         }

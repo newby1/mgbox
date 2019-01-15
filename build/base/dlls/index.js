@@ -42,6 +42,9 @@ module.exports = {
                         publicPath: preWebpackConfig.helper.extractCssPublicPath
                     }),
                     Plugins[Plugins.CONST.uglify](),
+                    Plugins[Plugins.CONST.webpackManifestPlugin]({
+                        fileName: "dll-manifest.json"
+                    })
                 ])
                 .append(extend(true, {
                     mode: processArgv.mode
