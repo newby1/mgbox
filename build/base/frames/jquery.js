@@ -1,12 +1,8 @@
-const Rigger = require("../../rigger/rigger");
-const Loader = require("../../helpers/loaders");
-const Plugins = require("../../helpers/plugins");
-const Helper = require("../../helpers/helper");
-const Const = require("../../const");
 module.exports = {
-    run({rigger}){
+    run({rigger, Helper, processArgv, Loaders, Plugins}){
+        Helper.log(processArgv.debug, `frame: vue`);
         return rigger.module({
-                [Loader.CONST.js]: Loader[Loader.CONST.js](),
+                [Loaders.CONST.js]: Loaders[Loaders.CONST.js](),
             })
             .plugins([
                 Plugins[Plugins.CONST.happypack]({

@@ -1,6 +1,9 @@
 module.exports = {
     config(){
         return {
+            devServer: {
+                port: 13003
+            },
             dll: {
                 assets: {
                     //css: [`styles/elementUI.css`]

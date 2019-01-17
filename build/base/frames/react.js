@@ -1,12 +1,13 @@
 const extend = require('extend');
 module.exports = {
-    run({rigger, itemConfig, processArgv, Loaders, Plugins}) {
+    run({rigger, itemConfig, processArgv, Loaders, Plugins, Const, Helper}) {
+        Helper.log(processArgv.debug, `frame: react`);
         let append = {
             resolve: {
                 alias: {}
             }
         };
-        if (processArgv.ssr){
+        if (processArgv.render === Const.RENDERS.SERVER){
             extend(true, append, {
                 target: "node"
             })

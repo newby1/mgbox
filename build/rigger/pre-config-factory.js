@@ -78,14 +78,8 @@ class PreConfigFactory {
         if (callback){
             this.preWebpackConfig = callback(this.getContext());
         }else{
-            if (this.processArgv.ssr) {
-                this.preWebpackConfig = require(`../base/renders/${this.processArgv.ssr}`).run(this.getContext());
-            }else{
-                this.preWebpackConfig = require(`../base/renders/client`).run(this.getContext());
-            }
-
+            this.preWebpackConfig = require(`../base/renders/${this.processArgv.render}`).run(this.getContext());
         }
-
     }
     compileItem(callback){
         if (callback){

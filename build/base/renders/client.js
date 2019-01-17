@@ -1,7 +1,8 @@
 const path = require("path");
 
 module.exports = {
-    run({rigger, itemConfig, processArgv, Loaders, Plugins, Helper}) {
+    run({rigger, itemConfig, processArgv, Loaders, Plugins, Helper, Const}) {
+        Helper.log(processArgv.debug, "render: client");
         let entry = {};
         let plugins = [];
 
@@ -17,13 +18,8 @@ module.exports = {
             });
 
         plugins.push(
-            Plugins[Plugins.CONST.definePlugin]( {
-                "_ENV": JSON.stringify(processArgv.env),
-                "_MOCK": JSON.stringify(processArgv.mock),
-                "process.env.NODE_ENV": JSON.stringify(processArgv.mode)
-            }),
             Plugins[Plugins.CONST.extractCss]( {
-                filename: `${itemConfig.relativePath.styles}/[name]_[contenthash].css`,
+                filename: `${itemConfig.relativePath.styles}/[name]_[${Helper.getHashTag(processArgv.env === Const.ENVS.LOCAL)}].css`,
             } ),
             Plugins[Plugins.CONST.copy]([{
                 from: `${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.scriptLibraries}`,

@@ -3,6 +3,7 @@ const extend = require('extend');
 const Const = require("../../const");
 module.exports = {
     run({rigger, itemConfig, processArgv, Helper, Plugins, Loaders}) {
+        Helper.log(processArgv.debug, `frame: vue`);
         let entry = {};
         let append = {
             resolve: {
@@ -20,19 +21,6 @@ module.exports = {
                 } ]
             })
         ];
-        /*
-        if (processArgv.ssr){
-            if (processArgv.ssr === Const.RENDERS.SERVER){
-                plugins.push(Plugins[Plugins.CONST.vueServerRenderer]());
-                extend(append, {
-                    target: "node"
-                })
-            }
-            if (processArgv.ssr === Const.RENDERS.CLIENT){
-                plugins.push(Plugins[Plugins.CONST.vueSSRClientPlugin]());
-            }
-        }
-        */
         return  rigger
             .module({
                 [Loaders.CONST.vue]: Loaders[Loaders.CONST.vue](),

@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "local": "node ./build/index.js",
     "ls": "node ./build/index.js  -i react -S -D",
     "ld": "node ./build/index.js  -i vue  -a index -S",
-    "l": "node ./build/index.js  -i vue  -a index -D -M",
+    "lp": "node ./build/index.js  -i vue -m production  -S -e server ",
+    "lpa": "node ./build/index.js   -m production   -e server ",
     "dev": "rm -rf dist && node ./build/index.js -e server -m production -i jquery -a index -C"
   },
   "author": "niudaodao",

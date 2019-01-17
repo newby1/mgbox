@@ -1,11 +1,4 @@
 module.exports = {
-    config(){
-        return {
-            devServer: {
-                port: 13003
-            }
-        }
-    },
     after({rigger, itemConfig, processArgv, Plugins}) {
         let entry = {};
         let plugins = [];

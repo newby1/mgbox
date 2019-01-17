@@ -4,11 +4,14 @@ const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
     run({rigger, itemConfig, processArgv, Helper, Plugins, Const}) {
-        const filename = processArgv.env === Const.ENVS.LOCAL
+        Helper.log(processArgv.debug, "render: server");
+        const isLocal = processArgv.env === Const.ENVS.LOCAL;
+        const serverPath = `../../${processArgv.item}`;
+        const filename = isLocal
             ?
-            `${itemConfig.relativePath.scripts}/[name]_[hash:8].js`
+            `${itemConfig.relativePath.scripts}/[name].js`
             :
-            `../../${itemConfig.relativePath.scripts}/[name]_[contenthash:8].js`;
+            `${serverPath}/[name].js`;
 
         let entry = {};
         let plugins = [];
@@ -28,27 +31,18 @@ module.exports = {
             .forEach((val) => {
                 let name = path.basename(val);
                 entry[`server-${name}`] = [ path.resolve(val, "server.js") ];
-                /*
-                plugins.push(
-                    Plugins[Plugins.CONST.copy]([{
-                        from: `${itemConfig.absolutePath.appsPath}/${name}/index.html`,
-                        to: `../${processArgv.item}/${name}.html`
-                    }])
-                )
-                */
 
             });
 
-        plugins.push(
-            Plugins[Plugins.CONST.definePlugin]( {
-                "ENV": processArgv.mode,
-                "process.env": processArgv.mode,
-                "process.env.VUE_ENV": `${Const.RENDERS.SERVER}`
-            }),
-            Plugins[Plugins.CONST.webpackManifestPlugin]({
-                fileName: "ssr-manifest.json"
-            })
-        );
+        if (isLocal){
+
+            plugins.push(
+                Plugins[Plugins.CONST.webpackManifestPlugin]({
+                    //fileName: (isLocal ? "" : `${serverPath}/` ) + "ssr-manifest.json"
+                    fileName: "ssr-manifest.json"
+                })
+            );
+        }
         rigger.entry(entry)
             .output(output)
             .append(append)

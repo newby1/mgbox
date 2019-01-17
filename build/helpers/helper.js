@@ -1,6 +1,33 @@
 const fs = require("fs");
 const path = require("path");
 module.exports = {
+    time(){
+        let start;
+        let time;
+        let log = time => {
+            console.log("use time:", time , "ms");
+        };
+        return {
+            start(){
+                time = +new Date;
+                start = time;
+            },
+            last(){
+                let t = +new Date;
+                log(t - time);
+                time = t;
+            },
+            stop(){
+                log(+new Date -start);
+            }
+        }
+
+    },
+    log(isDebug, ...arg){
+        if (isDebug){
+            console.log(...arg);
+        }
+    },
     getIPAdress() {
         let interfaces = require('os').networkInterfaces();
         for (let devName in interfaces) {
@@ -13,11 +40,22 @@ module.exports = {
             }
         }
     },
+    getHashTag(isDev){
+        return isDev ? "hash" : "contenthash";
+    },
     getItems(itemsPath) {
-        let res = [];
+        let res = {};
         let dirList = fs.readdirSync(itemsPath);
         dirList.forEach((item) => {
-            res.push(path.parse(`${itemsPath}/${item}`).name);
+            let itemName = path.parse(`${itemsPath}/${item}`).name;
+            let info = fs.statSync(path.join(itemsPath, item));
+            if (info.isDirectory()){
+                res[itemName] = true;
+            }else{
+                if (res[itemName] !== true){
+                    res[itemName] = false;
+                }
+            }
         });
         return res;
     },

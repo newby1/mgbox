@@ -1,20 +1,25 @@
 const path = require("path");
+const fs = require('fs');
 
 
 module.exports = {
-    run({rigger, itemConfig, processArgv, Loaders, Plugins}) {
+    run({rigger, itemConfig, processArgv, Loaders, Plugins, Helper, Const}) {
+        Helper.log(processArgv.debug, "mode: produciton");
         let entry = {};
         let plugins = [];
-        //删除 manifest,dist
-        console.log("delete dist and manifest");
 
         Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
+                let templateContent = fs.readFileSync(path.resolve(val, "index.html"), "utf8");
+                if (processArgv.tpl){
+                    const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
+                    templateContent = require("ejs").render(templateContent, data);
+                }
                 plugins.push(
                     Plugins[Plugins.CONST.htmlWebpackPlugin]({
                         chunks: [name],
-                        template: path.resolve(val, "index.html"),
+                        templateContent,
                         filename:  `${itemConfig.absolutePath.distItemPath}/${name}.html`,
                         inject: true,
                         minify: {
@@ -57,10 +62,10 @@ module.exports = {
                 }
             });
         }
-        */
         plugins.push(
             Plugins[Plugins.CONST.uglify]()
         );
+        */
         rigger
             .module({
                 [Loaders.CONST.html]: {

@@ -1,5 +1,6 @@
 module.exports = {
-    run({rigger, itemConfig, processArgv}) {
+    run({rigger, itemConfig, processArgv, Helper}) {
+        Helper.log(processArgv.debug, `env: local`);
         let entry = {};
         let plugins = [];
 

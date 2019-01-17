@@ -1,12 +1,9 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const path = require("path");
-const Rigger = require("../../rigger/rigger");
-const Helper = require("../../helpers/helper");
-const Plugins = require("../../helpers/plugins");
-const Loader = require("../../helpers/loaders");
 module.exports = {
-    run({rigger, itemConfig, processArgv}) {
+    run({rigger, itemConfig, processArgv, Loaders}) {
+        Helper.log(processArgv.debug, `env: client`);
         let entry = {};
         let plugins = [];
 
@@ -19,7 +16,7 @@ module.exports = {
                 publicPath: outputPublicPath
             })
             .module({
-                [Loader.CONST.less]: {
+                [Loaders.CONST.less]: {
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,

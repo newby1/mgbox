@@ -19,43 +19,55 @@ commander
     .option("-D, --devserver", "使用devserver")
     .option("-C, --cdn", "静态资源需要上cdn")
     .option("-S, --ssr", "服务端渲染")
+    .option("-O, --open", "是否打开浏览器")
     .option("-T, --tpl", "模板解析引擎")
+    .option("--debug", "编译日志")
     .parse(process.argv);
 
 
 
-let {items, env, mode, apps, mock, devserver, cdn, watch, ssr, tpl} = commander;
-
-items = items.length ? items : Helper.getItems(path.resolve(Const.BUILD_PATH, "./items/"));
+let {items, env, mode, apps, mock, devserver, cdn, watch, ssr, tpl, debug, open} = commander;
+const curItems = Helper.getItems(path.resolve(Const.BUILD_PATH, "./items/"));
 const processArgv = {
-    items,
     env,
     mode,
     apps,
+    isSSRItem: false,
+    render: Const.RENDERS.CLIENT,
     ssr,
     mock: mode == Const.MODES.DEVELOPMENT && mock ? true : false ,
     devserver,
     watch,
     cdn,
+    debug,
+    open,
     tpl
 };
 //删除缓存
 if (mode === Const.MODES.PRODUCTION){
+    console.log("delete dist & manifest dir");
     try {
-        del.sync([Const.MANIFEST_PATH, Const.DIST_PATH])
+        del.sync([Const.MANIFEST_PATH, Const.DIST_PATH]);
     } catch(e) {
     }
 
 }
-
 let itemsLength = items.length;
+items =  itemsLength ? items : Object.keys(curItems);
 items.forEach((val) => {
-    let option = extend({
-        item: val
-    }, processArgv);
-    if (itemsLength > 1){
-        processArgv.apps = [];
+    if (Object.keys(curItems).includes(val)){
+        let option = extend({
+                item: val,
+            },
+            processArgv,
+            {
+                isSSRItem: curItems[val]
+            }
+        );
+        if (itemsLength > 1){
+            processArgv.apps = [];
+        }
+        new Compile(option);
     }
-    new Compile(option);
 });
 
