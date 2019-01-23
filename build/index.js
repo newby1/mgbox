@@ -21,12 +21,13 @@ commander
     .option("-S, --ssr", "服务端渲染")
     .option("-O, --open", "是否打开浏览器")
     .option("-T, --tpl", "模板解析引擎")
+    .option("-L, --eslint", "eslint")
     .option("--debug", "编译日志")
     .parse(process.argv);
 
 
 
-let {items, env, mode, apps, mock, devserver, cdn, watch, ssr, tpl, debug, open} = commander;
+let {items, env, mode, apps, mock, devserver, cdn, watch, ssr, tpl, debug, open, eslint} = commander;
 const curItems = Helper.getItems(path.resolve(Const.BUILD_PATH, "./items/"));
 const processArgv = {
     env,
@@ -41,6 +42,7 @@ const processArgv = {
     cdn,
     debug,
     open,
+    eslint,
     tpl
 };
 //删除缓存

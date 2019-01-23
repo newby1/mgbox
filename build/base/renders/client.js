@@ -12,7 +12,7 @@ module.exports = {
                 entry[name] = [
                     "babel-polyfill",
                     path.resolve(val, "index.js"),
-                    path.resolve(val, "index.less")
+                    path.resolve(val, `index.${itemConfig.cssSuffix}`)
                 ];
 
             });

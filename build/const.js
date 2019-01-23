@@ -1,5 +1,6 @@
 const path = require("path");
-const PRJ_NAME = path.basename(path.resolve(__dirname, "../"));
+const PRJ_PATH =  path.resolve(__dirname, "../");
+const PRJ_NAME = path.basename(PRJ_PATH);
 module.exports = {
     PRJ_NAME,
     ENVS : {
@@ -29,6 +30,7 @@ module.exports = {
         CLIENT: "client",
         SERVER: "server"
     },
+    PRJ_PATH,
     SRC_PATH : path.resolve(__dirname, "../src"),
     BUILD_PATH: path.resolve(__dirname, "../build"),
     DIST_PATH : path.resolve(__dirname, "../dist"),

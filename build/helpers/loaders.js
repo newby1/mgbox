@@ -3,13 +3,15 @@ const extend = require("extend");
 let LOADERS = {
     less: "less",
     sass: "sass",
+    stylus: "stylus",
     js: "js",
     jsx: "jsx",
     vue: "vue",
     html: "html",
     pug: "pug",
     pic: "pic",
-    font: "font"
+    eslint: "eslint",
+    font: "font",
 };
 let loaderBase = {
     [LOADERS.vue]: {
@@ -17,6 +19,19 @@ let loaderBase = {
         use: {
             loader: "vue-loader"
         }
+    },
+    [LOADERS.eslint]: {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        enforce: "pre",
+        use: [
+            {
+                loader: "eslint-loader",
+                options: {
+                    //fix: true
+                }
+            }
+        ]
     },
     [LOADERS.js]: {
         test: /\.js$/,
@@ -37,13 +52,13 @@ let loaderBase = {
         ]
     },
     [LOADERS.font]: {
-        test: /\.(woff2?|eot|ttf|otf)$/,
+        test: /\.(woff2?|eot|ttf|otf|font?|ttc)$/,
         use: {
             loader: "file-loader",
         }
     },
     [LOADERS.pic]: {
-        test: /\.(png|jpg|gif|ico)$/,
+        test: /\.(png|jpe?g|gif|ico|bmp|svg|webp)$/,
         use: {
             loader: "url-loader",
             options: {
@@ -62,7 +77,7 @@ let loaderBase = {
         ]
     },
     [LOADERS.sass]: {
-        test: /\.(sass|scss)$/,
+        test: /\.(sass|scss|css)$/,
         use: [
             "style-loader",
             MiniCssExtractPlugin.loader,
@@ -71,13 +86,23 @@ let loaderBase = {
             "sass-loader",
         ]
     },
+    [LOADERS.stylus]: {
+        test: /\.(styl|css)$/,
+        use: [
+            "style-loader",
+            MiniCssExtractPlugin.loader,
+            "css-loader",
+            "postcss-loader",
+            "stylus-loader",
+        ]
+    },
     [LOADERS.html]: {
         test: /\.html$/,
         use: {
             loader: "html-loader",
             options: {
                 attrs: ["img:src", "link:href"],
-                interpolate: true,
+                interpolate: "require",
             }
         }
     },

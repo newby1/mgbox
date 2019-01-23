@@ -87,8 +87,11 @@ class Compile {
                 const filename = manifest[`server-${name}.js`];
                 //const filename = `server-${name}.js`;
                 const serverJs = this.readFile(fileSystem, outputPath, `${filename}`).toString();
-                const tpl = this.readFile(fileSystem, outputPath, `${name}.html`).toString();
-                let template = tpl;
+                let template =  this.readFile(fileSystem, outputPath, `${name}.html`).toString();
+                if (this.processArgv.tpl){
+                    const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
+                    template = require("ejs").render(template, data);
+                }
                 const serverApp = require("require-from-string")(serverJs).default;
                 serverApp({
                     req,
@@ -112,9 +115,25 @@ class Compile {
     clientRender(){
         const config = this.clientContext.webpackConfig;
         const devServer = this.clientContext.itemConfig.devServer;
+        const middleware = (app, ins) => {
+
+            app.get("*", (req, res, next) => {
+                if (/\.html/.test(req.path) && this.processArgv.tpl){
+                    const filename = req.path.slice(1);
+                    const fileSystem = ins.middleware.fileSystem;
+                    const outputPath = config.output.path;
+                    let template = this.readFile(fileSystem, outputPath, `${filename}`).toString();
+                    const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
+                    template = require("ejs").render(template, data);
+                    return res.send(template);
+                }
+                next();
+            });
+        };
         this.run({
             config,
-            devServer
+            devServer,
+            middleware
         })
 
     }
@@ -134,8 +153,10 @@ class Compile {
                         if (mock){
                             const mocksPath = path.resolve(Const.MOCKS_PATH , "./index.js");
                             apiMocker(app, mocksPath);
+                            middleware && middleware(app, ins);
                         }
-                        middleware && middleware(app, ins);
+                    },
+                    after(app, ins){
                     }
                 }
             ))

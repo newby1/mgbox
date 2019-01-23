@@ -4,6 +4,7 @@ const Rigger = require("./rigger");
 const Loaders = require("../helpers/loaders");
 const Plugins = require("../helpers/plugins");
 const Helper = require("../helpers/helper");
+const ProjectConfig = require("../project.config.json");
 class PreConfigFactory {
     constructor(processArgv){
         this.processArgv = processArgv;
@@ -59,7 +60,8 @@ class PreConfigFactory {
     }
     setConfig(callback){
         const BaseFun = require("../base/configs/");
-        const config = callback  && callback(this.getContext()) || null;
+        let config = callback  && callback(this.getContext()) || null;
+        config = extend(true, {}, ProjectConfig["default"], ProjectConfig[this.processArgv.item], config);
         this.itemConfig = extend({}, BaseFun(this.processArgv.item, config));
     }
     getContext(){

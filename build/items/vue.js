@@ -18,14 +18,5 @@ module.exports = {
                 }
             }
         }
-    },
-    external({rigger, itemConfig, processArgv}) {
-        let entry = {};
-        let plugins = [];
-
-        return rigger
-            .plugins(plugins)
-            .done();
-
     }
 };

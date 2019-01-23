@@ -54,6 +54,9 @@ let plugins = {
     },
     [PLUGIN.liveReloadPlugin]: (option) => {
         const LiveReloadPlugin = require("webpack-livereload-plugin");
+        option = Object.assign({
+            delay: 200
+        }, option);
         return new LiveReloadPlugin(option);
     },
     [PLUGIN.happypack]: (option) => {

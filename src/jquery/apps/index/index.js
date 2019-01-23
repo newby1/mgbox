@@ -1,3 +1,3 @@
 import $ from "jquery";
 
-$("#app").html("this is jquery frame");
+$("#app").html("this is jquery frame")

@@ -13,7 +13,7 @@ export default {
         return api.get("/jobs/companyAjax.json", {
             city: "北京",
             needAddtionalResult: false
-        });
+        })
     }
 
-};
+}

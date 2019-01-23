@@ -69,7 +69,7 @@ module.exports = {
     getApps(dir, filterApps = [], isSSR = false){
         let dirs = [];
         let max = 2;
-        let targetFile = isSSR ? "server.js" : "index.html";
+        let target = isSSR ? "server." : "index.html";
         function readDirSync(curPath, deep = 0) {
             if (deep >= max) {
                 return;
@@ -80,7 +80,7 @@ module.exports = {
                 if (info.isDirectory()) {
                     readDirSync(curPath + "/" + ele, deep + 1);
                 } else {
-                    if (ele == targetFile ) {
+                    if (ele.indexOf(target) === 0 ) {
                         dirs.push(path.resolve(__dirname, curPath));
                     }
                 }

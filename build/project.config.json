@@ -1,0 +1,10 @@
+{
+  "default": {
+    "cssProcessor": "less",
+    "cssSuffix": "less"
+  },
+  "vue": {
+    "cssProcessor": "sass",
+    "cssSuffix": "scss"
+  }
+}

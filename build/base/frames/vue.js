@@ -8,17 +8,19 @@ module.exports = {
         let append = {
             resolve: {
                 alias: {
-                    "vue$": "vue/dist/vue.js",
+                    "vue$": "vue/dist/vue.esm.js",
                 }
             }
         };
+        let loaders = [ {
+            loader: "babel-loader"
+        } ];
+
         let plugins = [
             Plugins[Plugins.CONST.vueLoaderPlugin](),
             Plugins[Plugins.CONST.happypack]({
                 id: "js",
-                loaders: [ {
-                    loader: "babel-loader"
-                } ]
+                loaders
             })
         ];
         return  rigger

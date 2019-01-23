@@ -23,7 +23,7 @@ module.exports = {
             .output(output)
             .module({
                 [Loaders.CONST.html]: Loaders[Loaders.CONST.html](),
-                [Loaders.CONST.less]: Loaders[Loaders.CONST.less](),
+                [Loaders.CONST[itemConfig.cssProcessor]]: Loaders[Loaders.CONST[itemConfig.cssProcessor]](),
                 [Loaders.CONST.pic]: Loaders[Loaders.CONST.pic]({
                     use: {
                         options: {

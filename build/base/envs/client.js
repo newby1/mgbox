@@ -16,7 +16,7 @@ module.exports = {
                 publicPath: outputPublicPath
             })
             .module({
-                [Loaders.CONST.less]: {
+                [Loaders.CONST[itemConfig.cssProcessor]]: {
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,

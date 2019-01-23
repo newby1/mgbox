@@ -1,6 +1,6 @@
 // router.js
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from 'vue'
+import Router from 'vue-router'
 import Biz from "./components/biz.vue";
 
 Vue.use(Router);
@@ -16,5 +16,5 @@ export function createRouter () {
                 }
             }
         ]
-    });
+    })
 }

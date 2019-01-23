@@ -11,15 +11,10 @@ module.exports = {
         Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
-                let templateContent = fs.readFileSync(path.resolve(val, "index.html"), "utf8");
-                if (processArgv.tpl){
-                    const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
-                    templateContent = require("ejs").render(templateContent, data);
-                }
                 plugins.push(
                     Plugins[Plugins.CONST.htmlWebpackPlugin]({
                         chunks: [name],
-                        templateContent,
+                        template: path.resolve(val, "index.html"),
                         filename:  `${itemConfig.absolutePath.distItemPath}/${name}.html`,
                         inject: true,
                         minify: {
@@ -78,7 +73,7 @@ module.exports = {
                         }
                     ]
                 },
-                [Loaders.CONST.less]: {
+                [Loaders.CONST[itemConfig.cssProcessor]]: {
                     use: [
                         {
                             loader: "css-loader",
