@@ -1,4 +1,5 @@
 const extend = require('extend');
+const path = require("path");
 module.exports = {
     run({rigger, itemConfig, processArgv, Loaders, Plugins, Const, Helper}) {
         Helper.log(processArgv.debug, `frame: react`);
@@ -7,22 +8,18 @@ module.exports = {
                 alias: {}
             }
         };
-        if (processArgv.render === Const.RENDERS.SERVER){
-            extend(true, append, {
-                target: "node"
-            })
-        }
+        let module = {
+            [Loaders.CONST.jsx]: Loaders[Loaders.CONST.jsx](),
+        };
         return  rigger
-            .module({
-                [Loaders.CONST.jsx]: Loaders[Loaders.CONST.jsx](),
-            })
+            .module(module)
             .plugins([
                 Plugins[Plugins.CONST.happypack]({
                     id: "jsx",
                     loaders: [ {
                         loader: "babel-loader",
                         options: {
-                            "presets": ["@babel/preset-env", "@babel/preset-react"],
+                            configFile: `${itemConfig.absolutePath.configPath}/.babelrc`
                         }
                     } ]
                 })

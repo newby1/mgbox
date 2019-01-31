@@ -12,12 +12,24 @@ let LOADERS = {
     pic: "pic",
     eslint: "eslint",
     font: "font",
+    ts: "ts"
 };
 let loaderBase = {
+    [LOADERS.ts]: {
+        test: /\.tsx?$/,
+        exclude: /(node_modules)/,
+        use: {
+            loader: "ts-loader"
+        }
+
+    },
     [LOADERS.vue]: {
         test: /\.vue$/,
         use: {
-            loader: "vue-loader"
+            loader: "vue-loader",
+            options: {
+                hotReload: true
+            }
         }
     },
     [LOADERS.eslint]: {

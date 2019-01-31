@@ -31,6 +31,7 @@ module.exports = {
         SERVER: "server"
     },
     PRJ_PATH,
+    CONFIG_PATH: path.resolve(__dirname, "../.config"),
     SRC_PATH : path.resolve(__dirname, "../src"),
     BUILD_PATH: path.resolve(__dirname, "../build"),
     DIST_PATH : path.resolve(__dirname, "../dist"),

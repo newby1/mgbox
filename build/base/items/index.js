@@ -10,6 +10,37 @@ module.exports = {
             publicPath: `/`,
             filename: `${itemConfig.relativePath.scripts}/[name]_[${hash}:8].js`
         };
+        let module = {
+            [Loaders.CONST.html]: Loaders[Loaders.CONST.html](),
+            [Loaders.CONST[itemConfig.cssProcessor]]: Loaders[Loaders.CONST[itemConfig.cssProcessor]](),
+            [Loaders.CONST.pic]: Loaders[Loaders.CONST.pic]({
+                use: {
+                    options: {
+                        name: `${itemConfig.relativePath.images}/[name]_[hash:8].[ext]`
+                    }
+                }
+            }),
+            [Loaders.CONST.font]: Loaders[Loaders.CONST.font]({
+                use: {
+                    options: {
+                        name: `${itemConfig.relativePath.fonts}/[name]_[hash:8].[ext]`,
+                    }
+                }
+            }),
+        };
+        if (itemConfig.ts){
+            module[Loaders.CONST.ts] = Loaders[Loaders.CONST.ts]({
+                use: [
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            configFile: `${itemConfig.absolutePath.configPath}/tsconfig.json`
+                        }
+                    }
+                ]
+
+            });
+        }
         plugins.push(
             Plugins[Plugins.CONST.definePlugin]( {
                 "_ENV": JSON.stringify(processArgv.env),
@@ -21,27 +52,11 @@ module.exports = {
         );
         rigger
             .output(output)
-            .module({
-                [Loaders.CONST.html]: Loaders[Loaders.CONST.html](),
-                [Loaders.CONST[itemConfig.cssProcessor]]: Loaders[Loaders.CONST[itemConfig.cssProcessor]](),
-                [Loaders.CONST.pic]: Loaders[Loaders.CONST.pic]({
-                    use: {
-                        options: {
-                            name: `${itemConfig.relativePath.images}/[name]_[hash:8].[ext]`
-                        }
-                    }
-                }),
-                [Loaders.CONST.font]: Loaders[Loaders.CONST.font]({
-                    use: {
-                        options: {
-                            name: `${itemConfig.relativePath.fonts}/[name]_[hash:8].[ext]`,
-                        }
-                    }
-                }),
-            })
+            .module(module)
             .plugins(plugins)
             .append({
                 resolve: {
+                    extensions: [".js", ".jsx", ".ts", ".tsx"],
                     alias: {
                         "$staticPath": itemConfig.absolutePath.staticPath,
                         "$appsPath": itemConfig.absolutePath.appsPath

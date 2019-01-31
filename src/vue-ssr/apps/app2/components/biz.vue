@@ -1,6 +1,6 @@
 <template>
     <div>
-        this is app compenents
+        this is app components
     </div>
 </template>
 <script>

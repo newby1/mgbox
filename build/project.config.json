@@ -1,10 +1,22 @@
 {
   "default": {
     "cssProcessor": "less",
-    "cssSuffix": "less"
+    "entryCssExt": "less",
+    "entryJsExt": "js",
+    "ts": false,
+    "frame": "vue"
   },
-  "vue": {
-    "cssProcessor": "sass",
-    "cssSuffix": "scss"
+  "vue-ts": {
+    "ts": true,
+    "entryJsExt": "ts"
+  },
+  "jquery-ts": {
+    "ts": true,
+    "entryJsExt": "ts"
+  },
+  "react-ts": {
+    "frame": "react",
+    "ts": true,
+    "entryJsExt": "tsx"
   }
 }

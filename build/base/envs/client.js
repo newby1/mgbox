@@ -10,23 +10,24 @@ module.exports = {
         let extractCssPublicPath = "../";
         let outputPublicPath = `../static/${itemConfig.itemName}/`;
         let htmlFileNamePath = `${itemConfig.absolutePath.distItemPath}/`;
+        let module = {
+            [Loaders.CONST[itemConfig.cssProcessor]]: {
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: extractCssPublicPath
+                        }
+                    }
+                ]
+            }
+        };
 
         rigger
             .output({
                 publicPath: outputPublicPath
             })
-            .module({
-                [Loaders.CONST[itemConfig.cssProcessor]]: {
-                    use: [
-                        {
-                            loader: MiniCssExtractPlugin.loader,
-                            options: {
-                                publicPath: extractCssPublicPath
-                            }
-                        }
-                    ]
-                }
-            })
+            .module(module)
             .helper({
                 extractCssPublicPath,
                 outputPublicPath,

@@ -1,20 +1,19 @@
 const extend = require("extend");
 const path = require("path");
 const Const = require("../../const");
-const PRJ_NAME = Const.PRJ_NAME;
 
 module.exports = function (itemName, option) {
     const itemManifestPath = `${Const.MANIFEST_PATH}/${itemName}`;
 
     const distPath = Const.DIST_PATH;
-    const distItemPath = `${distPath}/${itemName}`;
+    const distItemPath = `${distPath}/template/${itemName}`;
     const distStaticPath = `${distPath}/static/${itemName}`;
 
     const srcPath = Const.SRC_PATH;
     const appsPath = `${srcPath}/${itemName}/apps`;
     const staticPath = `${srcPath}/${itemName}/static/`;
+    const configPath = `${Const.CONFIG_PATH}/${itemName}`;
     let base = {
-        prjName: PRJ_NAME,
         itemName,
         frame: Const.FRAMES.VUE,
         cdn: {
@@ -25,7 +24,8 @@ module.exports = function (itemName, option) {
             appsPath,
             staticPath,
             distItemPath,
-            distStaticPath
+            distStaticPath,
+            configPath
         },
         relativePath: {
             scripts: `scripts`,
@@ -50,7 +50,7 @@ module.exports = function (itemName, option) {
             port: 0,
             options: {
                 hot: true,
-                inline: true,
+                //inline: true,
                 overlay: true,
                 stats: {
                     colors: true

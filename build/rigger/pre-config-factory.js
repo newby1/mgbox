@@ -54,7 +54,7 @@ class PreConfigFactory {
         })
     }
     compileHook(callback){
-        if (typeof callback === "function"){
+        if (callback){
             this.preWebpackConfig = callback(this.getContext());
         }
     }

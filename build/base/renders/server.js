@@ -20,17 +20,19 @@ module.exports = {
             libraryTarget: "commonjs2"
         };
         let append = {
+            target: "node",
             externals: [
                 nodeExternals({
                     whitelist: /\.css/
                 })
             ]
         };
+        let entryFile = `server.${itemConfig.entryFileExt}`;
 
         Helper.getSSRApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
-                entry[`server-${name}`] = [ path.resolve(val, "server.js") ];
+                entry[`server-${name}`] = [ path.resolve(val, entryFile) ];
 
             });
 

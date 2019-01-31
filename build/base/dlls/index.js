@@ -26,7 +26,8 @@ module.exports = {
                     libraryTarget: "umd"
                 }))
                 .module(option.module || [
-                    preWebpackConfig.module[itemConfig.frame === Const.FRAMES.REACT ? Loaders.CONST.jsx : Loaders.CONST.js],
+                    //preWebpackConfig.module[itemConfig.frame === Const.FRAMES.REACT ? Loaders.CONST.jsx : Loaders.CONST.js],
+                    Loaders[Loaders.CONST.js](),
                     preWebpackConfig.module[Loaders.CONST[itemConfig.cssProcessor]],
                     preWebpackConfig.module[Loaders.CONST.font],
                     preWebpackConfig.module[Loaders.CONST.pic]

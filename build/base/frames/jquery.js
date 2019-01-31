@@ -1,9 +1,10 @@
 module.exports = {
     run({rigger, Helper, processArgv, Loaders, Plugins}){
         Helper.log(processArgv.debug, `frame: vue`);
-        return rigger.module({
-                [Loaders.CONST.js]: Loaders[Loaders.CONST.js](),
-            })
+        let module = {
+            [Loaders.CONST.js]: Loaders[Loaders.CONST.js](),
+        };
+        return rigger.module(module)
             .plugins([
                 Plugins[Plugins.CONST.happypack]({
                     id: "js",

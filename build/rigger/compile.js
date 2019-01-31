@@ -28,6 +28,10 @@ class Compile {
             .then(context => {
                 context.webpackConfig = this.outputConfig(context.preWebpackConfig);
                 this.clientContext = context;
+                console.log("=========");
+                context.webpackConfig.module.rules.map(val => {
+                    console.log(val.use);
+                });
                 return this.getServerPreWebpackConfig()
             })
             .then((context) =>{

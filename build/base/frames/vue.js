@@ -23,11 +23,22 @@ module.exports = {
                 loaders
             })
         ];
+        let module = {
+            [Loaders.CONST.vue]: Loaders[Loaders.CONST.vue](),
+            [Loaders.CONST.js]: Loaders[Loaders.CONST.js](),
+        };
+        if (itemConfig.ts){
+            module[Loaders.CONST.ts] = {
+                use: [{
+                    loader: "ts-loader",
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/]
+                    }
+                }]
+            }
+        }
         return  rigger
-            .module({
-                [Loaders.CONST.vue]: Loaders[Loaders.CONST.vue](),
-                [Loaders.CONST.js]: Loaders[Loaders.CONST.js](),
-            })
+            .module(module)
             .plugins(plugins)
             .append(append)
             .done();

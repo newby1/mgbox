@@ -61,41 +61,43 @@ module.exports = {
             Plugins[Plugins.CONST.uglify]()
         );
         */
-        rigger
-            .module({
-                [Loaders.CONST.html]: {
-                    use: [
-                        {
-                            loader: "html-loader",
-                            options: {
-                                minimize: true
-                            }
+        let module = {
+            [Loaders.CONST.html]: {
+                use: [
+                    {
+                        loader: "html-loader",
+                        options: {
+                            minimize: true
                         }
-                    ]
-                },
-                [Loaders.CONST[itemConfig.cssProcessor]]: {
-                    use: [
-                        {
-                            loader: "css-loader",
-                            options: {
-                                sourceMap: false
-                            }
-                        },
-                        {
-                            loader: "postcss-loader",
-                            options: {
-                                plugins: [
-                                    require("autoprefixer"),
-                                    require("cssnano")({
-                                        preset: "default"
-                                    })
-                                ]
-                            }
+                    }
+                ]
+            },
+            [Loaders.CONST[itemConfig.cssProcessor]]: {
+                use: [
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: false
                         }
-                    ]
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            config:{
+                                path: `${itemConfig.absolutePath.configPath}`,
+                                ctx: {
+                                    env: processArgv.mode,
+                                    options: processArgv
+                                }
+                            },
+                        }
+                    }
+                ]
 
-                }
-            })
+            }
+        };
+        rigger
+            .module(module)
             .plugins(plugins)
             .append({
                 mode: Const.MODES.PRODUCTION

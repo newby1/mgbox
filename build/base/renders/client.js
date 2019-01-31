@@ -5,14 +5,15 @@ module.exports = {
         Helper.log(processArgv.debug, "render: client");
         let entry = {};
         let plugins = [];
+        let entryFile = `index.${itemConfig.entryJsExt}`;
 
         Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
                 entry[name] = [
                     "babel-polyfill",
-                    path.resolve(val, "index.js"),
-                    path.resolve(val, `index.${itemConfig.cssSuffix}`)
+                    path.resolve(val, entryFile),
+                    path.resolve(val, `index.${itemConfig.entryCssExt}`)
                 ];
 
             });

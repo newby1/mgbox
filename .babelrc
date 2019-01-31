@@ -1,7 +1,13 @@
 {
-  presets: ["@babel/preset-env"]
-//  plugins: [
-//    "transform-object-rest-spread",
-//    "syntax-dynamic-import"
-//  ]
+  presets: ["@babel/preset-env"],
+  "plugins": [
+    //    "transform-object-rest-spread",
+    //    "syntax-dynamic-import"
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ]
+  ]
 }

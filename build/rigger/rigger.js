@@ -1,4 +1,5 @@
 const extend = require("extend");
+const LoaderManage = require("../helpers/loaderManage");
 const mergeArray = function (target = [], merge = []) {
     let targetObj = {}, countObj = {}, res = [];
     let i = 0, targetLen = target.length, mergeLen = merge.length;
@@ -57,20 +58,23 @@ class Rigger {
         return this;
     }
     module(option){
-        let module = this.config.module;
-        for(let key in option){
-            if (!module[key]){
-                module[key] = option[key];
-            }else{
-                for(let k in option[key]){
-                    if (Object.prototype.toString.call(option[key][k]) === '[object Array]'){
-                        module[key][k] = mergeArray(module[key][k], option[key][k]);
-                    }else{
-                        extend(true, module[key][k], option[key][k]);
-                    }
-                }
-            }
-        }
+        let ins = new LoaderManage(this.config.module);
+        ins.batch(option);
+        this.config.module = ins.getRules();
+        // let module = this.config.module;
+        // for(let key in option){
+        //     if (!module[key]){
+        //         module[key] = option[key];
+        //     }else{
+        //         for(let k in option[key]){
+        //             if (Object.prototype.toString.call(option[key][k]) === '[object Array]'){
+        //                 module[key][k] = mergeArray(module[key][k], option[key][k]);
+        //             }else{
+        //                 extend(true, module[key][k], option[key][k]);
+        //             }
+        //         }
+        //     }
+        // }
         //extend(true, this.config.module, option);
         return this;
     }

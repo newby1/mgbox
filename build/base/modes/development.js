@@ -19,9 +19,13 @@ module.exports = {
                     {
                         loader: "postcss-loader",
                         options: {
-                            plugins: [
-                                require("autoprefixer")
-                            ]
+                            config:{
+                                path: `${itemConfig.absolutePath.configPath}`,
+                                ctx: {
+                                    env: processArgv.mode,
+                                    options: processArgv
+                                }
+                            },
                         }
                     }
                 ]
@@ -29,7 +33,9 @@ module.exports = {
             }
         };
         if (processArgv.eslint){
-            module[Loaders.CONST.eslint] = Loaders[Loaders.CONST.eslint]();
+            module[Loaders.CONST.eslint] = Loaders[Loaders.CONST.eslint]({
+                eslintPath: `${itemConfig.configPath}/.eslintrc.json`
+            });
         }
 
         Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
