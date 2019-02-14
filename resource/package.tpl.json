@@ -1,0 +1,15 @@
+{
+  "name": "frame",
+  "version": "1.0.0",
+  "description": "this is app",
+  "main": "index.js",
+  "bin": {
+    "mgbox": "./bin/mgbox.js"
+  },
+  "scripts": {
+    "dev": "mgbox run -D -M",
+    "publish": "mgbox run -e server -m production -C"
+  },
+  "author": "niudaodao",
+  "license": "ISC"
+}

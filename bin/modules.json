@@ -1,0 +1,98 @@
+{
+  "base": [
+    "@babel/core",
+    "@babel/plugin-proposal-decorators",
+    "@babel/preset-env",
+    "autoprefixer",
+    "babel-loader",
+    "babel-polyfill",
+    "copy-webpack-plugin",
+    "cross-env",
+    "del",
+    "eslint",
+    "eslint-loader",
+    "extend",
+    "file-loader",
+    "happypack",
+    "html-loader",
+    "html-webpack-include-assets-plugin",
+    "html-webpack-plugin",
+    "mini-css-extract-plugin",
+    "mocker-api",
+    "require-from-string",
+    "uglifyjs-webpack-plugin",
+    "url-loader",
+    "url-polyfill",
+    "webpack",
+    "webpack-dev-server",
+    "webpack-livereload-plugin",
+    "webpack-manifest-plugin",
+    "webpack-node-externals",
+    "whatwg-fetch"
+  ],
+  "tplEngine": {
+    "ejs": ["ejs"],
+    "pug": ["pug"],
+    "handlebars": ["handlebars"]
+  },
+  "ts": {
+    "base": [
+      "ts-loader",
+      "typescript",
+      "@types/node"
+    ],
+    "react":[
+      "@types/react-dom",
+      "@types/react-redux"
+    ],
+    "vue": [
+      "vue-property-decorator",
+      "vuex-class"
+    ]
+  },
+  "ssr": {
+    "vue": [
+      "vue-server-renderer"
+    ]
+  },
+  "react":[
+    "@babel/preset-react",
+    "react",
+    "react-dom",
+    "react-redux",
+    "redux",
+    "redux-thunk"
+  ],
+  "vue": [
+    "vue",
+    "vue-loader",
+    "vue-router",
+    "vue-template-compiler",
+    "vuex"
+  ],
+  "jquery": [
+    "jquery"
+  ],
+  "css":{
+    "base": [
+      "css-loader",
+      "cssnano",
+      "style-loader",
+      "postcss",
+      "postcss-loader"
+    ],
+    "less": [
+      "less",
+      "less-loader"
+    ],
+    "sass": [
+      "node-sass",
+      "sass-loader"
+
+    ],
+    "stylus": [
+      "stylus-loader",
+      "stylus"
+    ]
+  }
+}

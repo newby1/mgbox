@@ -1,0 +1,47 @@
+{
+  "vue-ssr": {
+    "isSsrItem": true
+  },
+  "react-ssr": {
+    "frame": "react",
+    "isSsrItem": true
+  },
+  "react-ssr-ts": {
+    "isSsrItem": true,
+    "ts": true,
+    "entryJsExt": "tsx"
+  },
+  "vue": {
+    "isSsrItem": false
+  },
+  "jquery": {
+    "isSsrItem": false,
+    "frame": "jquery"
+  },
+  "react": {
+    "isSsrItem": false,
+    "frame": "react"
+  },
+  "vue-ts": {
+    "isSsrItem": false,
+    "ts": true,
+    "entryJsExt": "ts"
+  },
+  "vue-ssr-ts": {
+    "isSsrItem": true,
+    "ts": true,
+    "entryJsExt": "ts"
+  },
+  "jquery-ts": {
+    "isSsrItem": false,
+    "frame": "jquery",
+    "ts": true,
+    "entryJsExt": "ts"
+  },
+  "react-ts": {
+    "isSsrItem": false,
+    "frame": "react",
+    "ts": true,
+    "entryJsExt": "tsx"
+  }
+}
