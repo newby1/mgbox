@@ -51,9 +51,13 @@ const add = {
             resolveNpm(`resource/build`),
             resolveNpm(`resource/mocks`),
             resolveNpm(`resource/.babelrc`),
-            resolveNpm(`resource/.gitignore`),
+            resolveNpm(`resource/.gitignore.tpl`),
             resolveNpm(`resource/package.tpl.json`),
             resolvePrj(`./`));
+        shell.mv(
+            resolvePrj(`.gitignore.tpl`),
+            resolvePrj(`.gitignore`),
+        );
         shell.mv(
             resolvePrj(`package.tpl.json`),
             resolvePrj(`package.json`),

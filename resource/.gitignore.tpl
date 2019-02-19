@@ -26,5 +26,3 @@ manifest
 npm-debug.log
 *.lock
 package-lock.json
-mocks/*
-!mocks/index.js
