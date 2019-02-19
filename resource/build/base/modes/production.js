@@ -87,7 +87,8 @@ module.exports = {
                                 path: `${itemConfig.absolutePath.configPath}`,
                                 ctx: {
                                     env: processArgv.mode,
-                                    options: processArgv
+                                    processArgv,
+                                    itemConfig
                                 }
                             },
                         }

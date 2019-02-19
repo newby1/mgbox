@@ -1,5 +1,6 @@
 module.exports = ({env, file, options}) => {
-    if (options.env === "development"){
+
+    if (options.processArgv.mode === "development"){
         return {
             plugins: [
                 require("autoprefixer")()
@@ -12,7 +13,7 @@ module.exports = ({env, file, options}) => {
                 require("autoprefixer")(),
                 require("cssnano")({
                     preset: "default"
-                })
+                }),
             ]
         }
     }

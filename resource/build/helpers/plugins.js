@@ -23,15 +23,17 @@ let plugins = {
     CONST: PLUGIN,
     registerPlugin(name, module){
         if (PLUGIN[name]){
+            console.log("已经有相同名称的插件了");
             return;
         }
         PLUGIN[name] = name;
         this[name] = function (option) {
             if (typeof module === "string"){
                 return new require(module)(option);
-            }else{
-                return module;
+            }else if (typeof module === "function"){
+                return module(option);
             }
+            throw new Error("只能注册为字符串模块或者函数");
         }
     },
     [PLUGIN.webpackManifestPlugin]: (option) => {

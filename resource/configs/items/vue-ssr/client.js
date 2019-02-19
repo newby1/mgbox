@@ -22,6 +22,13 @@ module.exports = {
 
         return rigger
             .plugins(plugins)
+            .append({
+                resolve: {
+                    alias: {
+                        "vue$": "vue/dist/vue.esm.js",
+                    }
+                }
+            })
             .done();
 
     }

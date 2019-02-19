@@ -12,9 +12,7 @@ module.exports = {
                 },
                 entry: {
                     "vendor": ["babel-polyfill", "url-polyfill"],
-                    "vue": [ "vue/dist/vue.esm.js"],
-                    "vueRouter": [ "vue-router"],
-                    "vuex": [ "vuex"],
+                    "vueVendor": [ "vue/dist/vue.esm.js", "vue-router", "vuex"],
                     //"elementUI": ["element-ui","element-ui/lib/theme-chalk/index.css"],
                 }
             }
@@ -28,6 +26,13 @@ module.exports = {
                         options: {
                             configFile: path.resolve(Const.PLUGINS_CONFIG_PATH, `./${itemConfig.itemName}/tsconfig.json`)
                         }
+                    }
+                }
+            })
+            .append({
+                resolve: {
+                    alias: {
+                        "vue$": "vue/dist/vue.esm.js",
                     }
                 }
             })

@@ -6,11 +6,6 @@ module.exports = {
         Helper.log(processArgv.debug, `frame: vue`);
         let entry = {};
         let append = {
-            resolve: {
-                alias: {
-                    "vue$": "vue/dist/vue.esm.js",
-                }
-            }
         };
         let loaders = [ {
             loader: "babel-loader"

@@ -23,7 +23,8 @@ module.exports = {
                                 path: `${itemConfig.absolutePath.configPath}`,
                                 ctx: {
                                     env: processArgv.mode,
-                                    options: processArgv
+                                    processArgv,
+                                    itemConfig
                                 }
                             },
                         }
@@ -43,7 +44,7 @@ module.exports = {
                 let name = path.basename(val);
                 plugins.push(
                     Plugins[Plugins.CONST.htmlWebpackPlugin]({
-                        chunks: [name],
+                        chunks: ["bizVendor", name],
                         template: path.resolve(val, "index.html"),
                         filename:  `${preWebpackConfig.helper.htmlFileNamePath}${name}.html`,
                         inject: true
