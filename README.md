@@ -2,18 +2,18 @@
 
 ## 背景
    现在前端框架很多，一个前端工程师可能要关注很多框架，在团队的项目使用中，很容易就会出现多套框架。给维护和团队学习成本提升很多。基于现在大部分框架都都可以依赖webpack做打包方案，此框架以webpack做依托，通过配置形成多框架、多场景的支持。本框架的目的不是场景可扩展的，相反更多的是场景收敛，也就是说，默认的提供了一套完整的解决方案。提供以下能力：
-+ 框架支持（vue/react/jquery）  
-+ ssr支持（vue/react）*  
-+ typescript支持（vue/react/jquery）
-+ 模板引擎支持（ejs/pug/handerbars）
++ 多框架（vue/react/jquery）  
++ ssr（vue/react）*  
++ typescript（vue/react/jquery）
++ 模板引擎（ejs/pug/handerbars）
 + 多种编译模式（本地/hybird/server）
-+ 支持多项目同时编译
-+ 支持devserver
-+ 支持多app
++ 多项目同时编译
++ devserver
++ 多app编译
 + mock数据（本地/server/模板数据）
 + 多css预处理器（less/sass/stylus）
 + eslint
-+ dllplugin/happypack/liveReload
++ es6+/dllplugin/happypack/liveReload
 + cdn(需额外发布支持)*
 > ssr仅支持到本地开发，没有提供完整的server方案。  
 cdn路径在本地编译完成，相关静态资源依赖后续发布
