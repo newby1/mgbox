@@ -70,10 +70,10 @@ npm run dev
  -m | --mode | [development(默认):production] | 编译模式 
 -a | --apps | [all(默认) : app : app1,app2] | 编译app
 -D | --devserver | false | 启用devserver
--M | --mock | false | 请用mock api
+-M | --mock | false | 启用本地mock代理。依赖`-D`
 -C | --cdn | false | 编译cdn 
--O | --open | false | 打开浏览器
--L | --eslist | false | eslint检测
+-O | --open | false | 打开浏览器。依赖`-e local -D`
+-L | --eslist | false | eslint检测。依赖`-m development`
 -S | --ssr | false | 启用ssr  
 ***
 使用示例  
