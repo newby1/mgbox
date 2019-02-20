@@ -6,6 +6,9 @@
 + typescript支持（vue/react/jquery）
 + 模板引擎支持（ejs/pug/handerbars）
 + 多种编译模式（本地/hybird/server）
++ 支持多项目多框架同时编译
++ 支持devserver
++ 支持多app
 + mock数据（本地/server/模板数据）
 + 多css预处理器（less/sass/stylus）
 + eslint
@@ -48,4 +51,26 @@ mgbox add
       +fonts
       ...
 ```   
-
+2. 工程使用说明
+```
+mgbox run 
+npm run dev
+```
+参数说明  
+ 缩写 | 补充 | 值 | 说明   
+:---|:---|:----|:----
+ -i | --item | all(默认) : item : item1,item2 | 选择编译的项目 
+ -e | --env | local(默认):server:client | 编译环境 
+ -m | --mode | development(默认):production | 编译模式 
+-a | --apps | all(默认) : app : app1,app2 | 编译app
+-D | --devserver | false | 启用devserver
+-M | --mock | false | 请用mock api
+-C | --cdn | false | 编译cdn 
+-O | --open | false | 打开浏览器
+-L | --eslist | false | eslint检测
+-S | --ssr | false | 启用ssr  
+使用示例  
+```
+mgbox run -i app -a index -D -M -O
+npm run dev -- -i app -a index -D -M 
+```
