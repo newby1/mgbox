@@ -32,25 +32,29 @@ mgbox add
 +configs 
     +.configs //.babelrc .eslintrc postcss ts 等loader相关配置
     +items //项目编译中的配置项，可以扩展功能
-      item.js 
+      item1.js 
+      item2.js 
     project.config.json  //项目生成时的配置
 +mocks  
   index.js //业务mocks数据入口
   local.js //业务mocks数据，建议不如git库
   tpldata.js //模板引擎mock数据
 +src  
-  +item //项目名称
+  +item2
+  +item1 //项目名称
     +apps
-      +app
+      +app2
+      +app1
         +components
         +services
         index.html //入口文件。必须。可以做模板
         index.js //入口js。后缀为js|ts|tsx|jsx
         index.less //入口css。后缀为less|scss|styl
+        server.js //ssr入口js。后缀index.js
     +static
       +images
       +fonts
-      ...
+    ...
 ```   
 ### 工程使用说明
 ```
@@ -77,3 +81,6 @@ npm run dev
 mgbox run -i app -a app1,app2 -D -M -O
 npm run dev -- -i app -a index -D -M 
 ```
+### 其他
+1. app访问地址为 http://localhost:xxxxx/app.html
+2. 启用ssr时，访问地址为http://localhost:xxxxx/app
