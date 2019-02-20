@@ -1,12 +1,13 @@
-# mgbox
+# mgbox  
+
 ## 背景
-现在前端框架很多，一个前端工程师可能要关注很多框架，在团队的项目使用中，很容易就会出现多套框架。给维护和团队学习成本提升很多。基于现在大部分框架都都可以依赖webpack做打包方案，此框架以webpack做依托，通过配置形成多框架、多场景的支持。本框架的目的不是场景可扩展的，相反更多的是场景收敛，也就是说，默认的提供了一套完整的解决方案。提供以下能力：
+   现在前端框架很多，一个前端工程师可能要关注很多框架，在团队的项目使用中，很容易就会出现多套框架。给维护和团队学习成本提升很多。基于现在大部分框架都都可以依赖webpack做打包方案，此框架以webpack做依托，通过配置形成多框架、多场景的支持。本框架的目的不是场景可扩展的，相反更多的是场景收敛，也就是说，默认的提供了一套完整的解决方案。提供以下能力：
 + 框架支持（vue/react/jquery）  
 + ssr支持（vue/react）*  
 + typescript支持（vue/react/jquery）
 + 模板引擎支持（ejs/pug/handerbars）
 + 多种编译模式（本地/hybird/server）
-+ 支持多项目多框架同时编译
++ 支持多项目同时编译
 + 支持devserver
 + 支持多app
 + mock数据（本地/server/模板数据）
@@ -25,7 +26,7 @@ cd xxx
 mgbox add
 ```
 ## 其他说明
-1. 工程目录文件结构约定 
+### 工程目录文件结构约定 
 ```
 +build   //编译  
 +configs 
@@ -51,26 +52,28 @@ mgbox add
       +fonts
       ...
 ```   
-2. 工程使用说明
+### 工程使用说明
 ```
 mgbox run 
 npm run dev
 ```
 参数说明  
+***
  缩写 | 补充 | 值 | 说明   
 :---|:---|:----|:----
- -i | --item | all(默认) : item : item1,item2 | 选择编译的项目 
- -e | --env | local(默认):server:client | 编译环境 
- -m | --mode | development(默认):production | 编译模式 
--a | --apps | all(默认) : app : app1,app2 | 编译app
+ -i | --item | [all(默认) : item : item1,item2] | 选择编译的项目 
+ -e | --env | [local(默认) : server : client] | 编译环境 
+ -m | --mode | [development(默认):production] | 编译模式 
+-a | --apps | [all(默认) : app : app1,app2] | 编译app
 -D | --devserver | false | 启用devserver
 -M | --mock | false | 请用mock api
 -C | --cdn | false | 编译cdn 
 -O | --open | false | 打开浏览器
 -L | --eslist | false | eslint检测
 -S | --ssr | false | 启用ssr  
+***
 使用示例  
 ```
-mgbox run -i app -a index -D -M -O
+mgbox run -i app -a app1,app2 -D -M -O
 npm run dev -- -i app -a index -D -M 
 ```
