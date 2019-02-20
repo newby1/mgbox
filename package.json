@@ -1,7 +1,7 @@
 {
   "name": "mgbox",
-  "version": "1.0.2",
-  "description": "frame",
+  "version": "1.0.3",
+  "description": "frame build and study",
   "main": "index.js",
   "bin": {
     "mgbox": "./bin/mgbox.js"
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/newby1/pandora.git"
+    "url": "git+https://github.com/newby1/mgbox.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/newby1/pandora/issues"
+    "url": "https://github.com/newby1/mgbox/issues"
   },
-  "homepage": "https://github.com/newby1/pandora#readme",
+  "homepage": "https://github.com/newby1/mgbox#readme",
   "dependencies": {
     "commander": "^2.19.0",
     "extend": "^3.0.2",
