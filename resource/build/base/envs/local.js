@@ -25,25 +25,25 @@ module.exports = {
         let outputPublicPath = extractCssPublicPath;
 
         let ip = Helper.getIPAdress();
-        // for(let key in preWebpackConfig.entry){
-        //     preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://${ip}:${itemConfig.devServer.port}/`)
-        // }
+        for(let key in preWebpackConfig.entry){
+            //preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://${ip}:${itemConfig.devServer.port}/`)
+            preWebpackConfig.entry[key].unshift(`webpack-dev-server/client?http://${ip}:${itemConfig.devServer.port}/`)
+        }
 
         plugins.push(
             // Plugins[Plugins.CONST.namedModulesPlugin](),
-            // Plugins[Plugins.CONST.hotReplace](),
-            // Plugins[Plugins.CONST.htmlIncludeAssets]({
-            //     assets: ["webpack-dev-server.js"],
-            //     publicPath: outputPublicPath,
-            //     append: false,
-            // }),
-            Plugins[Plugins.CONST.liveReloadPlugin](),
-
+            Plugins[Plugins.CONST.hotReplace](),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
-                assets: [`http://${ip}:35729/livereload.js`],
-                publicPath: "",
+                assets: ["webpack-dev-server.js"],
+                publicPath: outputPublicPath,
                 append: false,
-            })
+            }),
+            //Plugins[Plugins.CONST.liveReloadPlugin](),
+            // Plugins[Plugins.CONST.htmlIncludeAssets]({
+            //     assets: [`http://${ip}:35729/livereload.js`],
+            //     publicPath: "",
+            //     append: false,
+            // })
         );
 
         rigger.entry(entry)

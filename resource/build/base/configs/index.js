@@ -55,8 +55,8 @@ module.exports = function (itemName, option) {
         devServer: {
             port: 0,
             options: {
-                hot: true,
-                //inline: true,
+                //hot: true,
+                inline: true,
                 overlay: true,
                 stats: {
                     colors: true
