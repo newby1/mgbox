@@ -31,7 +31,7 @@ module.exports = {
         }
 
         plugins.push(
-            // Plugins[Plugins.CONST.namedModulesPlugin](),
+            Plugins[Plugins.CONST.namedModulesPlugin](),
             Plugins[Plugins.CONST.hotReplace](),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
                 assets: ["webpack-dev-server.js"],

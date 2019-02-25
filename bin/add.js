@@ -31,14 +31,22 @@ const shouldUserYarn = () => {
 let configPath = resolvePrj("configs/project.config.json");
 const add = {
     main(){
-        this.init();
+        this.loadConfig();
         this.collect();
     },
-    init(){
+    loadConfig(){
+        let configs = `configs`;
+        if (!fs.existsSync(resolvePrj(configs))){
+            shell.mkdir("-p", configs);
+        }
+
         if (utils.isInstalled(configPath)) {
             config = require(configPath);
             return;
         }
+        shell.touch(configPath);
+    },
+    init(){
         //初始化项目
         ["configs/.config", "mocks", "src", "configs/items"].forEach(val => {
             if (!fs.existsSync(resolvePrj(val))){
@@ -62,7 +70,6 @@ const add = {
             resolvePrj(`package.tpl.json`),
             resolvePrj(`package.json`),
         );
-        shell.touch(configPath);
     },
     collect(){
         const cssExt = {
@@ -192,6 +199,9 @@ const add = {
         shell.exec(`npm run dev -- -O -i ${itemName}`);
     },
     copy(){
+        if (!utils.isInstalled(resolvePrj(`package.json`))) {
+            this.init();
+        }
         let itemConfig = config[itemName];
         let item = itemConfig.frame;
         if (itemConfig.isSsrItem){
