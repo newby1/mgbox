@@ -1,3 +1,5 @@
+###1.0.5
+1. 修改bin/add.js init
 ###1.0.4
 1. 完善readme
 2. 修改devserver热更新
