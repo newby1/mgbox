@@ -24,6 +24,7 @@ module.exports = function (itemName, option) {
         "tplEngine": "none",
         cdn: {
             host: "",
+            handleUrlCallback: null,
             exts: ["js", "css", "swf", "jpg", "jpeg", "png", "gif", "ico"]
         },
         absolutePath: {
@@ -70,6 +71,36 @@ module.exports = function (itemName, option) {
         },
     };
     extend(true, base, option);
+    let tplReg = /\[(.*?)\]/g;
+    if (base.cdn.host  && tplReg.test(base.cdn.host) && !base.cdn.handleUrlCallback){
+        let getStr = (str, reg) => {
+            let res = str.match(reg);
+            if (res && res[0]){
+                return "" + res[0];
+            }
+            return "";
+        };
+        // http://s[2,4,5].xxx.com/xxx0sxs234xxa.js => http://s2.xxx.com/xxx0sxs234xxa.js
+        base.cdn.handleUrlCallback = function (url) {
+            return url.replace(tplReg, function ($0, $1) {
+                let ruleArr = $1.split(",");
+                let target = ruleArr[0];
+                let baseReg = new RegExp(`[^\\/]+\\.(${base.cdn.exts.join("|")})($|\\?)`);
+                let pathname = getStr(url, baseReg);
+                let numRes = pathname.match(/\d/g);
+                if (numRes){
+                    for(let len = numRes.length, i=0; i < len; i++){
+                        let val = numRes[i];
+                        if (ruleArr.includes(val)){
+                            target = val;
+                            break;
+                        }
+                    }
+                }
+                return target;
+            })
+        }
+    }
     if (base.dll.entry){
         Object.keys(base.dll.entry).forEach((key) => {
             base.dll.assets.js.push(`${base.relativePath.scriptLibraries}/${key}.js`)

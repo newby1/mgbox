@@ -4,7 +4,8 @@ module.exports = {
     title: "this is mock",
     titleesj: "this is tpl ejs",
     titlepug: "this is tpl pug",
-    titlehd: "this is tpl hd"
+    titlehd: "this is tpl hd",
+    list: ["ab", "bc"]
     //...data
 };
 

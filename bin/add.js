@@ -136,7 +136,7 @@ const add = {
                 name: "tplEngine",
                 message: "选择模板引擎",
                 default: "none",
-                choices: ["none", "ejs", "pug", "handlebars"],
+                choices: ["none","velocity", "ejs", "pug", "handlebars"],
                 when: function (answers) {
                     return false ===  answers.isSsrItem
                 }

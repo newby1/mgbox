@@ -33,7 +33,8 @@
   "tplEngine": {
     "ejs": ["ejs"],
     "pug": ["pug"],
-    "handlebars": ["handlebars"]
+    "handlebars": ["handlebars"],
+    "velocity": ["velocity"]
   },
   "ts": {
     "base": [

@@ -42,6 +42,7 @@ mgbox add
   local.js //业务mocks数据，建议不如git库
   tpldata.js //模板引擎mock数据
 +src  
+  +common//多item共用的组件服务
   +item2
   +item1 //项目名称
     +apps

@@ -3,7 +3,7 @@ const fs = require('fs');
 
 
 module.exports = {
-    run({rigger, itemConfig, processArgv, Loaders, Plugins, Helper, Const}) {
+    run({rigger, itemConfig, processArgv, Loaders, Plugins, Helper, Const, preWebpackConfig}) {
         Helper.log(processArgv.debug, "mode: produciton");
         let entry = {};
         let plugins = [];
@@ -29,38 +29,36 @@ module.exports = {
                 );
             });
 
-        /*
-        if (processArgv.cdn){
+        if (processArgv.cdn && itemConfig.cdn.handleUrlCallback){
             plugins.push(
                 Plugins[Plugins.CONST.cdn](itemConfig.cdn)
             );
             rigger.module({
                 [Loaders.CONST.font]: {
-                    use: {
+                    use: [{
+                        loader: "file-loader",
                         options: {
                             publicPath: function (url) {
-                                let res = Helper.getCdnUrl(`${preWebpackConfig.output.publicPath}${url}`, itemConfig.cdn.host, itemConfig.cdn.exts);
+                                let res = itemConfig.cdn.handleUrlCallback(`${preWebpackConfig.output.publicPath}${url}`);
                                 return res;
                             }
                         }
-                    }
+                    }]
                 },
                 [Loaders.CONST.pic]: {
-                    use: {
+                    use: [{
+                        loader: "url-loader",
                         options: {
                             publicPath: function (url) {
-                                let res = Helper.getCdnUrl(`${preWebpackConfig.output.publicPath}${url}`, itemConfig.cdn.host, itemConfig.cdn.exts);
+                                let res = itemConfig.cdn.handleUrlCallback(`${preWebpackConfig.output.publicPath}${url}`);
                                 return res;
                             }
                         }
-                    }
+                    }]
+
                 }
             });
         }
-        plugins.push(
-            Plugins[Plugins.CONST.uglify]()
-        );
-        */
         let module = {
             [Loaders.CONST.html]: {
                 use: [

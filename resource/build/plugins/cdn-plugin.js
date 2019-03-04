@@ -1,13 +1,11 @@
-const Helper = require("../helpers/helper");
-
 function CdnPlugin(options){
   this.options = options;
 }
 
 
 CdnPlugin.prototype.apply = function (compiler) {
-  let cdnHost = this.options.host;
   let exts = this.options.exts;
+  let urlCallback = this.options.handleUrlCallback;
 
   let onCompilation = function (compilation) {
     function onAfterHtmlProcessing(htmlPluginData, callback){
@@ -17,11 +15,8 @@ CdnPlugin.prototype.apply = function (compiler) {
         if (!$0){
           return "";
         }
-        if (/\/\//.test($2)){
-          return $0;
-        }
-        let res = $1 + Helper.getCdnUrl($2, cdnHost, exts);
-        return res;
+        let res = typeof urlCallback === "function" ?  urlCallback($2) : $0;
+        return $1 + res;
       });
 
       if (callback){

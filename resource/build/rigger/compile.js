@@ -40,6 +40,7 @@ class Compile {
                 this.clientContext = context;
                 // console.log("=========");
                 // context.webpackConfig.module.rules.map(val => {
+                //     console.log(val.test);
                 //     console.log(val.use);
                 // });
                 return this.getServerPreWebpackConfig()
@@ -94,9 +95,14 @@ class Compile {
             case "handlebars":
                 template = require("handlebars").compile(template)(data);
                 break;
+            case "velocity":
+                let Engine = require("velocity").Engine;
+                template = new Engine({
+                    template
+                }).render(data);
+                break;
             case "none":
             default:
-                template = template;
         }
         return template;
 

@@ -22,13 +22,7 @@ module.exports = {
             Plugins[Plugins.CONST.extractCss]( {
                 filename: `${itemConfig.relativePath.styles}/[name]_[${Helper.getHashTag(processArgv.env === Const.ENVS.LOCAL)}].css`,
             } ),
-            Plugins[Plugins.CONST.copy]([{
-                from: `${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.scriptLibraries}`,
-                to: itemConfig.relativePath.scriptLibraries
-            }]),
-            Plugins[Plugins.CONST.webpackManifestPlugin]()
-        );
-        plugins.push(
+            Plugins[Plugins.CONST.webpackManifestPlugin](),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
                 assets: [ ...itemConfig.dll.assets.css,  ...itemConfig.buildAssets.css],
                 append: false,
@@ -37,7 +31,16 @@ module.exports = {
                 assets: [ ...itemConfig.dll.assets.js,  ...itemConfig.buildAssets.js],
                 append: false,
             })
-        )
+        );
+        let copyLibraries = `${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.scriptLibraries}`;
+        if (require("fs").existsSync(copyLibraries)){
+            plugins.push(
+                Plugins[Plugins.CONST.copy]([{
+                    from: copyLibraries,
+                    to: itemConfig.relativePath.scriptLibraries
+                }])
+            )
+        }
         rigger
             .entry(entry)
             .plugins(plugins);
