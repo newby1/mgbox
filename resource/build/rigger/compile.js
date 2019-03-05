@@ -29,7 +29,7 @@ class Compile {
         if (this.processArgv.mode === Const.MODES.PRODUCTION){
             console.log("delete dist & manifest dir");
             try {
-                del.sync([Const.MANIFEST_PATH, Const.DIST_PATH]);
+                require("del").sync([Const.MANIFEST_PATH, Const.DIST_PATH]);
             } catch(e) {
             }
         }

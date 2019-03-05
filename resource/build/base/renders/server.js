@@ -6,12 +6,11 @@ module.exports = {
     run({rigger, itemConfig, processArgv, Helper, Plugins, Const}) {
         Helper.log(processArgv.debug, "render: server");
         const isLocal = processArgv.env === Const.ENVS.LOCAL;
-        const serverPath = `../../${processArgv.itemName}`;
         const filename = isLocal
             ?
             `${itemConfig.relativePath.scripts}/[name].js`
             :
-            `${serverPath}/[name].js`;
+            `${itemConfig.dist.ssr.path}/[name].js`;
 
         let entry = {};
         let plugins = [];
@@ -40,7 +39,6 @@ module.exports = {
 
             plugins.push(
                 Plugins[Plugins.CONST.webpackManifestPlugin]({
-                    //fileName: (isLocal ? "" : `${serverPath}/` ) + "ssr-manifest.json"
                     fileName: "ssr-manifest.json"
                 })
             );

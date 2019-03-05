@@ -5,9 +5,10 @@ module.exports = {
         const hash = Helper.getHashTag(processArgv.env === Const.ENVS.LOCAL);
         let entry = {};
         let plugins = [];
+        const distConfig = itemConfig.dist[processArgv.env];
         let output = {
-            path: itemConfig.absolutePath.distStaticPath,
-            publicPath: `/`,
+            path: distConfig.path,
+            publicPath: distConfig.publicPath,
             filename: `${itemConfig.relativePath.scripts}/[name]_[${hash}:8].js`
         };
         let module = {

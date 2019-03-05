@@ -62,8 +62,8 @@ class PreConfigFactory {
         const ProjectConfig = require(path.resolve(Const.CONFIGS_PATH, "./project.config.json"));
         const BaseFun = require("../base/configs/index");
         let config = callback  && callback(this.getContext()) || null;
-        config = extend(true, {},  ProjectConfig[this.processArgv.itemName], config);
-        this.itemConfig = extend({}, BaseFun(this.processArgv.itemName, config));
+        let itemName = this.processArgv.itemName;
+        this.itemConfig = extend({}, BaseFun(itemName, config), ProjectConfig[itemName]);
     }
     getContext(){
         return {

@@ -23,15 +23,21 @@ module.exports = {
                 filename: `${itemConfig.relativePath.styles}/[name]_[${Helper.getHashTag(processArgv.env === Const.ENVS.LOCAL)}].css`,
             } ),
             Plugins[Plugins.CONST.webpackManifestPlugin](),
-            Plugins[Plugins.CONST.htmlIncludeAssets]({
-                assets: [ ...itemConfig.dll.assets.css,  ...itemConfig.buildAssets.css],
-                append: false,
-            }),
-            Plugins[Plugins.CONST.htmlIncludeAssets]({
-                assets: [ ...itemConfig.dll.assets.js,  ...itemConfig.buildAssets.js],
-                append: false,
-            })
         );
+        //加载公共资源
+        [...itemConfig.dll.assets.css, ...itemConfig.buildAssets.css, ...itemConfig.dll.assets.js,  ...itemConfig.buildAssets.js].forEach(val => {
+            let option = {
+                assets: [val],
+                append: false,
+            };
+            if (/\/\//.test(val)){
+                option.publicPath = "";
+            }
+            plugins.push(
+                Plugins[Plugins.CONST.htmlIncludeAssets](option)
+            )
+        });
+
         let copyLibraries = `${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.scriptLibraries}`;
         if (require("fs").existsSync(copyLibraries)){
             plugins.push(

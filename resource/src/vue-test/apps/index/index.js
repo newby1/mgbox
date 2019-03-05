@@ -8,3 +8,9 @@ new Vue({
     render: h => h(App)
 });
 
+import Api from "$appsPath/common/services/api.js";
+const Svc = new Api("");
+Svc.get("/a").then(data => console.log(data), e => {
+    console.log(e);
+});
+

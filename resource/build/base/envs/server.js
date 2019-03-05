@@ -4,22 +4,16 @@ module.exports = {
         let entry = {};
         let plugins = [];
 
-        let extractCssPublicPath = `/${itemConfig.itemName}/`;
+        let distConfig = itemConfig.dist[processArgv.env];
+        let publicPath = distConfig.publicPath;
         if (processArgv.cdn){
-            extractCssPublicPath = `${itemConfig.cdn.host}${extractCssPublicPath}`;
+            publicPath = `${itemConfig.cdn.host}${publicPath}`;
         }
-        let outputPublicPath = extractCssPublicPath;
-        let htmlFileNamePath = `${itemConfig.absolutePath.distItemPath}/`;
-
         rigger
             .output({
-                publicPath: outputPublicPath
-            })
-            .helper({
-                extractCssPublicPath,
-                outputPublicPath,
-                htmlFileNamePath
+                publicPath
             });
+
         return rigger.done();
     }
 };

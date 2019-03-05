@@ -2,21 +2,19 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const path = require("path");
 module.exports = {
-    run({rigger, itemConfig, processArgv, Loaders}) {
+    run({rigger, itemConfig, processArgv, Loaders, Helper}) {
         Helper.log(processArgv.debug, `env: client`);
         let entry = {};
         let plugins = [];
+        let distConfig = itemConfig.dist[processArgv.env];
 
-        let extractCssPublicPath = "../";
-        let outputPublicPath = `../static/${itemConfig.itemName}/`;
-        let htmlFileNamePath = `${itemConfig.absolutePath.distItemPath}/`;
         let module = {
             [Loaders.CONST[itemConfig.cssProcessor]]: {
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: extractCssPublicPath
+                            publicPath: distConfig.staticPublicPath
                         }
                     }
                 ]
@@ -24,15 +22,8 @@ module.exports = {
         };
 
         rigger
-            .output({
-                publicPath: outputPublicPath
-            })
-            .module(module)
-            .helper({
-                extractCssPublicPath,
-                outputPublicPath,
-                htmlFileNamePath
-            });
+            .module(module);
+
         return rigger.done();
     }
 };

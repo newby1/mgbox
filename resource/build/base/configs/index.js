@@ -6,8 +6,10 @@ module.exports = function (itemName, option) {
     const itemManifestPath = `${Const.MANIFEST_PATH}/${itemName}`;
 
     const distPath = Const.DIST_PATH;
-    const distItemPath = `${distPath}/template/${itemName}`;
-    const distStaticPath = `${distPath}/static/${itemName}`;
+    const distTemplateBasePath = `template/${itemName}`;
+    const distStaticBasePath = `static/${itemName}`;
+    const distTemplatePath = `${distPath}/${distTemplateBasePath}`;
+    const distStaticPath = `${distPath}/${distStaticBasePath}`;
 
     const srcPath = Const.SRC_PATH;
     const appsPath = `${srcPath}/${itemName}/apps`;
@@ -30,11 +32,34 @@ module.exports = function (itemName, option) {
         absolutePath: {
             appsPath,
             staticPath,
-            distItemPath,
-            distStaticPath,
             configPath
         },
+        dist: {
+            ssr:{
+                path: `../../${distTemplateBasePath}`
+            },
+            client: {
+                path: `${distPath}/${itemName}`,
+                publicPath: `../`,
+                staticPublicPath: "../",
+                htmlDir: `./`
+            },
+            local: {
+                path: `${distPath}/${itemName}`,
+                publicPath: `/`,
+                staticPublicPath: "/",
+                htmlDir: `./`
+            },
+            server: {
+                path: distStaticPath,
+                publicPath: `/${itemName}/`,
+                htmlDir: distTemplatePath
+            }
+
+        },
         relativePath: {
+            distTemplateBasePath,
+            distStaticBasePath,
             scripts: `scripts`,
             scriptLibraries: `scripts/libraries`,
             styles: `styles`,

@@ -7,7 +7,7 @@ module.exports = {
         Helper.log(processArgv.debug, "mode: produciton");
         let entry = {};
         let plugins = [];
-
+        let distConfig = itemConfig.dist[processArgv.env];
         Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
@@ -15,7 +15,7 @@ module.exports = {
                     Plugins[Plugins.CONST.htmlWebpackPlugin]({
                         chunks: [name],
                         template: path.resolve(val, "index.html"),
-                        filename:  `${itemConfig.absolutePath.distItemPath}/${name}.html`,
+                        filename:  `${distConfig.htmlDir}/${name}.html`,
                         inject: true,
                         minify: {
                             collapseWhitespace: true,

@@ -39,7 +39,7 @@ module.exports = {
                     }),
                     Plugins[Plugins.CONST.extractCss]( {
                         filename: `${itemConfig.relativePath.styles}/[name].css`,
-                        publicPath: preWebpackConfig.helper.extractCssPublicPath
+                        publicPath: preWebpackConfig.output.publicPath
                     }),
                     Plugins[Plugins.CONST.webpackManifestPlugin]({
                         fileName: "dll-manifest.json"

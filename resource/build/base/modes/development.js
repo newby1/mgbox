@@ -4,7 +4,6 @@ const fs = require("fs");
 module.exports = {
     run({rigger, itemConfig, processArgv, Helper, Loaders, Plugins, Const}) {
         Helper.log(processArgv.debug, "mode: development");
-        let preWebpackConfig = rigger.getConfig();
         let entry = {};
         let plugins = [];
         let module = {
@@ -39,6 +38,7 @@ module.exports = {
             });
         }
 
+        let distConfig = itemConfig.dist[processArgv.env];
         Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
@@ -46,7 +46,8 @@ module.exports = {
                     Plugins[Plugins.CONST.htmlWebpackPlugin]({
                         chunks: ["bizVendor", name],
                         template: path.resolve(val, "index.html"),
-                        filename:  `${preWebpackConfig.helper.htmlFileNamePath}${name}.html`,
+
+                        filename:  `${distConfig.htmlDir}/${name}.html`,
                         inject: true
                     })
                 );

@@ -1,32 +1,15 @@
 module.exports = {
     run({rigger, itemConfig, processArgv, Plugins, Const, Helper, preWebpackConfig}) {
         Helper.log(processArgv.debug, `env: local`);
+        let distConfig = itemConfig.dist[processArgv.env];
         if (processArgv.render === Const.RENDERS.SERVER){
-            let extractCssPublicPath = "/";
-            let htmlFileNamePath = "";
-            let outputPublicPath = extractCssPublicPath;
-
-            rigger
-                .output({
-                    publicPath: outputPublicPath
-                })
-                .helper({
-                    extractCssPublicPath,
-                    outputPublicPath,
-                    htmlFileNamePath
-                });
             return rigger.done();
         }
         let entry = {};
         let plugins = [];
 
-        let extractCssPublicPath = "/";
-        let htmlFileNamePath = "";
-        let outputPublicPath = extractCssPublicPath;
-
         let ip = Helper.getIPAdress();
         for(let key in preWebpackConfig.entry){
-            //preWebpackConfig.entry[key].splice(0, 0, "webpack/hot/dev-server", `webpack-dev-server/client?http://${ip}:${itemConfig.devServer.port}/`)
             preWebpackConfig.entry[key].unshift(`webpack-dev-server/client?http://${ip}:${itemConfig.devServer.port}/`)
         }
 
@@ -35,7 +18,7 @@ module.exports = {
             Plugins[Plugins.CONST.hotReplace](),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
                 assets: ["webpack-dev-server.js"],
-                publicPath: outputPublicPath,
+                publicPath: distConfig.publicPath,
                 append: false,
             }),
             //Plugins[Plugins.CONST.liveReloadPlugin](),
@@ -47,14 +30,6 @@ module.exports = {
         );
 
         rigger.entry(entry)
-            .output({
-                publicPath: outputPublicPath
-            })
-            .helper({
-                extractCssPublicPath,
-                outputPublicPath,
-                htmlFileNamePath
-            })
             .plugins(plugins);
 
         return rigger.done();

@@ -77,7 +77,8 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.3.0",
-    "@types/node": "^11.9.3",
+    "@types/node": "^11.10.4",
+    "element-ui": "^2.6.1",
     "velocity": "^0.7.2",
     "vue-property-decorator": "^7.3.0",
     "vuex-class": "^0.3.1",
