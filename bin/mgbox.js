@@ -70,6 +70,8 @@ commander
                     processArgv.apps = [];
                 }
                 new Compile(option);
+            }else{
+                console.log(`item "${val}" is not exist!`) ;
             }
         });
     });

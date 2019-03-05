@@ -5,7 +5,7 @@
 + 多框架（vue/react/jquery）  
 + ssr（vue/react）*1 
 + typescript（vue/react/jquery）
-+ 模板引擎（ejs/pug/handerbars）*2
++ 模板引擎（velocity/ejs/pug/handerbars）*2
 + 多种编译模式（本地/hybird/server）
 + 多项目同时编译
 + devserver
