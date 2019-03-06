@@ -6,10 +6,14 @@ module.exports = function (itemName, option) {
     const itemManifestPath = `${Const.MANIFEST_PATH}/${itemName}`;
 
     const distPath = Const.DIST_PATH;
+    //server
     const distTemplateBasePath = `template/${itemName}`;
-    const distStaticBasePath = `static/${itemName}`;
     const distTemplatePath = `${distPath}/${distTemplateBasePath}`;
-    const distStaticPath = `${distPath}/${distStaticBasePath}`;
+    const distStaticPath = `${distPath}/static/${itemName}`;
+
+
+    //local client
+    const distLocalPath = `${distPath}/${itemName}`;
 
     const srcPath = Const.SRC_PATH;
     const appsPath = `${srcPath}/${itemName}/apps`;
@@ -39,16 +43,16 @@ module.exports = function (itemName, option) {
                 path: `../../${distTemplateBasePath}`
             },
             client: {
-                path: `${distPath}/${itemName}`,
+                path: distLocalPath,
                 publicPath: `../`,
                 staticPublicPath: "../",
                 htmlDir: `./`
             },
             local: {
-                path: `${distPath}/${itemName}`,
+                path: distLocalPath,
                 publicPath: `/`,
                 staticPublicPath: "/",
-                htmlDir: `./`
+                htmlDir: "./"
             },
             server: {
                 path: distStaticPath,
@@ -58,8 +62,6 @@ module.exports = function (itemName, option) {
 
         },
         relativePath: {
-            distTemplateBasePath,
-            distStaticBasePath,
             scripts: `scripts`,
             scriptLibraries: `scripts/libraries`,
             styles: `styles`,
@@ -91,7 +93,7 @@ module.exports = function (itemName, option) {
                 headers: {
                     'Access-Control-Allow-Origin': '*'
                 },
-                contentBase: distStaticPath
+                contentBase: distLocalPath
             },
         },
     };

@@ -25,6 +25,7 @@ module.exports = {
             Plugins[Plugins.CONST.webpackManifestPlugin](),
         );
         //加载公共资源
+
         [...itemConfig.dll.assets.css, ...itemConfig.buildAssets.css, ...itemConfig.dll.assets.js,  ...itemConfig.buildAssets.js].forEach(val => {
             let option = {
                 assets: [val],
@@ -33,9 +34,7 @@ module.exports = {
             if (/\/\//.test(val)){
                 option.publicPath = "";
             }
-            plugins.push(
-                Plugins[Plugins.CONST.htmlIncludeAssets](option)
-            )
+            plugins.unshift( Plugins[Plugins.CONST.htmlIncludeAssets](option) );
         });
 
         let copyLibraries = `${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.scriptLibraries}`;
