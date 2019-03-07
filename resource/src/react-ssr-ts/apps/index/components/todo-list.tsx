@@ -1,5 +1,5 @@
 import * as React from "react"
-import Todo from './Todo'
+import Todo from './todo'
 import {TodoItem} from "../reducers/todos";
 
 const TodoList = ({ todos, toggleTodo }:{ todos:any, toggleTodo:any }) => (
