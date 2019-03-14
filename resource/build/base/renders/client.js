@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require('fs');
 
 module.exports = {
     run({rigger, itemConfig, processArgv, Loaders, Plugins, Helper, Const}) {
@@ -10,10 +11,15 @@ module.exports = {
         Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
             .forEach((val) => {
                 let name = path.basename(val);
+                let fileCss = `index.${itemConfig.entryCssExt}`;
+                let defaultEntryCss = path.resolve(val, fileCss);
+                if (!fs.existsSync(defaultEntryCss)){
+                    defaultEntryCss = path.resolve(`${itemConfig.absolutePath.staticPath}/${itemConfig.relativePath.styles}/${name}`, fileCss);
+                }
                 entry[name] = [
                     "babel-polyfill",
                     path.resolve(val, entryFile),
-                    path.resolve(val, `index.${itemConfig.entryCssExt}`)
+                    defaultEntryCss
                 ];
 
             });

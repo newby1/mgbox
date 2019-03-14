@@ -40,7 +40,7 @@ mgbox add
 +mocks  
   index.js //业务mocks数据入口
   local.js //业务mocks数据，建议不如git库
-  tpldata.js //模板引擎mock数据
+  index.js //模板引擎mock数据
 +src  
   +common//多item共用的组件服务
   +item2
@@ -52,11 +52,14 @@ mgbox add
         +services
         index.html //入口文件。必须。可以做模板
         index.js //入口js。后缀为js|ts|tsx|jsx
-        index.less //入口css。后缀为less|scss|styl
-        server.js //ssr入口js。后缀index.js
+        index.less //入口css。后缀为less|scss|styl。也可以放到static/styles/app1/index.less。
+        server.js //ssr入口js。后缀index.js。ssr项目需要
     +static
       +images
       +fonts
+      +styles
+        +index
+          index.less 
     ...
 ```   
 ### 工程使用说明
@@ -82,8 +85,60 @@ npm run dev
 使用示例  
 ```
 mgbox run -i app -a app1,app2 -D -M -O
+or
 npm run dev -- -i app -a index -D -M 
 ```
 ### 其他
 1. app访问地址为 http://localhost:xxxxx/app.html
 2. 启用ssr时，访问地址为http://localhost:xxxxx/app
+3. 公共模板支持
+``` 
+...
+  +apps
+    +commmons
+      +tpls
+        tpl2.html
+        tpl.html 
+    +app
+      tpl.html //使用公共模板tpl.html
+    +app2
+      tpl2.html //使用公共模板tpl2.html
+    +app3
+      index.html //默认入口
+```
+commons/tpls/tpl.html
+```
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <!--common-tpl-outlet-->
+    //模板替换标志
+</body>
+</html>
+```
+app2/tpl.html
+```
+<div> app2 </div>
+
+```
+最终输出
+```
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <div> app2 </div>
+</body>
+</html>
+
+```
+

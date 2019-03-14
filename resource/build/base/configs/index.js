@@ -17,7 +17,8 @@ module.exports = function (itemName, option) {
 
     const srcPath = Const.SRC_PATH;
     const appsPath = `${srcPath}/${itemName}/apps`;
-    const staticPath = `${srcPath}/${itemName}/static/`;
+    const staticPath = `${srcPath}/${itemName}/static`;
+    const commonTplPath = `${appsPath}/common/tpls`;
     const configPath = `${Const.PLUGINS_CONFIG_PATH}/${itemName}`;
     let base = {
         itemName,
@@ -34,6 +35,7 @@ module.exports = function (itemName, option) {
             exts: ["js", "css", "swf", "jpg", "jpeg", "png", "gif", "ico"]
         },
         absolutePath: {
+            commonTplPath,
             appsPath,
             staticPath,
             configPath
@@ -46,13 +48,13 @@ module.exports = function (itemName, option) {
                 path: distLocalPath,
                 publicPath: `../`,
                 staticPublicPath: "../",
-                htmlDir: `./`
+                htmlDir: `.`
             },
             local: {
                 path: distLocalPath,
                 publicPath: `/`,
                 staticPublicPath: "/",
-                htmlDir: "./"
+                htmlDir: "."
             },
             server: {
                 path: distStaticPath,

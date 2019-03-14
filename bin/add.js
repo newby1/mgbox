@@ -17,7 +17,7 @@ const resolvePrj = (file) => {
 };
 
 const resolveNpm = (file) => {
-    return path.resolve(__dirname, `../${file}`);
+    return path.resolve(__dirname, `../resource/${file}`);
 
 };
 const shouldUserYarn = () => {
@@ -56,11 +56,10 @@ const add = {
         });
         //复制mocks .babelrc .gitignore
         shell.cp("-r" ,
-            resolveNpm(`resource/build`),
-            resolveNpm(`resource/mocks`),
-            resolveNpm(`resource/.babelrc`),
-            resolveNpm(`resource/.gitignore.tpl`),
-            resolveNpm(`resource/package.tpl.json`),
+            resolveNpm(`build`),
+            resolveNpm(`.babelrc`),
+            resolveNpm(`.gitignore.tpl`),
+            resolveNpm(`package.tpl.json`),
             resolvePrj(`./`));
         shell.mv(
             resolvePrj(`.gitignore.tpl`),
@@ -110,15 +109,6 @@ const add = {
                 choices: ["vue", "react", "jquery"]
             },
             {
-                type: "confirm",
-                name: "isSsrItem",
-                message: "是否支持ssr",
-                default: false,
-                when: function (answers) {
-                    return answers.frame !== "jquery";
-                }
-            },
-            {
                 type: "list",
                 name: "cssProcessor",
                 message: "选择css预处理器",
@@ -130,6 +120,15 @@ const add = {
                 name: "ts",
                 message: "是否启用typescript",
                 default: false
+            },
+            {
+                type: "confirm",
+                name: "isSsrItem",
+                message: "是否支持ssr",
+                default: false,
+                when: function (answers) {
+                    return answers.frame !== "jquery";
+                }
             },
             {
                 type: "list",
@@ -152,6 +151,7 @@ const add = {
                         (answers.frame === "react" && jsExt.tsx  || jsExt.ts)
                         :
                         jsExt.js;
+                fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
                 this.copy();
                 this.createPackage();
             })
@@ -195,7 +195,6 @@ const add = {
         );
     },
     run(){
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
         shell.exec(`npm run dev -- -O -i ${itemName}`);
     },
     copy(){
@@ -219,7 +218,7 @@ const add = {
             `configs/items/{item}${itemConfig.isSsrItem ? "" : ".js" }`
         ].forEach(val => {
             shell.cp("-r",
-                resolveNpm(`resource/${tpl(val, item)}`),
+                resolveNpm(`${tpl(val, item)}`),
                 resolvePrj(val.replace(/\{.+$/, ""))
             );
             if (item != itemName){
@@ -228,6 +227,26 @@ const add = {
                     resolvePrj(tpl(val, itemName)));
             }
         });
+        shell.cp("-r",
+            resolveNpm(`mocks/appname`),
+            resolvePrj(`mocks/`)
+        );
+        shell.mv(
+            resolvePrj(`mocks/appname`),
+            resolvePrj(`mocks/${itemName}`)
+        );
+        if (itemConfig.tplEngine !== "none"){
+            shell.cp("-r",
+                resolveNpm(`mocks/appname-tpl`),
+                resolvePrj(`mocks/`)
+            );
+            shell.mv(
+                resolvePrj(`mocks/appname-tpl`),
+                resolvePrj(`mocks/${itemName}-tpl`)
+            );
+
+        }
+
         glob(resolvePrj(`src/${itemName}`) + "/**/*.less", function (err, files) {
             files.forEach(file => {
                 shell.mv(file, file.replace(".less", `.${itemConfig.entryCssExt}`));

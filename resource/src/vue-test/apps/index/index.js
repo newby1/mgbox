@@ -10,7 +10,9 @@ new Vue({
 
 import Api from "$appsPath/common/services/api.js";
 const Svc = new Api("");
-Svc.get("/a").then(data => console.log(data), e => {
-    console.log(e);
-});
+Svc.get("/a").then(
+    data => console.log(data),
+    e => {
+        console.log(e);
+    });
 

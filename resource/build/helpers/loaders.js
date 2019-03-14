@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const extend = require("extend");
+const LoaderManage = require("./loaderManage");
 let LOADERS = {
     less: "less",
     sass: "sass",
@@ -110,15 +111,23 @@ let loaderBase = {
     },
     [LOADERS.html]: {
         test: /\.html$/,
-        use: {
-            loader: "html-loader",
-            options: {
-                attrs: ["img:src", "link:href"],
-                interpolate: "require",
-            }
-        }
-    },
+        use: [
+            {
+                loader: "html-loader",
+                options: {
+                    attrs: ["img:src", "link:href"],
+                    interpolate: "require",
+                }
 
+            },
+            {
+                loader: "common-tpl-loader",
+                options: {
+                    tpls: []
+                }
+            },
+        ]
+    }
 };
 let loader = {
     CONST: LOADERS,
@@ -137,7 +146,12 @@ let loader = {
 for(let key in loaderBase){
     loader[key] = (function (name) {
         return function (option) {
-            return extend(true, {}, loaderBase[name], option);
+            return new LoaderManage({
+                [name]: loaderBase[name]
+            }).batch({
+                [name]: option
+            }).getRules()[name];
+            //return extend(true, {}, loaderBase[name], option);
         }
     })(key);
 }

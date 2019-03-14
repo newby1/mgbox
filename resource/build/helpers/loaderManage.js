@@ -27,7 +27,6 @@ class LoaderManage {
             use.push(rule.use);
             res.use = use;
         }
-
         res.use = res.use.map(loader => {
             let newLoader = loader;
             if (typeof loader === "string" ){
@@ -48,8 +47,11 @@ class LoaderManage {
     }
     batch(rules){
         for(let key in rules){
-            this.add(key, rules[key]);
+            if (rules[key]){
+                this.add(key, rules[key]);
+            }
         }
+        return this;
     }
     update(name, rule){
         let preRule = this.rules[name];

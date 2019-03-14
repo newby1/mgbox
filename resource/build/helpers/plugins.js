@@ -117,7 +117,7 @@ let plugins = {
         return new webpack.HotModuleReplacementPlugin();
     },
     [PLUGIN.cdn]: (option) => {
-        const CdnPlugin = require("../plugins/cdn-plugin");
+        const CdnPlugin = require("../patch/cdn-plugin");
         return new CdnPlugin(option);
     }
 };

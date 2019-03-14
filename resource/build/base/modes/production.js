@@ -7,27 +7,6 @@ module.exports = {
         Helper.log(processArgv.debug, "mode: produciton");
         let entry = {};
         let plugins = [];
-        let distConfig = itemConfig.dist[processArgv.env];
-        Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
-            .forEach((val) => {
-                let name = path.basename(val);
-                plugins.push(
-                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
-                        chunks: [name],
-                        template: path.resolve(val, "index.html"),
-                        filename:  `${distConfig.htmlDir}/${name}.html`,
-                        inject: true,
-                        minify: {
-                            collapseWhitespace: true,
-                            removeComments: true,
-                            removeRedundantAttributes: true,
-                            //removeScriptTypeAttributes: true,
-                            removeStyleLinkTypeAttributes: true,
-                            useShortDoctype: true
-                        }
-                    })
-                );
-            });
 
         if (processArgv.cdn && itemConfig.cdn.handleUrlCallback){
             plugins.push(

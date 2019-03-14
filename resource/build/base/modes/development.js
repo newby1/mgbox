@@ -38,20 +38,6 @@ module.exports = {
             });
         }
 
-        let distConfig = itemConfig.dist[processArgv.env];
-        Helper.getApps(itemConfig.absolutePath.appsPath, processArgv.apps)
-            .forEach((val) => {
-                let name = path.basename(val);
-                plugins.push(
-                    Plugins[Plugins.CONST.htmlWebpackPlugin]({
-                        chunks: ["bizVendor", name],
-                        template: path.resolve(val, "index.html"),
-
-                        filename:  `${distConfig.htmlDir}/${name}.html`,
-                        inject: true
-                    })
-                );
-            });
 
         rigger
             .module(module)

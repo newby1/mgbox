@@ -24,25 +24,29 @@ class Compile {
     outputConfig(preWebpackConfig){
         return require("./output").run(preWebpackConfig);
     }
-    main(){
+    delDist(){
+        let processArgv = this.processArgv;
 
-        if (this.processArgv.mode === Const.MODES.PRODUCTION){
+        if (processArgv.mode === Const.MODES.PRODUCTION){
             console.log("delete dist & manifest dir");
             try {
-                require("del").sync([Const.MANIFEST_PATH, Const.DIST_PATH]);
+                require("del").sync([path.resolve(Const.MANIFEST_PATH, `${processArgv.itemName}`), path.resolve(Const.DIST_PATH, `${processArgv.itemName}`)]);
             } catch(e) {
             }
         }
+    }
+    main(){
         console.log(this.processArgv);
+        this.delDist();
         this.getClientPreWebpackConfig()
             .then(context => {
                 context.webpackConfig = this.outputConfig(context.preWebpackConfig);
                 this.clientContext = context;
-                // console.log("=========");
-                // context.webpackConfig.module.rules.map(val => {
-                //     console.log(val.test);
-                //     console.log(val.use);
-                // });
+                Helper.log(this.processArgv.debug, context.webpackConfig);
+                    // context.webpackConfig.module.rules.map(val => {
+                    //     console.log(val.test);
+                    //     console.log(val.use);
+                    // });
                 return this.getServerPreWebpackConfig()
             })
             .then((context) =>{
@@ -107,6 +111,10 @@ class Compile {
         return template;
 
     }
+    mockTpl(template){
+        const data = require(path.resolve(Const.MOCKS_PATH, `${this.processArgv.itemName}-tpl/mock.js`));
+        return this.tplRender(template, data);
+    }
     serverRender(){
         const clentConfig = this.clientContext.webpackConfig;
         const serverConfig = this.serverContext.webpackConfig;
@@ -130,8 +138,7 @@ class Compile {
                 const serverJs = this.readFile(fileSystem, outputPath, `${filename}`).toString();
                 let template =  this.readFile(fileSystem, outputPath, `${name}.html`).toString();
                 if (itemConfig.tplEngine !== "none"){
-                    const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
-                    template = this.tplRender(template, data);
+                    template = this.mockTpl(template);
                 }
                 const serverApp = require("require-from-string")(serverJs).default;
                 serverApp({
@@ -164,8 +171,7 @@ class Compile {
                     const fileSystem = ins.middleware.fileSystem;
                     const outputPath = config.output.path;
                     let template = this.readFile(fileSystem, outputPath, `${filename}`).toString();
-                    const data = require(path.resolve(Const.MOCKS_PATH, "tpldata.js"));
-                    template = this.tplRender(template, data);
+                    template = this.mockTpl(template);
                     return res.send(template);
                 }
                 next();
@@ -181,7 +187,8 @@ class Compile {
     run({ config, devServer, middleware = null}){
         const timer = Helper.time();
         timer.start();
-        const mock = this.processArgv.mock;
+        const processArgv = this.processArgv;
+        const mock = processArgv.mock;
         let compiler = webpack(config);
         if (this.processArgv.env === Const.ENVS.LOCAL && this.processArgv.devserver){
             let firstExec = true;
@@ -192,7 +199,7 @@ class Compile {
                 {
                     before(app, ins){
                         if (mock){
-                            const mocksPath = path.resolve(Const.MOCKS_PATH , "./index.js");
+                            const mocksPath = path.resolve(Const.MOCKS_PATH , `${processArgv.itemName}/mock.js`);
                             require("mocker-api")(app, mocksPath);
                         }
                         middleware && middleware(app, ins);

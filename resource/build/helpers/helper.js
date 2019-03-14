@@ -52,17 +52,29 @@ module.exports = {
     getHashTag(isDev){
         return isDev ? "hash" : "contenthash";
     },
-    getCdnUrl(url, cdnHost, exts) {
-        return cdnHost + (url.indexOf("/") == 0 ?  "" : "/")  + url;
-    },
     getSSRApps(dir, filterApps){
         return this.getApps(dir, filterApps, true);
-
+    },
+    getHtmlFile(dir){
+        let arr = [];
+        if (!fs.existsSync(dir)){
+            return arr;
+        }
+        let res = fs.readdirSync(dir);
+        res.forEach(val => {
+            if (/\.html$/.test(val)){
+                let info = fs.statSync(dir + `/${val}`);
+                if (info.isFile()){
+                    arr.push(val);
+                }
+            }
+        });
+        return arr;
     },
     getApps(dir, filterApps = [], isSSR = false){
         let dirs = [];
         let max = 2;
-        let target = isSSR ? "server." : "index.html";
+        let target = isSSR ? "server." : ".html";
         function readDirSync(curPath, deep = 0) {
             if (deep >= max) {
                 return;
@@ -73,16 +85,17 @@ module.exports = {
                 if (info.isDirectory()) {
                     readDirSync(curPath + "/" + ele, deep + 1);
                 } else {
-                    if (ele.indexOf(target) === 0 ) {
+                    if (ele.indexOf(target) !== -1 ) {
                         dirs.push(path.resolve(__dirname, curPath));
                     }
                 }
             })
         }
         readDirSync(dir);
-        return dirs.filter(function (val) {
+        dirs =  dirs.filter(function (val) {
             let name = path.basename(val);
             return filterApps.length ? ( filterApps.includes(name) ? true : false ) : true;
-        })
+        });
+        return dirs;
     }
 };
