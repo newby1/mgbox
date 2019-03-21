@@ -13,6 +13,7 @@
 + mock数据（本地/server/模板数据）
 + 多css预处理器（less/sass/stylus）
 + eslint
++ 公共模板支持
 + es6+/dllplugin/happypack/liveReload
 + cdn(需额外发布支持)*3
 > 1.ssr仅支持到本地开发，没有提供完整的server方案。  

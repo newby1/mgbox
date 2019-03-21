@@ -1,3 +1,4 @@
+const path = require("path");
 const fs = require("fs");
 
 const webpack = require("webpack");
@@ -5,9 +6,15 @@ const webpack = require("webpack");
 const Tool = require("../../rigger/tool");
 const extend = require('extend');
 
+const dllManifest = "dll-manifest.json";
 module.exports = {
     run(option = {}, {rigger,Loaders, itemConfig, processArgv, preWebpackConfig, Helper, Const, Plugins}){
         Helper.log(processArgv.debug, `dll`);
+        let output = option.output || Object.assign({}, preWebpackConfig.output, {
+            filename: `${itemConfig.relativePath.scriptLibraries}/[name]_[contenthash:8].js`,
+            library: "[name]",
+            libraryTarget: "umd"
+        });
         return new Promise((resolve, reject) => {
             try{
                 let stats = fs.statSync(itemConfig.dll.manifestPath);
@@ -20,11 +27,7 @@ module.exports = {
             }
             let config = new Tool()
                 .entry(option.entry || itemConfig.dll.entry)
-                .output(option.output || Object.assign({}, preWebpackConfig.output, {
-                    filename: `${itemConfig.relativePath.scriptLibraries}/[name].js`,
-                    library: "[name]",
-                    libraryTarget: "umd"
-                }))
+                .output(output)
                 .module(option.module || [
                     //preWebpackConfig.module[itemConfig.frame === Const.FRAMES.REACT ? Loaders.CONST.jsx : Loaders.CONST.js],
                     Loaders[Loaders.CONST.js](),
@@ -38,11 +41,11 @@ module.exports = {
                         name: "[name]"
                     }),
                     Plugins[Plugins.CONST.extractCss]( {
-                        filename: `${itemConfig.relativePath.styles}/[name].css`,
+                        filename: `${itemConfig.relativePath.styles}/[name]_[contenthash:8].css`,
                         publicPath: preWebpackConfig.output.publicPath
                     }),
                     Plugins[Plugins.CONST.webpackManifestPlugin]({
-                        fileName: "dll-manifest.json"
+                        fileName: dllManifest
                     })
                 ])
                 .append(extend(true, {
@@ -65,6 +68,28 @@ module.exports = {
                         manifest: require(`${itemConfig.dll.manifestPath}/${val}.json`),
                     })
                 });
+                let manifest = require(path.join(output.path, dllManifest));
+                let insertPlugin = function (filePath) {
+                    plugins.unshift( Plugins[Plugins.CONST.htmlIncludeAssets]({
+                        assets: [filePath],
+                        append: false,
+                        publicPath: ""
+                    }) );
+
+                };
+                if (manifest){
+                    Object.keys(itemConfig.dll.entry).forEach((key) => {
+                        let filePath = manifest[`${key}.js`];
+                        if (filePath){
+                            insertPlugin(filePath);
+                        }
+                        filePath =  manifest[`${key}.css`];
+                        if (filePath){
+                            insertPlugin(filePath);
+                        }
+                    })
+                }
+
                 preWebpackConfig = rigger
                     .plugins(plugins)
                     .done();

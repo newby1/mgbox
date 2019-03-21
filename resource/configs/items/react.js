@@ -1,13 +1,14 @@
 module.exports = {
     config({Const}) {
         return {
-            frame: Const.FRAMES.REACT,
             devServer: {
                 port: 13004
             },
+            buildAssets: {
+                js: [],
+                css: []
+            },
             dll: {
-                assets: {
-                },
                 entry: {
                     "vendor": ["babel-polyfill", "url-polyfill"],
                     "reactVendor": [ "react", "react-dom","react-redux"]

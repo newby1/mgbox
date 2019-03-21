@@ -2,14 +2,14 @@ const path = require("path");
 module.exports = {
     config() {
         return {
-
             devServer: {
                 port: 13001
             },
+            buildAssets: {
+                js: [],
+                css: []
+            },
             dll: {
-                assets: {
-                    //css: [`styles/elementUI.css`]
-                },
                 entry: {
                     "vendor": ["babel-polyfill", "url-polyfill"],
                     "vueVendor": [ "vue/dist/vue.esm.js", "vue-router", "vuex"],

@@ -32,7 +32,7 @@ module.exports = {
         );
         //加载公共资源
 
-        [...itemConfig.dll.assets.css, ...itemConfig.buildAssets.css, ...itemConfig.dll.assets.js,  ...itemConfig.buildAssets.js].forEach(val => {
+        [...itemConfig.buildAssets.css, ...itemConfig.buildAssets.js].forEach(val => {
             let option = {
                 assets: [val],
                 append: false,

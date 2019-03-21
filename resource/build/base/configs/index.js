@@ -76,10 +76,6 @@ module.exports = function (itemName, option) {
         },
         dll: {
             manifestPath: itemManifestPath,
-            assets:{
-                js: [],
-                css: []
-            },
             entry: null,
         },
         devServer: {
@@ -129,11 +125,6 @@ module.exports = function (itemName, option) {
                 return target;
             })
         }
-    }
-    if (base.dll.entry){
-        Object.keys(base.dll.entry).forEach((key) => {
-            base.dll.assets.js.push(`${base.relativePath.scriptLibraries}/${key}.js`)
-        })
     }
     return base;
 };

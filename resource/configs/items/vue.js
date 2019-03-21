@@ -6,10 +6,11 @@ module.exports = {
             devServer: {
                 port: 13000
             },
+            buildAssets: {
+                js: [],
+                css: []
+            },
             dll: {
-                assets: {
-                    //css: [`styles/elementUI.css`]
-                },
                 entry: {
                     "vendor": ["babel-polyfill", "url-polyfill"],
                     "vueVendor": [ "vue/dist/vue.esm.js", "vue-router", "vuex"],

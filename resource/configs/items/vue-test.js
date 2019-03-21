@@ -16,9 +16,6 @@ module.exports = {
                 ]
             },
             dll: {
-                assets: {
-                    css: [`styles/elementUI.css`]
-                },
                 entry: {
                     "vendor": ["babel-polyfill", "url-polyfill"],
                     "vueVendor": [ "vue/dist/vue.esm.js", "vue-router", "vuex"],

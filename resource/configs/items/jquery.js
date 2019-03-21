@@ -1,7 +1,6 @@
 module.exports = {
     config({Const}) {
         return {
-            frame: Const.FRAMES.JQUERY,
             devServer: {
                 port: 13005
             },
