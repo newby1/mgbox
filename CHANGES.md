@@ -1,3 +1,5 @@
+### 1.0.12 - 190329
+1. 新增`mgbox update`命令用于更新`build`
 ### 1.0.11 - 190329
 1. bugfix eslint 报错
 2. 修改config的configPath => pluginsConfigPath

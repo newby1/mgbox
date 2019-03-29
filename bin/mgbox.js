@@ -16,6 +16,13 @@ commander
     });
 
 commander
+    .command("update")
+    .description("更新build")
+    .action(function()  {
+        require("./update");
+    });
+
+commander
     .command("run")
     .option("-e, --env <env>", "编译环境", "local")
     .option("-m, --mode <mode>", "编译模式", "development")
