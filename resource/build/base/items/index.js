@@ -53,7 +53,7 @@ module.exports = {
                     {
                         loader: "ts-loader",
                         options: {
-                            configFile: `${itemConfig.absolutePath.configPath}/tsconfig.json`
+                            configFile: `${itemConfig.absolutePath.loadersConfigPath}/tsconfig.json`
                         }
                     }
                 ]

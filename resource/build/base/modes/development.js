@@ -19,7 +19,7 @@ module.exports = {
                         loader: "postcss-loader",
                         options: {
                             config:{
-                                path: `${itemConfig.absolutePath.configPath}`,
+                                path: `${itemConfig.absolutePath.loadersConfigPath}`,
                                 ctx: {
                                     env: processArgv.mode,
                                     processArgv,
@@ -33,9 +33,18 @@ module.exports = {
             }
         };
         if (processArgv.eslint){
-            module[Loaders.CONST.eslint] = Loaders[Loaders.CONST.eslint]({
-                eslintPath: `${itemConfig.configPath}/.eslintrc.json`
-            });
+            module[Loaders.CONST.eslint] = Loaders[Loaders.CONST.eslint](
+                {
+                    use: [
+                        {
+                            loader: "eslint-loader",
+                            options: {
+                                configFile: path.resolve(itemConfig.absolutePath.loadersConfigPath, './.eslintrc.json')
+                            }
+                        }
+                    ]
+                }
+            );
         }
 
 

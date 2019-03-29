@@ -8,6 +8,7 @@
 + 模板引擎（velocity/ejs/pug/handerbars）*2
 + 多种编译模式（本地/hybird/server）
 + 多项目同时编译
++ 项目配置隔离
 + devserver
 + 多app编译
 + mock数据（本地/server/模板数据）

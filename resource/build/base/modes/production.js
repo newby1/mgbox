@@ -61,7 +61,7 @@ module.exports = {
                         loader: "postcss-loader",
                         options: {
                             config:{
-                                path: `${itemConfig.absolutePath.configPath}`,
+                                path: `${itemConfig.absolutePath.loadersConfigPath}`,
                                 ctx: {
                                     env: processArgv.mode,
                                     processArgv,

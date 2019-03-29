@@ -1,3 +1,6 @@
+### 1.0.11 - 190329
+1. bugfix eslint 报错
+2. 修改config的configPath => pluginsConfigPath
 ### 1.0.10
 1. dllplugin加hash
 2. 修改模板内容

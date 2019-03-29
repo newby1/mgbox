@@ -15,19 +15,20 @@ class LoaderManage {
         let res = {};
         extend(true, res, rule);
         //loader是简写，转换成数组use
-        if (rule.loader){
+        if (res.loader){
             res.use = [];
             res.use.push({
-                loader: rule.loader
+                loader: res.loader
             });
+            delete res.loader;
         }
         //use是对象或者字符串，转换成数组use
-        if (Object.prototype.toString.call(rule.use) === '[object Object]' || typeof rule.use === "string"){
+        if (Object.prototype.toString.call(res.use) === '[object Object]' || typeof res.use === "string"){
             let use = [];
-            use.push(rule.use);
+            use.push(res.use);
             res.use = use;
         }
-        res.use = res.use.map(loader => {
+        res.use = res.use && res.use.map(loader => {
             let newLoader = loader;
             if (typeof loader === "string" ){
                 newLoader = {

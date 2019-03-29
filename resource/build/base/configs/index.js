@@ -19,7 +19,7 @@ module.exports = function (itemName, option) {
     const appsPath = `${srcPath}/${itemName}/apps`;
     const staticPath = `${srcPath}/${itemName}/static`;
     const commonTplPath = `${appsPath}/common/tpls`;
-    const configPath = `${Const.PLUGINS_CONFIG_PATH}/${itemName}`;
+    const loadersConfigPath = `${Const.PLUGINS_CONFIG_PATH}/${itemName}`;
     let base = {
         itemName,
         "isSsrItem": false,
@@ -38,7 +38,7 @@ module.exports = function (itemName, option) {
             commonTplPath,
             appsPath,
             staticPath,
-            configPath
+            loadersConfigPath
         },
         dist: {
             ssr:{

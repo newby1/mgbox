@@ -53,6 +53,7 @@ export class Api extends AbstractApi {
 
     fetch(url, data, option){
         let args = {
+            bodyStream: "json", //arraybuffer blob formData text json
             method: METHODS.GET,
             credentials: "same-origin"
         };
@@ -71,21 +72,13 @@ export class Api extends AbstractApi {
         return new Promise((resolve, reject) => {
             window.fetch(request).then((response) => {
                     if(response.ok){
-                        if(args.dataType && args.dataType == "html") {
-                            response.text().then(data => {
+                        console.log(response);
+                        response[args.bodyStream]().then(data => {
                                 resolve(data);
                             },
                             e => {
-                                reject(new Error("html data error"));
+                                reject(new Error(`body response stream [${args.bodyStream}] error : ${e}`));
                             });
-                            return;
-                        }
-                        response.json().then(data => {
-                            resolve(data);
-                        },
-                        e => {
-                            reject(new Error("data json error"));
-                        });
 
                     }else{
                         reject(new Error("error " + response.status));
@@ -161,6 +154,17 @@ class CacheApi extends Api {
         super(host);
         this.caches = {};
     }
+    request(method, url, data, option){
+        return  new Promise((resolve, reject) => {
+            super[method.toLowerCase()](url, data , option).then(data => {
+                resolve(data);
+            }, e => {
+                reject(e);
+            });
+
+        });
+
+    }
     memoryCache(method, url, data, option){
         let args = {
             memoryCache : false
@@ -170,8 +174,8 @@ class CacheApi extends Api {
         let res = this.caches[key];
         if (!res){
             this.caches[key] = new Promise((resolve, reject) => {
-                super[method.toLowerCase()](url, data , option).then(data => {
-                    if ( !args.memoryCache){
+                this.request(method, url, data, args).then(data => {
+                    if ( !data){
                         this.caches[key] = null;
                     }
                     resolve(data);
@@ -184,6 +188,25 @@ class CacheApi extends Api {
         return this.caches[key];
 
     }
+
+    getLocalData(key){
+        let data = null;
+        let localData = storage.get(key);
+        if (!localData){
+            return data;
+        }
+        let arr = localData.split("|");
+        let isAvailable = parseInt(arr[1]) + parseInt(arr[2]) > +new Date;
+        if (isAvailable){
+            try{
+                data = JSON.parse(arr[0]);
+            }catch (e) {
+                console.log("local cache parse data is error");
+
+            }
+        }
+        return data;
+    }
     localCache(method, url, data, option){
         let args = {
             localCache: {
@@ -192,45 +215,36 @@ class CacheApi extends Api {
         };
         extend(true, args, option);
         let key = url + JSON.stringify(data);
-        let localData = storage.get(key);
+        let localData = this.getLocalData(key);
 
         return new Promise((resolve, reject ) => {
             if (localData ){
-                let arr = localData.split("|");
-                let isAvailable = parseInt(arr[1]) + parseInt(arr[2]) > +new Date;
-                if (isAvailable){
-                    let data = null;
-                    try{
-                        data = JSON.parse(arr[0]);
-                    }catch (e) {
-                        console.log("local cache parse data is error");
-
-                    }
-                    resolve(data);
-                    return;
-                }
+                resolve(localData);
+                return;
             }
-            super[method.toLowerCase()](url, data, args).then(data => {
+            this.request(method, url, data, args)
+                .then(data => {
                     storage.set(key, data, args.localCache.cacheTime);
                     resolve(data);
-                },
-                e => {
+                })
+                .catch(e => {
                     reject(e);
-                }
-            );
+                });
         });
     }
     cache(method, url, data, option){
         let args = {
             memoryCache: false,
-            localCache: false
+            localCache: null
         };
         Object.assign(args, option);
-        if (args.localCache){
-            return this.localCache(method, url, data, option)
+        if (args.memoryCache){
+            return this.memoryCache(method, url, data, option);
         }
-        return this.memoryCache(method, url, data, option)
-
+        if (args.localCache){
+            return this.localCache(method, url, data, option);
+        }
+        return this.request(method, url, data, option);
     }
     get(url, data, option){
         return this.cache(METHODS.GET, url, data, option);

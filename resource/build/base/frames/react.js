@@ -19,7 +19,7 @@ module.exports = {
                     loaders: [ {
                         loader: "babel-loader",
                         options: {
-                            configFile: `${itemConfig.absolutePath.configPath}/.babelrc`
+                            configFile: `${itemConfig.absolutePath.loadersConfigPath}/.babelrc`
                         }
                     } ]
                 })
