@@ -33,9 +33,9 @@ mgbox add
 ## 其他说明
 ### 工程目录文件结构约定 
 ```
-+build   //编译  
++build   //核心编译目录  
 +configs 
-    +.configs //.babelrc .eslintrc postcss ts 等loader相关配置
+    +.configs //.babelrc .eslintrc postcss ts 等loader相关配置;多项目的配置是隔离的。
     +items //项目编译中的配置项，可以扩展功能
       item1.js 
       item2.js 
@@ -91,6 +91,12 @@ mgbox run -i app -a app1,app2 -D -M -O
 or
 npm run dev -- -i app -a index -D -M 
 ```
+### 项目更新
+主要是更新构建目录 `build`
+```
+mgbox update
+```
+> build 目录内的代码不建议变动。一般配置可以在相关的 configs/items/xxx.js里面配置
 ### 其他
 1. app访问地址为 http://localhost:xxxxx/app.html
 2. 启用ssr时，访问地址为http://localhost:xxxxx/app
