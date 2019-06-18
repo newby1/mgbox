@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue demo </title>
+</head>
+<body>
+
+<div id="app" >
+    {{message}}
+    <todo-item propgood="abcd" >
+
+    </todo-item>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.config.keyCodes = {
+
+    };
+    Vue.component("todo-item", {
+        template: "<li>{{good}}</li>",
+        props: ["propgood"],
+        data(){
+            return {
+                good: ""
+            }
+        },
+        beforeCreate(){
+            console.log(this.good);
+            console.log("beforeCreate");
+        },
+        created(){
+            console.log(this.good);
+            console.log("Create");
+        },
+        beforeMount(){
+            console.log(this.good);
+            console.log("beforeMount");
+        },
+        mounted(){
+            this.good = this.propgood;
+            console.log(this.good);
+            console.log("mounted");
+            setTimeout(()=> {
+                this.good = "ddd";
+
+            }, 2000)
+        },
+        beforeUpdate(){
+            console.log(this.good);
+            console.log("beforeUpdate");
+        },
+        updated(){
+            console.log(this.good);
+            console.log("updated");
+        },
+        beforeDestroy(){
+            console.log("beforeDestroy");
+        },
+        destroyed(){
+            console.log("destroyed");
+        }
+    });
+    new Vue({
+        el: "#app",
+        data: {
+            message: "good"
+        }
+    });
+</script>
+
+</body>
+</html>
