@@ -7,6 +7,14 @@ module.exports = {
         Helper.log(processArgv.debug, "mode: produciton");
         let entry = {};
         let plugins = [];
+        console.log("delete dist & manifest dir");
+        try {
+            require("del").sync([path.resolve(Const.MANIFEST_PATH, `${processArgv.itemName}`),
+                itemConfig.absolutePath.distStaticPath,
+                itemConfig.absolutePath.distTemplatePath,
+            ])
+        } catch(e) {
+        }
 
         if (processArgv.cdn && itemConfig.cdn.handleUrlCallback){
             plugins.push(

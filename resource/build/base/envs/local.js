@@ -17,7 +17,7 @@ module.exports = {
             Plugins[Plugins.CONST.namedModulesPlugin](),
             Plugins[Plugins.CONST.hotReplace](),
             Plugins[Plugins.CONST.htmlIncludeAssets]({
-                assets: ["webpack-dev-server.js"],
+                tags: ["webpack-dev-server.js"],
                 publicPath: distConfig.publicPath,
                 append: false,
             }),

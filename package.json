@@ -7,7 +7,7 @@
     "mgbox": "./bin/mgbox.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/newby1/mgbox#readme",
   "dependencies": {
-    "commander": "^2.19.0",
+    "commander": "^2.20.0",
     "extend": "^3.0.2",
     "glob": "^7.1.3",
     "inquirer": "^6.2.2",

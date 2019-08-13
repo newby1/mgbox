@@ -19,9 +19,21 @@ module.exports = {
     after({rigger, itemConfig, processArgv}) {
         let entry = {};
         let plugins = [];
+        {
+            "key": rule;
+        }
 
         return rigger
+            .entry({})
+            .output({})
+            .modules({key: rule})
             .plugins(plugins)
+            .apend({
+                alias: {
+
+                    }
+                |
+            })
             .done();
 
     }

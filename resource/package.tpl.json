@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "mgbox run -D -M",
-    "publish": "mgbox run -e server -m production -C"
+    "publish": "mgbox run -e server -m production -C",
+    "ssrpublish": "mgbox run -e server -m production -C -S"
   },
   "author": "niudaodao",
   "license": "ISC"

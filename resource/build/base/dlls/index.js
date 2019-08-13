@@ -71,7 +71,7 @@ module.exports = {
                 let manifest = require(path.join(output.path, dllManifest));
                 let insertPlugin = function (filePath) {
                     plugins.unshift( Plugins[Plugins.CONST.htmlIncludeAssets]({
-                        assets: [filePath],
+                        tags: [filePath],
                         append: false,
                         publicPath: ""
                     }) );

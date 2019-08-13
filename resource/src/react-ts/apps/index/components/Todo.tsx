@@ -1,6 +1,6 @@
 import * as React from "react"
 
-const Todo = ({ onClick, completed, text }:{ onClick:any, completed:boolean, text:string }) => (
+const Todo = ({ onClick, completed, text, key }:{ onClick:any, completed:boolean, text:string, key: string }) => (
     <li
         onClick={onClick}
         style={{

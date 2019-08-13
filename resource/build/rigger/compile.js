@@ -24,20 +24,8 @@ class Compile {
     outputConfig(preWebpackConfig){
         return require("./output").run(preWebpackConfig);
     }
-    delDist(){
-        let processArgv = this.processArgv;
-
-        if (processArgv.mode === Const.MODES.PRODUCTION){
-            console.log("delete dist & manifest dir");
-            try {
-                require("del").sync([path.resolve(Const.MANIFEST_PATH, `${processArgv.itemName}`), path.resolve(Const.DIST_PATH, `${processArgv.itemName}`)]);
-            } catch(e) {
-            }
-        }
-    }
     main(){
         console.log(this.processArgv);
-        this.delDist();
         this.getClientPreWebpackConfig()
             .then(context => {
                 context.webpackConfig = this.outputConfig(context.preWebpackConfig);

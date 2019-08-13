@@ -29,6 +29,7 @@ module.exports = function (itemName, option) {
         "entryJsExt": "js",
         "ts": false,
         "tplEngine": "none",
+        "useLatestModules": false,
         cdn: {
             host: "",
             handleUrlCallback: null,
@@ -38,7 +39,9 @@ module.exports = function (itemName, option) {
             commonTplPath,
             appsPath,
             staticPath,
-            loadersConfigPath
+            loadersConfigPath,
+            distTemplatePath,
+            distStaticPath
         },
         dist: {
             ssr:{

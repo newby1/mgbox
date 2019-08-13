@@ -10,9 +10,8 @@ new Vue({
 
 import Api from "$appsPath/common/services/api.js";
 const Svc = new Api("");
-Svc.get("/a").then(
+Svc.get("/mock/ab", null, { bodyStream: "text" }).then(
     data => console.log(data),
     e => {
         console.log(e);
     });
-

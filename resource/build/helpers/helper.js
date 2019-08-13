@@ -71,6 +71,9 @@ module.exports = {
         });
         return arr;
     },
+    /**
+     * 查找apps下的app入口html或者ssr server入口
+     */
     getApps(dir, filterApps = [], isSSR = false){
         let dirs = [];
         let max = 2;
@@ -85,7 +88,7 @@ module.exports = {
                 if (info.isDirectory()) {
                     readDirSync(curPath + "/" + ele, deep + 1);
                 } else {
-                    if (ele.indexOf(target) !== -1 ) {
+                    if (ele.indexOf(target) !== -1 && deep == 1 ) {
                         dirs.push(path.resolve(__dirname, curPath));
                     }
                 }

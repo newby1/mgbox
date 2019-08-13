@@ -25,6 +25,10 @@
     "isSsrItem": false,
     "frame": "react"
   },
+  "react-test": {
+    "isSsrItem": false,
+    "frame": "react"
+  },
   "vue-ts": {
     "isSsrItem": false,
     "ts": true,

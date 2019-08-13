@@ -3,6 +3,7 @@ const cwd = process.cwd();
 const PRJ_PATH =  cwd;
 const PRJ_NAME = path.basename(PRJ_PATH);
 module.exports = {
+    VERSION: "1.0.12",
     PRJ_NAME,
     ENVS : {
         LOCAL: "local",

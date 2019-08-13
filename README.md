@@ -33,17 +33,19 @@ mgbox add
 ## 其他说明
 ### 工程目录文件结构约定 
 ```
-+build   //核心编译目录  
++build   //核心编译目录。不建议变动，相关修改可以在configs进行  
 +configs 
     +.configs //.babelrc .eslintrc postcss ts 等loader相关配置;多项目的配置是隔离的。
     +items //项目编译中的配置项，可以扩展功能
       item1.js 
       item2.js 
-    project.config.json  //项目生成时的配置
+    project.config.json  //项目生成时的配置。不能变动，整个编译依赖此配置。
 +mocks  
-  index.js //业务mocks数据入口
-  local.js //业务mocks数据，建议不如git库
-  index.js //模板引擎mock数据
+  +item1 
+    mock.js //mock入口文件
+    app1.js //业务数据
+  ...
+  +item1-tpl //模板mock数据。目录结构同item1
 +src  
   +common//多item共用的组件服务
   +item2
@@ -72,6 +74,7 @@ npm run dev
 ```
 参数说明  
 ***
+
  缩写 | 补充 | 值 | 说明   
 :---|:---|:----|:----
  -i | --item | [all(默认) : item : item1,item2] | 选择编译的项目 
@@ -83,7 +86,8 @@ npm run dev
 -C | --cdn | false | 编译cdn 
 -O | --open | false | 打开浏览器。依赖`-e local -D`
 -L | --eslist | false | eslint检测。依赖`-m development`
--S | --ssr | false | 启用ssr  
+-S | --ssr | false | 启用ssr 
+ 
 ***
 使用示例  
 ```

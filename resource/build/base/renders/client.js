@@ -34,7 +34,7 @@ module.exports = {
 
         [...itemConfig.buildAssets.css, ...itemConfig.buildAssets.js].forEach(val => {
             let option = {
-                assets: [val],
+                tags: [val],
                 append: false,
             };
             if (/\/\//.test(val)){

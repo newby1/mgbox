@@ -3,23 +3,25 @@ const fs = require('fs');
 const extend = require("extend");
 const path = require("path");
 const cwd = process.cwd();
-const utils = require('./utils');
+const packageJson = require("../package");
+const Utils = require('./utils');
 
 let commander = require("commander");
+let version = packageJson.version;
 
 commander
-    .version("0.1.0", "-v, --version")
+    .version(version, "-v, --version")
     .command("add")
     .description("添加一个项目")
     .action(function()  {
-        require("./add");
+        require("./add").run();
     });
 
 commander
     .command("update")
     .description("更新build")
     .action(function()  {
-        require("./update");
+        require("./update").run();
     });
 
 commander
@@ -41,7 +43,7 @@ commander
     .option("--debug", "编译日志")
     .action(function(res)  {
         const configPath = path.resolve(cwd, "./configs/project.config.json");
-        if (!utils.isInstalled(configPath)){
+        if (!Utils.isInstalled(configPath)){
             console.log("请使用mgbox add添加项目");
             return;
         }

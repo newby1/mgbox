@@ -4,7 +4,7 @@ const shell = require("shelljs");
 const path = require("path");
 const inquirer = require("inquirer");
 const execSync = require('child_process').execSync;
-const utils = require('./utils');
+const Utils = require('./utils');
 const glob = require("glob");
 
 let config = {};
@@ -29,10 +29,10 @@ const shouldUserYarn = () => {
     }
 };
 let configPath = resolvePrj("configs/project.config.json");
-const add = {
-    main(){
+module.exports = {
+    run(){
         this.loadConfig();
-        this.collect();
+        this.collectUserConfig();
     },
     loadConfig(){
         let configs = `configs`;
@@ -40,7 +40,7 @@ const add = {
             shell.mkdir("-p", configs);
         }
 
-        if (utils.isInstalled(configPath)) {
+        if (Utils.isInstalled(configPath)) {
             config = require(configPath);
             return;
         }
@@ -70,7 +70,7 @@ const add = {
             resolvePrj(`package.json`),
         );
     },
-    collect(){
+    collectUserConfig(){
         const cssExt = {
             "less": "less",
             "sass": "scss",
@@ -139,6 +139,12 @@ const add = {
                 when: function (answers) {
                     return false ===  answers.isSsrItem
                 }
+            },
+            {
+                type: "confirm",
+                name: "useLatestModules",
+                message: "是否使用最新的package dependencies",
+                default: false
             }
         ])
             .then(answers => {
@@ -158,47 +164,16 @@ const add = {
     },
     createPackage(){
         const modules = require('./modules');
-        let itemConfig = config[itemName];
-        let frame = itemConfig.frame;
-        let dependencies = [].concat(modules.base);
-        let startMsg = "开始安装模块...";
-        let msg = "安装模块完成";
-        let that = this;
-        let exec;
-        dependencies = dependencies
-            .concat(modules[frame])
-            .concat(modules.css.base)
-            .concat(modules.css[itemConfig.cssProcessor])
-            .concat(modules.tplEngine[itemConfig.tplEngine] || []);
-        if (itemConfig.isSsrItem){
-            dependencies = dependencies.concat(modules.ssr[frame] || []);
-        }
-        if (itemConfig.ts){
-            dependencies = dependencies.concat(modules.ts.base)
-                .concat(modules.ts[frame]);
-        }
-        console.log(startMsg);
-        if (shouldUserYarn()){
-            exec = "yarn add ";
-        }else{
-            console.log("npm i");
-            exec = "npm i "
-        }
-        shell.exec(`${exec} ${dependencies.join(" ")}`,
-            {
-                async: true
-            },
-            function () {
-                console.log(msg);
-                that.run();
-            }
-        );
+        const dependencies = Utils.getPackageModules(config[itemName], modules);
+        Utils.installPackage(dependencies, () => {
+            this.startServer();
+        })
     },
-    run(){
+    startServer(){
         shell.exec(`npm run dev -- -O -i ${itemName}`);
     },
     copy(){
-        if (!utils.isInstalled(resolvePrj(`package.json`))) {
+        if (!Utils.isInstalled(resolvePrj(`package.json`))) {
             this.init();
         }
         let itemConfig = config[itemName];
@@ -256,6 +231,5 @@ const add = {
     }
 
 };
-add.main();
 
 

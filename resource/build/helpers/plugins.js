@@ -82,7 +82,8 @@ let plugins = {
         return new webpack.DllReferencePlugin(option);
     },
     [PLUGIN.htmlIncludeAssets]: (option) => {
-        const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
+        //const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
+        const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-tags-plugin");
         return new HtmlWebpackIncludeAssetsPlugin(option)
     },
     [PLUGIN.copy]: (option) => {

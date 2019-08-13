@@ -1,7 +1,7 @@
 <template>
-    <li @click="handle" :style="style">
-        {{text}}
-    </li>
+        <li @click="handle" :style="style">
+            {{text}}
+        </li>
 </template>
 <script>
     import {EVENT_TYPES} from "../store/index";
