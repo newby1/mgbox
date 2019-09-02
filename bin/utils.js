@@ -62,7 +62,7 @@ const Utils = {
         return dependencies;
 
     },
-    shouldUserYarn(){
+    shouldUseYarn(){
         try {
             execSync('yarnpkg --version', { stdio: 'ignore' });
             return true;
@@ -75,7 +75,7 @@ const Utils = {
         let msg = "安装模块完成";
         console.log(startMsg);
         let exec;
-        if (Utils.shouldUserYarn()){
+        if (Utils.shouldUseYarn()){
             exec = "yarn add ";
         }else{
             console.log("npm i");

@@ -20,14 +20,6 @@ const resolveNpm = (file) => {
     return path.resolve(__dirname, `../resource/${file}`);
 
 };
-const shouldUserYarn = () => {
-    try {
-        execSync('yarnpkg --version', { stdio: 'ignore' });
-        return true;
-    } catch (e) {
-        return false;
-    }
-};
 let configPath = resolvePrj("configs/project.config.json");
 module.exports = {
     run(){
