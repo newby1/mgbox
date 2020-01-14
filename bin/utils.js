@@ -37,10 +37,10 @@ const Utils = {
         modules
     ){
         let dependencies = [];
-        if (!dependencies || !modules){
+        if (!dependConfig || !modules){
             return dependencies;
         }
-        const spliceModule = dependConfig.useLastestModules
+        const spliceModule = dependConfig.useLatestModules
             ?
             Utils.spliceModuleUseLasted
             :

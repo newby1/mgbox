@@ -1,6 +1,6 @@
 {
   "name": "mgbox",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "frame build and study",
   "main": "index.js",
   "bin": {

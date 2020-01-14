@@ -1,110 +1,110 @@
 {
   "base": {
-    "@babel/core":"^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "autoprefixer": "^9.4.0",
-    "babel-loader": "^8.0.0",
+    "@babel/core":"^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.1.1",
+    "@babel/preset-env": "^7.8.3",
+    "autoprefixer": "^9.4.1",
+    "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
-    "copy-webpack-plugin": "^5.0.0",
-    "cross-env": "^5.2.0",
-    "del": "^3.0.0",
-    "eslint": "^5.0.0",
-    "eslint-loader": "^2.0.0",
-    "extend": "^3.0.0",
-    "file-loader": "^3.0.0",
-    "glob": "^7.0.0",
-    "happypack": "^5.0.0",
-    "html-loader": "^0.5.0",
-    "html-webpack-tags-plugin": "^2.0.0",
-    "html-webpack-plugin": "^3.0.0",
-    "loader-utils": "^1.0.0",
-    "mini-css-extract-plugin": "^0.5.0",
-    "mocker-api": "^1.6.0",
-    "require-from-string": "^2.0.0",
-    "uglifyjs-webpack-plugin": "^2.0.0",
-    "url-loader": "^1.0.0",
-    "url-polyfill": "^1.0.0",
-    "webpack": "^4.0.0",
-    "webpack-dev-server": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "cross-env": "^6.0.3",
+    "del": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-loader": "^3.0.3",
+    "extend": "^3.0.2",
+    "file-loader": "^5.0.2",
+    "glob": "^7.1.6",
+    "happypack": "^5.0.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-tags-plugin": "^2.0.17",
+    "html-webpack-plugin": "^3.0.1",
+    "loader-utils": "^1.2.3",
+    "mini-css-extract-plugin": "^0.9.0",
+    "mocker-api": "^1.11.2",
+    "require-from-string": "^2.0.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^3.0.0",
+    "url-polyfill": "^1.1.7",
+    "webpack": "^4.41.5",
+    "webpack-dev-server": "^3.10.1",
     "webpack-livereload-plugin": "^2.2.0",
-    "webpack-manifest-plugin": "^2.0.0",
-    "webpack-node-externals": "^1.7.0",
+    "webpack-manifest-plugin": "^2.2.0",
+    "webpack-node-externals": "^1.7.2",
     "whatwg-fetch": "^3.0.0"
   },
   "tplEngine": {
     "ejs": {
-      "ejs": "^2.6.0"
+      "ejs": "^3.0.1"
     },
     "pug": {
-      "pug": "^2.0.0"
+      "pug": "^2.0.4"
     },
     "handlebars": {
-      "handlebars": "^4.0.0"
+      "handlebars": "^4.7.2"
     },
     "velocity": {
-      "velocity": "^0.7.0"
+      "velocity": "^0.7.2"
     }
   },
   "ts": {
     "base": {
-      "ts-loader": "^6.0.0",
-      "typescript": "^3.5.0",
-      "@types/node": "^12.6.2"
+      "ts-loader": "^6.2.1",
+      "typescript": "^3.7.4",
+      "@types/node": "^13.1.6"
     },
     "react":{
-      "@types/react-dom": "^16.0.0",
-      "@types/react-redux": "^7.0.0"
+      "@types/react-dom": "^16.9.4",
+      "@types/react-redux": "^7.1.5"
     },
     "vue": {
-      "vue-property-decorator": "^8.0.0",
-      "vuex-class": "^0.3.0"
+      "vue-property-decorator": "^8.3.0",
+      "vuex-class": "^0.3.2"
     }
   },
   "ssr": {
     "vue": {
-      "vue-server-renderer": "^2.6.0"
+      "vue-server-renderer": "^2.6.11"
     }
   },
   "react":{
-    "@babel/preset-react": "^7.0.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-redux": "^6.0.0",
-    "react-router": "^5.0.0",
-    "react-router-redux": "^4.0.0",
-    "redux": "^4.0.0",
-    "redux-thunk": "^2.0.0"
+    "@babel/preset-react": "^7.8.3",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.1.3",
+    "react-router": "^5.1.2",
+    "react-router-redux": "^4.0.8",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "vue": {
-    "vue": "^2.0.0",
-    "vue-loader": "^15.0.0",
-    "vue-router": "^3.0.0",
-    "vue-template-compiler": "^2.0.0",
-    "vuex": "^3.0.0"
+    "vue": "^2.6.11",
+    "vue-loader": "^15.8.3",
+    "vue-router": "^3.1.3",
+    "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.1.2"
   },
   "jquery": {
-    "jquery": "^1.0.0"
+    "jquery": "^1.12.4"
   },
   "css":{
     "base": {
-      "css-loader": "^2.0.0",
-      "cssnano": "^4.0.0",
-      "style-loader": "^0.1.0",
-      "postcss": "^7.0.0",
+      "css-loader": "^2.0.1",
+      "cssnano": "^4.1.10",
+      "style-loader": "^1.1.2",
+      "postcss": "^7.0.26",
       "postcss-loader": "^3.0.0"
     },
     "less": {
-      "less": "^3.0.0",
-      "less-loader": "^4.0.0"
+      "less": "^3.10.3",
+      "less-loader": "^5.0.0"
     },
     "sass": {
-      "node-sass": "^4.0.0",
-      "sass-loader": "^7.0.0"
+      "node-sass": "^4.13.0",
+      "sass-loader": "^8.0.2"
     },
     "stylus": {
-      "stylus-loader": "^3.0.0",
-      "stylus": "^0.1.0"
+      "stylus-loader": "^3.0.2",
+      "stylus": "^0.54.7"
     }
   }
 }

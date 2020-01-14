@@ -1,3 +1,6 @@
+### 1.0.14
+1、修复一个小bug
+2、将默认版本package.json更新到最新版本
 ### 1.0.13
 1. 支持锁定package版本
 2. mgbox update优化
